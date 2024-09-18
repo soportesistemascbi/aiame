@@ -149,54 +149,6 @@ export default function Anuncios() {
                 borderCollapse: 'collapse',
                 maxWidth: '100vw',
             }}>
-                <div style={{
-                    width: '100%',
-                    padding: '20px',
-                    paddingLeft: '80px',
-                    paddingBottom: '50px',
-                    display: 'flex',
-                    maxWidth: '100%',
-                }}>
-                    <div style={{ width: '1555px', height: '50px', display: 'flex', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
-                                type="text"
-                                placeholder='Buscar por Número de Caso o Encargado'
-                                value={busqueda}
-                                onChange={(e) => setBusqueda(e.target.value)}
-                                style={{
-                                    width: '220px',
-                                    padding: '9px',
-                                    border: 'none',
-                                    background: '#F5F7FA',
-                                    borderRadius: '20px',
-                                    outline: 'none',
-                                    margin: '0',
-                                    height: '22px'
-                                }}
-                            />
-                        </div>
-
-                        <div style={{ display: 'flex', flexDirection: 'column', marginRight: '100px' }} onClick={AbrirCaracteristicas}>
-                            <img
-                                src={suma}
-                                alt="Agregar"
-                                style={{
-                                    width: '60px',
-                                    display: 'flex',
-                                    alignItems: 'end',
-                                    justifyContent: 'end'
-                                }}
-                            />
-                            <p style={{ margin: '0' }}>Agregar</p>
-                        </div>
-
-                    </div>
-                </div>
-
-
-
-
 
 
                 <div style={{ width: '100%', overflowY: 'auto' }}>
@@ -206,7 +158,7 @@ export default function Anuncios() {
 
                     {noticias.length === 0 ? (
                         <tr>
-                            <td colSpan="7" style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
+                            <td style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
                                 <div style={{
                                     display: 'flex',
                                     flexDirection: 'column',

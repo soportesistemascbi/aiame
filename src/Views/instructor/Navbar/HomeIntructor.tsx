@@ -121,7 +121,7 @@ export default function HomeIntructor() {
     const Imagenes = [
         { icono: Reporte },
         { icono: Reporte },
-
+        { icono: Reporte },
     ];
     //--------------------------------------------------------------------------------------------
     //Modal de usuarios

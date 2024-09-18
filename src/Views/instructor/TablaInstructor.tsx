@@ -390,7 +390,7 @@ export default function TablaInstructor() {
                                                         value={selectedCategorias.join(', ')}
                                                         style={{
                                                             width: '100%', padding: '10px', marginBottom: '10px',
-                                                            borderRadius: '10px', border: '2px solid blue', outline: 'none', textAlign: 'center'
+                                                            borderRadius: '10px',  outline: 'none', textAlign: 'center'
                                                         }}
                                                         id="clase_categoria"
                                                     />
@@ -607,58 +607,7 @@ export default function TablaInstructor() {
 
 
 
-                                {/*                 BLOQUE PARA LAS NOTICIAS               */}
-
-
-        
-                {noticias.length === 0 ? (
-                    <tr>
-                        <td colSpan="7" style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '100%',
-                                height: '100px' // Puedes ajustar la altura según tus necesidades
-                            }}>
-
-                                <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
-                                    No hay anuncios disponibles.
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                ) : (                
-                    noticias.length > 0 && (
-                        <div style={{ width: '100%', maxWidth: '600px', marginTop: '-10px', marginBottom: '0px', background: '#f9f9f9', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', boxSizing: 'border-box' }}>
-                            <Slider {...carouselSettings}>
-                                {noticias.map((noticia) => (
-                                    <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
-                                        <img
-                                            src={noticia.urlImagen}
-                                            alt={`Imagen de noticia ${noticia.id}`}
-                                            className="slider-image"
-                                            style={{ width: '100%', height: '100px', borderRadius: '5px' }}
-                                        />
-                                        <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
-                                            <h3 style={{ margin: '0', fontSize: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                {noticia.descripcion}
-                                            </h3>
-                                            <p style={{ margin: '5px 0', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                {noticia.fecha}
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </Slider>
-
-
-                        </div>
-                    ))}
-
-
-                           {/*                 FIN DE ANUNCIOS Y COMIENZO DE LA TABLA               */}
+                 
 
 
                 <div style={{ width: '100%', overflowY: 'auto' }}>

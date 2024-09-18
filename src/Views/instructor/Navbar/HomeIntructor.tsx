@@ -83,6 +83,9 @@ export default function HomeIntructor() {
                 case 'Historial':
                     CerrarHistorial();
                     break;
+                    case 'Noticias':
+                        CerrarHistorial();
+                        break;
                 default:
                     break;
             }
@@ -97,11 +100,18 @@ export default function HomeIntructor() {
                 case 'Reportes':
                     AbrirUsuarios();
                     CerrarHistorial();
+                    CerrarNoticias();
                     break;
                 case 'Historial':
                     AbrirHistorial();
                     CerrarUsuarios();
+                    CerrarNoticias();
                     break;
+                    case 'Noticias':
+                        AbrirNoticias();
+                        CerrarHistorial();
+                        CerrarUsuarios();
+                        break;
                 default:
                     break;
             }
@@ -117,6 +127,7 @@ export default function HomeIntructor() {
     //Modal de usuarios
     const [Reportes, setReportes] = useState(false);
     const [Historiall, setHisotrial] = useState(false);
+    const [noticias, setNoticias] = useState(false);
 
     const AbrirUsuarios = () => {
         setReportes(!Reportes);
@@ -130,6 +141,13 @@ export default function HomeIntructor() {
     };
     const CerrarHistorial = () => {
         setHisotrial(false);
+    };
+
+    const AbrirNoticias = () => {
+        setNoticias(!noticias);
+    };
+    const CerrarNoticias = () => {
+        setNoticias(false);
     };
 
 
@@ -226,7 +244,7 @@ export default function HomeIntructor() {
                     style={{
                         width: '110px', margin: '10px auto'
                     }} />
-                {['Reportes', 'Historial'].map((text, index) => (
+                {['Reportes', 'Historial', 'Noticias'].map((text, index) => (
                     <button
                         key={text}
                         style={{

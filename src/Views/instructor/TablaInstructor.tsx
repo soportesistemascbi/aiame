@@ -328,30 +328,26 @@ export default function TablaInstructor() {
             )}
 
             {Reporte && (
-                <div
-                    style={{
-                        width: 'calc(11.5em + 80vw)',
-                        height: '91.5%',
-                        background: '#F5F7FA',
-
-                        boxShadow: '1px 1px 5px 1px #cccccc',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        position: 'fixed',
-                        bottom: '0px',
-                        right: '0px',
-                        zIndex: '2',
-                        overflow: 'hidden',
-
-
-                    }}
-                >
+                <div style={{
+                    width: 'calc(11.5em + 80vw)',
+                    height: '91.5%',
+                    background: '#F0F4F8',
+                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    position: 'fixed',
+                    bottom: '0',
+                    right: '0',
+                    zIndex: '2',
+                    overflow: 'hidden',
+                    borderRadius: '12px'
+                }}>
                     <div style={{
                         width: 'calc(3em + 80vw)',
                         height: '85%',
-                        background: 'white',
-                        boxShadow: '1px 1px 5px 1px #cccccc',
-                        borderRadius: '10px',
+                        background: '#ffffff',
+                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                        borderRadius: '12px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -363,122 +359,108 @@ export default function TablaInstructor() {
                         transform: 'translateX(-98%) translateX(-4px)',
                         borderCollapse: 'collapse',
                         maxWidth: '100vw',
+                        padding: '20px'
                     }}>
-                        <div style={{
-                            width: '100%', height: '100%', background: 'white', boxShadow: '1px 1px 5px 1px #cccccc',
-                            borderRadius: '10px', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center', justifyContent: 'space-between', position: 'relative'
-                        }}>
-                            <h1 style={{ color: '#096ECB', textAlign: 'center', marginBottom: '20px' }}>Reporte de Caso</h1>
-                            <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
-                                <div style={{
-                                    width: '100%', display: 'flex', flexDirection: 'row', gap: '20px', boxSizing: 'border-box'
-                                }}>
-                                    <div style={{ height: '100%', width: '100%', flex: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <div style={{
-                                            display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'center', justifyContent: 'center', width: '100%',
-                                            flexWrap: 'wrap'
-                                        }}>
-                                            <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center' }}>
-                                                <label>Tipo De Caso</label>
-                                                <div style={{ width: '70%', position: 'relative' }}>
-                                                    <input
-                                                        type="text"
-                                                        placeholder='Categorias'
-                                                        onFocus={() => setShowCategories(true)}
-                                                        readOnly
-                                                        value={selectedCategorias.join(', ')}
-                                                        style={{
-                                                            width: '100%', padding: '10px', marginBottom: '10px',
-                                                            borderRadius: '10px',  outline: 'none', textAlign: 'center'
-                                                        }}
-                                                        id="clase_categoria"
-                                                    />
-                                                    {showCategories && (
-                                                        <select
-                                                            multiple
-                                                            onChange={handleCategoriaChange}
-                                                            onClick={() => setShowCategories(false)}
-                                                            style={{
-                                                                position: 'absolute', top: '100%', left: '0', zIndex: '1', width: '100%',
-                                                                display: showCategories ? 'block' : 'none', textAlign: 'center', scrollbarWidth: 'none'
-                                                            }}
-                                                        >
-                                                            {TipoCaso.map(caso => (
-                                                                <option key={caso.id} value={caso.descripcion} data-id={caso.id}>
-                                                                    {caso.descripcion}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center' }}>
-                                                <label>SerialPc</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder='SerialPc'
-                                                    style={{
-                                                        width: '70%', padding: '10px', marginBottom: '10px',
-                                                        borderRadius: '10px', outline: 'none', textAlign: 'center'
-                                                    }}
-                                                    id="serial_pc"
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                                            <label>Descripción</label>
-                                            <textarea
-                                                id="descripcionCaso"
-                                                style={{
-                                                    width: '84%', height: '200px', padding: '10px',
-                                                     borderRadius: '10px', marginBottom: '20px'
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
-                                        <h2 style={{ fontSize: '24px', color: '#096ECB' }}>Adjuntar Imagen</h2>
-                                        <div style={{
-                                            width: '100%', maxWidth: '350px', height: '200px', backgroundColor: '#ddd',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #ccc',
-                                            marginBottom: '20px'
-                                        }}>
-                                            {file ? (
-                                                <img
-                                                    src={URL.createObjectURL(file)}
-                                                    alt="Vista previa de la imagen"
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                />
-                                            ) : (
-                                                <div style={{ textAlign: 'center', padding: '10px' }}>
-                                                    <p>No se ha seleccionado ninguna imagen.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={handleButtonClick}
-                                            style={{
-                                                padding: '10px 20px', backgroundColor: '#096ECB', color: 'white',
-                                                border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '20px'
-                                            }}
-                                        >
-                                            Seleccionar Imagen
-                                        </button>
+                        <h1 style={{ color: '#1E90FF', marginBottom: '20px' }}>Reporte de Caso</h1>
+                        <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row', gap: '20px' }}>
+                                <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <label style={{ marginBottom: '5px', fontWeight: 'bold' }}>Tipo De Caso</label>
+                                    <div style={{ width: '70%', position: 'relative' }}>
                                         <input
-                                            ref={fileInputRef}
-                                            type="file"
-                                            onChange={handleFileChange}
-                                            style={{ display: 'none' }}
-                                            accept=".jpeg, .jpg, .png"
+                                            type="text"
+                                            placeholder='Categorías'
+                                            onFocus={() => setShowCategories(true)}
+                                            readOnly
+                                            value={selectedCategorias.join(', ')}
+                                            style={{
+                                                width: '100%', padding: '12px', marginBottom: '10px',
+                                                borderRadius: '10px', outline: 'none', textAlign: 'center', border: '1px solid #ccc'
+                                            }}
+                                            id="clase_categoria"
                                         />
+                                        {showCategories && (
+                                            <select
+                                                multiple
+                                                onChange={handleCategoriaChange}
+                                                onClick={() => setShowCategories(false)}
+                                                style={{
+                                                    position: 'absolute', top: '100%', left: '0', zIndex: '1', width: '100%',
+                                                    display: showCategories ? 'block' : 'none', textAlign: 'center', border: '1px solid #ccc', borderRadius: '5px'
+                                                }}
+                                            >
+                                                {TipoCaso.map(caso => (
+                                                    <option key={caso.id} value={caso.descripcion} data-id={caso.id}>
+                                                        {caso.descripcion}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
                                 </div>
-
-
-                            </form>
+                                <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <label style={{ marginBottom: '5px', fontWeight: 'bold' }}>Serial PC</label>
+                                    <input
+                                        type="text"
+                                        placeholder='SerialPc'
+                                        style={{
+                                            width: '70%', padding: '12px', marginBottom: '10px',
+                                            borderRadius: '10px', outline: 'none', textAlign: 'center', border: '1px solid #ccc'
+                                        }}
+                                        id="serial_pc"
+                                    />
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
+                                <label style={{ marginBottom: '5px', fontWeight: 'bold' }}>Descripción</label>
+                                <textarea
+                                    id="descripcionCaso"
+                                    style={{
+                                        width: '84%', height: '200px', padding: '12px',
+                                        borderRadius: '10px', marginBottom: '20px', border: '1px solid #ccc'
+                                    }}
+                                />
+                            </div>
+                            <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
+                                <h2 style={{ fontSize: '24px', color: '#1E90FF' }}>Adjuntar Imagen</h2>
+                                <div style={{
+                                    width: '100%', maxWidth: '350px', height: '200px', backgroundColor: '#f7f7f7',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #ccc',
+                                    marginBottom: '20px', borderRadius: '10px'
+                                }}>
+                                    {file ? (
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt="Vista previa de la imagen"
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '10px' }}
+                                        />
+                                    ) : (
+                                        <div style={{ textAlign: 'center', padding: '10px' }}>
+                                            <p>No se ha seleccionado ninguna imagen.</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleButtonClick}
+                                    style={{
+                                        padding: '10px 20px', backgroundColor: '#1E90FF', color: 'white',
+                                        border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '20px',
+                                        transition: 'background-color 0.3s'
+                                    }}
+                                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0a74d4'}
+                                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#1E90FF'}
+                                >
+                                    Seleccionar Imagen
+                                </button>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                    accept=".jpeg, .jpg, .png"
+                                />
+                            </div>
                             <div style={{
                                 width: '100%',
                                 display: 'flex',
@@ -507,7 +489,6 @@ export default function TablaInstructor() {
                                 >
                                     Volver
                                 </button>
-
                                 <button
                                     onClick={handleSubmit}
                                     style={{
@@ -530,10 +511,11 @@ export default function TablaInstructor() {
                                     Enviar
                                 </button>
                             </div>
-
-                        </div>
+                        </form>
                     </div>
-                </div >
+                </div>
+
+
             )}
 
 
@@ -607,7 +589,7 @@ export default function TablaInstructor() {
 
 
 
-                 
+
 
 
                 <div style={{ width: '100%', overflowY: 'auto' }}>
@@ -631,7 +613,7 @@ export default function TablaInstructor() {
                         <tbody>
 
 
-                           {/*                 DATOS DE LA TABLA               */}
+                            {/*                 DATOS DE LA TABLA               */}
 
 
                             {casosFiltrados.length === 0 ? (
@@ -694,7 +676,7 @@ export default function TablaInstructor() {
             </div>
 
 
-                               {/*                 LOADER O ANIMACIÓN DE CARGA               */}
+            {/*                 LOADER O ANIMACIÓN DE CARGA               */}
 
 
             {loading && (

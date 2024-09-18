@@ -9,12 +9,10 @@ import { MoonLoader } from 'react-spinners';
 
 export default function Anuncios() {
     const [noticias, setNoticias] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
     const [descripcion, setDescripcion] = useState(false);
     const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
     const [loading, setLoading] = useState(false);
 
-    const [Reporte, setReporte] = useState(false);
 
 
 

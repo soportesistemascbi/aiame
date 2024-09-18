@@ -2,7 +2,7 @@
 import './Registro.css';
 import Logo from '../../../Img/Logo.png';
 import Mujer from './Img/Mujer.svg';
-import { Contraseña, Gmail, NDocumento, Nombre, NumeroTelefono } from '../../../Components/Inputs/Inputs';
+import { Contraseña, Gmail, NDocumento, Nombre, NumeroTelefono, RContraseña } from '../../../Components/Inputs/Inputs';
 import { Registrarme, Atras } from '../../../Components/Botones/Botones';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -25,7 +25,7 @@ export default function Registro() {
     const [showCargo, setShowCargos] = useState(false);
     const [selectedCargoId, setSelectedCargoIds] = useState([]);
     const navigate = useNavigate();
-
+    const bcrypt1 = bcrypt;
 
     useEffect(() => {
         fetchDocumento();
@@ -73,18 +73,17 @@ export default function Registro() {
             .catch(error => console.error('Error al obtener los cargos:', error));
     };
 
-    const handleDocumentoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, (option: HTMLOptionElement) => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, (option: HTMLOptionElement) => option.getAttribute('data-id'));
+    const handleDocumentoChange = (e) => {
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
         setSelectedDocumento(selectedOptions);
         setSelectedDocumentosIds(selectedOptionsIds);
     };
-    
 
-    const handleCargoChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const handleCargoChange = (e) => {
         const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
         const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedCargo(selectedOptions );
+        setSelectedCargo(selectedOptions);
         setSelectedCargoIds(selectedOptionsIds);
     };
 
@@ -92,7 +91,7 @@ export default function Registro() {
 
 
 
-    const handleSubmit = async (e: any) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true); // Inicia el loader
 

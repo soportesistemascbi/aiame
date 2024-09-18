@@ -30,7 +30,7 @@ const [showAlert_inicio, setShowAlert] = useState(false);
 const [loading, setLoading] = useState(false);
 
 // Función para manejar el inicio de sesión.
-const handleLogin = async (e: any) => {
+const handleLogin = async (e) => {
     e.preventDefault(); // Previene el envío del formulario de manera tradicional.
 
     setLoading(true); // Inicia el loader al comenzar el proceso de inicio de sesión.
@@ -155,13 +155,16 @@ const handleLogin = async (e: any) => {
             marginLeft: "calc(0em + 10vw)",
           }}
         >
-          <img src={Logo} alt="Logo de la aplicación"   style={{
+          <img
+            src={Logo}
+            style={{
               width: "100px",
               top: "0",
               left: "0%",
               position: "fixed",
               zIndex: "1",
-            }}/>
+            }}
+          />
 
           <h1
             style={{
@@ -179,25 +182,29 @@ const handleLogin = async (e: any) => {
           <form onSubmit={handleLogin} style={{ display: 'flex', width: '100%', alignItems: 'center', justifyItems: 'center', flexDirection: 'column' }}>
 
             <div className="inputGroup">
-            <input type="text" required autoComplete="off" id="numero" placeholder="Ingrese su número de documento" />
-             <img src={Usuario} alt="Ícono de usuario"   style={{
+              <input type="text" required autoComplete="off" id="numero" />
+              <img
+                src={Usuario}
+                style={{
                   position: "absolute",
                   top: "0px",
                   left: "10px",
                   marginTop: "10px",
-                }}/>
-             
+                }}
+              />
               <label htmlFor="name"> Numero de documento</label>
             </div>
             <div className="inputGroup" style={{}}>
-            <input type="password" required autoComplete="off" id="contraseña" placeholder="Ingrese su contraseña" />
-            <img src={Contraseña} alt="Ícono de contraseña" style={{
+              <input type="password" required autoComplete="off" id="contraseña" />
+              <img
+                src={Contraseña}
+                style={{
                   position: "absolute",
                   top: "0px",
                   left: "10px",
                   marginTop: "10px",
-                }}/>
-       
+                }}
+              />
               <label htmlFor="name">Contraseña</label>
             </div>
             <Link to={"Olvido_Contraseña"} style={{ textDecoration: 'none' }} >

@@ -15,6 +15,7 @@ import TablaHistorial from '../tablaHistorial.js'
 import { useState, useEffect } from 'react';
 import TablaInstructor from '../TablaInstructor.js'
 import { Cerrar_Sesion } from '../../../Components/Botones/Botones.js'
+import Anuncios from '../../Soporte_Sitio/tablas/Anuncios.js'
 
 
 
@@ -83,9 +84,9 @@ export default function HomeIntructor() {
                 case 'Historial':
                     CerrarHistorial();
                     break;
-                    case 'Noticias':
-                        CerrarHistorial();
-                        break;
+                case 'Noticias':
+                    CerrarHistorial();
+                    break;
                 default:
                     break;
             }
@@ -107,11 +108,11 @@ export default function HomeIntructor() {
                     CerrarUsuarios();
                     CerrarNoticias();
                     break;
-                    case 'Noticias':
-                        AbrirNoticias();
-                        CerrarHistorial();
-                        CerrarUsuarios();
-                        break;
+                case 'Noticias':
+                    AbrirNoticias();
+                    CerrarHistorial();
+                    CerrarUsuarios();
+                    break;
                 default:
                     break;
             }
@@ -232,7 +233,7 @@ export default function HomeIntructor() {
                 <a href="/">
                     <Cerrar_Sesion />
                 </a>
-                <p style={{ margin: '0', fontSize: '11px', cursor:'pointer' }} onClick={AMCS}>cancelar</p>
+                <p style={{ margin: '0', fontSize: '11px', cursor: 'pointer' }} onClick={AMCS}>cancelar</p>
             </div>
             <div className={`AMCL ${MCL ? 'ALCL' : ''}`}>
                 <img src={Cerrar} onClick={CMCL}
@@ -277,6 +278,9 @@ export default function HomeIntructor() {
             {Historiall && (
                 <TablaHistorial />
             )};
+            {noticias && (
+                <Anuncios />
+            )};
             {showSearchIcon && (
                 <div className='Lateral'
                     style={{
@@ -292,7 +296,7 @@ export default function HomeIntructor() {
 
 
 
-                    {['Reportes', 'Historial'].map((text, index) => (
+                    {['Reportes', 'Historial', 'Noticias'].map((text, index) => (
                         <button
                             key={text}
                             style={{

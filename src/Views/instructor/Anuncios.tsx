@@ -8,44 +8,16 @@ import "./carrusel.css";
 import { MoonLoader } from 'react-spinners';
 
 export default function Anuncios() {
-    const [casos, setCasos] = useState([]);
     const [noticias, setNoticias] = useState([]);
     const [busqueda, setBusqueda] = useState('');
-    const [casosFiltrados, setCasosFiltrados] = useState([]);
     const [descripcion, setDescripcion] = useState(false);
     const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
-    const id = localStorage.getItem('idUsuario');
     const [loading, setLoading] = useState(false);
-    const [TipoCaso, setCategorias] = useState([]);
-    const [selectedCategorias, setSelectedCategorias] = useState([]);
-    const [showCategories, setShowCategories] = useState(false);
-    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]);
-    const [showAlert_inicio, setShowAlert] = useState(false);
+
     const [Reporte, setReporte] = useState(false);
-    const fileInputRef = useRef(null);
-    const [file, setFile] = useState(null);
 
 
 
-    useEffect(() => {
-        const fetchCasos = async () => {
-            try {
-                const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=4&id=${id}`);
-                const data = await response.json();
-                if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                    setCasos([]);
-                    setCasosFiltrados([]);
-                } else {
-                    setCasos(data.rpta);
-                    setCasosFiltrados(data.rpta);
-                }
-            } catch (error) {
-                console.error('Error al obtener casos:', error);
-            }
-        };
-
-        fetchCasos();
-    }, [id]);
 
 
     useEffect(() => {
@@ -75,37 +47,11 @@ export default function Anuncios() {
 
 
 
-    
-
-    useEffect(() => {
-        const resultados = casos.filter(item => {
-            const id = item.id ? item.id.toLowerCase() : '';
-            const nombreSoporte = item.nombreSoporte ? item.nombreSoporte.toLowerCase() : '';
-            const SerialPc = item.serialPc ? item.serialPc.toLowerCase() : '';
 
 
-            return id.includes(busqueda.toLowerCase()) || nombreSoporte.includes(busqueda.toLowerCase()) || SerialPc.includes(busqueda.toLowerCase());
-        });
-        setCasosFiltrados(resultados);
-    }, [busqueda, casos]);
 
-    function hexToRgba(hex, opacity) {
-        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            return `rgba(0, 0, 0, ${opacity})`;
-        }
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-    }
 
-    const getColor = (color) => {
-        if (!color || color.trim() === '') {
-            return '#000000';
-        }
-        return color.startsWith('#') ? color : `#${color}`;
-    };
+
     const carouselSettings = {
         dots: true,
         infinite: false, // Si es 'true', el carrusel podría repetirse infinitamente
@@ -123,43 +69,6 @@ export default function Anuncios() {
     };
 
 
-
-
-    useEffect(() => {
-        fetchCategorias();
-    }, []);
-
-    const fetchCategorias = () => {
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2')
-            .then(response => response.ok ? response.text() : Promise.reject('Error al obtener las categorías'))
-            .then(text => {
-                try {
-                    const data = JSON.parse(text);
-                    setCategorias(data.rpta);
-                } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
-                }
-            })
-            .catch(error => console.error('Error al obtener las categorías:', error));
-    };
-
-    const handleCategoriaChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedCategorias(selectedOptions);
-        setSelectedCategoriasIds(selectedOptionsIds);
-    };
-
-    const handleButtonClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
-        }
-    };
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
-    }
 
     const AbrirCaracteristicas = () => {
         setReporte(!Reporte);
@@ -287,67 +196,67 @@ export default function Anuncios() {
 
 
 
-                 
+
 
 
                 <div style={{ width: '100%', overflowY: 'auto' }}>
-                {/*                 BLOQUE PARA LAS NOTICIAS               */}
+                    {/*                 BLOQUE PARA LAS NOTICIAS               */}
 
 
-        
-                {noticias.length === 0 ? (
-                    <tr>
-                        <td colSpan="7" style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
-                            <div style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                width: '100%',
-                                height: '100px' // Puedes ajustar la altura según tus necesidades
-                            }}>
 
-                                <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
-                                    No hay anuncios disponibles.
-                                </span>
-                            </div>
-                        </td>
-                    </tr>
-                ) : (                
-                    noticias.length > 0 && (
-                        <div style={{ width: '100%', maxWidth: '600px', marginTop: '-10px', marginBottom: '0px', background: '#f9f9f9', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', boxSizing: 'border-box' }}>
-                            <Slider {...carouselSettings}>
-                                {noticias.map((noticia) => (
-                                    <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
-                                        <img
-                                            src={noticia.urlImagen}
-                                            alt={`Imagen de noticia ${noticia.id}`}
-                                            className="slider-image"
-                                            style={{ width: '100%', height: '100px', borderRadius: '5px' }}
-                                        />
-                                        <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
-                                            <h3 style={{ margin: '0', fontSize: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                {noticia.descripcion}
-                                            </h3>
-                                            <p style={{ margin: '5px 0', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                {noticia.fecha}
-                                            </p>
+                    {noticias.length === 0 ? (
+                        <tr>
+                            <td colSpan="7" style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
+                                <div style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%',
+                                    height: '100px' // Puedes ajustar la altura según tus necesidades
+                                }}>
+
+                                    <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
+                                        No hay anuncios disponibles.
+                                    </span>
+                                </div>
+                            </td>
+                        </tr>
+                    ) : (
+                        noticias.length > 0 && (
+                            <div style={{ width: '100%', maxWidth: '600px', marginTop: '-10px', marginBottom: '0px', background: '#f9f9f9', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', boxSizing: 'border-box' }}>
+                                <Slider {...carouselSettings}>
+                                    {noticias.map((noticia) => (
+                                        <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
+                                            <img
+                                                src={noticia.urlImagen}
+                                                alt={`Imagen de noticia ${noticia.id}`}
+                                                className="slider-image"
+                                                style={{ width: '100%', height: '100px', borderRadius: '5px' }}
+                                            />
+                                            <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
+                                                <h3 style={{ margin: '0', fontSize: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                    {noticia.descripcion}
+                                                </h3>
+                                                <p style={{ margin: '5px 0', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                                                    {noticia.fecha}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                            </Slider>
+                                    ))}
+                                </Slider>
 
 
-                        </div>
-                    ))}
+                            </div>
+                        ))}
 
 
-                           {/*                 FIN DE ANUNCIOS Y COMIENZO DE LA TABLA               */}
+                    {/*                 FIN DE ANUNCIOS Y COMIENZO DE LA TABLA               */}
                 </div>
             </div>
 
 
-                               {/*                 LOADER O ANIMACIÓN DE CARGA               */}
+            {/*                 LOADER O ANIMACIÓN DE CARGA               */}
 
 
             {loading && (

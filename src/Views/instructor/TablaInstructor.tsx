@@ -329,22 +329,27 @@ export default function TablaInstructor() {
 
             {Reporte && (
                 <div style={{
-                    width: 'calc(11.5em + 80vw)',
-                    height: '91.5%',
-                    background: '#F0F4F8',
-                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                    width: 'calc(3em + 80vw)',
+                    height: '89%',
+                    background: 'red',
+                    boxShadow: '1px 1px 5px 1px #cccccc',
+                    borderRadius: '10px',
                     display: 'flex',
-                    flexDirection: 'row',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
                     position: 'fixed',
-                    bottom: '0',
-                    right: '0',
+                    bottom: '10px',
+                    left: '96%',
+                    transform: 'translateX(-98%) translateX(-4px)',
                     zIndex: '2',
-                    overflow: 'hidden',
-                    borderRadius: '12px'
+                    borderCollapse: 'collapse',
+                    maxWidth: '100vw',
                 }}>
                     <div style={{
-                        width: 'calc(3em + 80vw)',
-                        height: '85%',
+                        width: '100%',
+                        height: '100%',
                         background: '#ffffff',
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                         borderRadius: '12px',
@@ -353,13 +358,7 @@ export default function TablaInstructor() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        position: 'fixed',
-                        bottom: '30px',
-                        left: '96%',
-                        transform: 'translateX(-98%) translateX(-4px)',
-                        borderCollapse: 'collapse',
-                        maxWidth: '100vw',
-                        padding: '20px'
+
                     }}>
                         <h1 style={{ color: '#1E90FF', marginBottom: '20px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

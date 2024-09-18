@@ -1,5 +1,3 @@
-import { Link, useNavigate } from 'react-router-dom';
-import suma from '../../Views/Tablas/icon/suma.svg';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";

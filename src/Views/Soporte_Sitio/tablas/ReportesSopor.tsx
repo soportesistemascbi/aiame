@@ -102,19 +102,21 @@ export default function ReportesSopor() {
 
 
     const handleCategoriaChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedCategorias(selectedOptions);
-        setSelectedCategoriasIds(selectedOptionsIds);
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene los valores seleccionados.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene los IDs seleccionados.
+        setSelectedCategorias(selectedOptions); // Actualiza las categorías seleccionadas en el estado.
+        setSelectedCategoriasIds(selectedOptionsIds); // Actualiza los IDs de categorías seleccionadas en el estado.
     };
 
 
+    // Maneja los cambios en los estados seleccionados.
     const handleCategoriaChange2 = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedEstado(selectedOptions);
-        setSelectedEstadoIds(selectedOptionsIds);
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene los valores seleccionados.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene los IDs seleccionados.
+        setSelectedEstado(selectedOptions); // Actualiza los estados seleccionados en el estado.
+        setSelectedEstadoIds(selectedOptionsIds); // Actualiza los IDs de estados seleccionados en el estado.
     };
+
 
     const handleButtonClick = () => {
         if (fileInputRef.current) {
@@ -235,12 +237,13 @@ export default function ReportesSopor() {
         setLoading(true);
 
 
-        const id = DatosCaso[0].idEquipo!;
+        const id = DatosCaso[0].idEquipo;
         const idCaso = idcaso;
         const observacion = document.getElementById('descripcionCaso').value;
         const idUsuarioSoporte = localStorage.getItem('idUsuario');
         const tipoCaso = selectedCategoriaIds;
         const estado = selectedEstadoIds;
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', selectedCategoriaIds)
 
         // Validaciones
         if (!observacion) {
@@ -263,6 +266,13 @@ export default function ReportesSopor() {
             setLoading(false);
             return;
         }
+        if (!id) {
+            alert('No ha puesto un equipo para el caso');
+            setLoading(false);
+            return;
+        }
+
+
 
         const formData = new FormData();
         formData.append('case', '2');
@@ -736,222 +746,176 @@ export default function ReportesSopor() {
 
 
             {Reportes && (
-                <div
-                    style={{
-                        width: 'calc(11.5em + 80vw)',
-                        height: '91.5%',
-                        background: '#F5F7FA',
-
-                        boxShadow: '1px 1px 5px 1px #cccccc',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        position: 'fixed',
-                        bottom: '0px',
-                        right: '0px',
-                        zIndex: '4',
-                        overflow: 'hidden',
-
-
-                    }}
-                >
+                <div style={{
+                    width: 'calc(3em + 80vw)',
+                    height: '89%',
+                    background: 'red',
+                    boxShadow: '1px 1px 5px 1px #cccccc',
+                    borderRadius: '10px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    position: 'fixed',
+                    bottom: '10px',
+                    left: '96%',
+                    transform: 'translateX(-98%) translateX(-4px)',
+                    zIndex: '5',
+                    borderCollapse: 'collapse',
+                    maxWidth: '100vw',
+                }}>
                     <div style={{
-                        width: 'calc(3em + 80vw)',
-                        height: '85%',
-                        background: 'white',
-                        boxShadow: '1px 1px 5px 1px #cccccc',
-                        borderRadius: '10px',
+                        width: '100%',
+                        height: '100%',
+                        background: '#ffffff',
+                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                        borderRadius: '12px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
-                        position: 'fixed',
-                        bottom: '30px',
-                        left: '96%',
-                        transform: 'translateX(-98%) translateX(-4px)',
-                        borderCollapse: 'collapse',
-                        maxWidth: '100vw',
                     }}>
-                        <div style={{
-                            width: '100%', height: '100%', background: 'white', boxShadow: '1px 1px 5px 1px #cccccc',
-                            borderRadius: '10px', display: 'flex', flexDirection: 'column',
-                            alignItems: 'center', justifyContent: 'space-between', position: 'relative'
-                        }}>
-                            <h1 style={{ color: '#096ECB', textAlign: 'center', marginBottom: '20px' }}>Reporte de Caso</h1>
-                            <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }} >
-                                <div style={{
-                                    width: '100%', display: 'flex', flexDirection: 'row', gap: '20px', boxSizing: 'border-box'
-                                }}>
-                                    <div style={{ height: '100%', width: '100%', flex: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                        <div style={{
-                                            display: 'flex', flexDirection: 'row', gap: '20px', alignItems: 'center', justifyContent: 'center', width: '100%',
-                                            flexWrap: 'wrap'
-                                        }}>
-                                            <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center' }}>
-                                                <label>Tipo De Caso</label>
-                                                <div style={{ width: '70%', position: 'relative' }}>
-                                                    <input
-                                                        type="text"
-                                                        placeholder='Categorias'
-                                                        onFocus={() => setShowCategories(true)}
-                                                        readOnly
-                                                        value={selectedCategorias.join(', ')}
-                                                        style={{
-                                                            width: '100%', padding: '10px', marginBottom: '10px',
-                                                            borderRadius: '10px', border: '2px solid blue', outline: 'none', textAlign: 'center'
-                                                        }}
-                                                        id="clase_categoria"
-                                                    />
-                                                    {showCategories && (
-                                                        <select
-                                                            multiple
-                                                            onChange={handleCategoriaChange}
-                                                            onClick={() => setShowCategories(false)}
-                                                            style={{
-                                                                position: 'absolute', top: '100%', left: '0', zIndex: '1', width: '100%',
-                                                                display: showCategories ? 'block' : 'none', textAlign: 'center', scrollbarWidth: 'none'
-                                                            }}
-                                                        >
-                                                            {TipoCaso.map(caso => (
-                                                                <option key={caso.id} value={caso.descripcion} data-id={caso.id}>
-                                                                    {caso.descripcion}
-                                                                </option>
-                                                            ))}
-                                                        </select>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyItems: 'center' }}>
-                                                <label>Estado </label>
-                                                <div style={{ width: '70%', position: 'relative' }}>
-                                                    <input
-                                                        type="text"
-                                                        placeholder='Estado'
-                                                        onFocus={() => setShowEstado(true)}
-                                                        readOnly
-                                                        value={selectedEstado.join(', ')}
-                                                        style={{
-                                                            width: '200px',
-                                                            padding: '10px',
-                                                            marginRight: '40px',
-                                                            borderRadius: '10px',
-                                                            border: '2px solid blue',
-                                                            outline: 'none',
-                                                            display: 'flex',
-                                                            textAlign: 'center',
-                                                        }}
-                                                        id="clase_categoria"
-                                                        className="placeholder-style"
-                                                    />
-                                                    <style jsx>{`
-                                     .placeholder-style::placeholder {
-                                         color: rgba(0, 0, 0); 
-                                     }
-                                 `}</style>
-                                                    <select
-                                                        multiple
-                                                        onChange={handleCategoriaChange2}
-                                                        onClick={() => setShowEstado(false)}
-                                                        id="descripcion"
-                                                        style={{
-                                                            position: 'absolute',
-                                                            top: '100%',
-                                                            left: '0',
-                                                            zIndex: '1',
-                                                            width: '100%',
-                                                            display: showEstado ? 'block' : 'none',
-                                                            textAlign: 'center',
-                                                            scrollbarWidth: 'none',
-                                                            color: 'black'
-                                                        }}
-                                                    >
-                                                        {TipoEstado.map(caso => (
-                                                            <option key={caso.id} value={caso.estado} data-id={caso.id}>
-                                                                {caso.estado}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center', justifyContent: 'center', }}>
-                                            <label>Descripción</label>
-                                            <textarea
-                                                id="descripcionCaso"
-                                                style={{
-                                                    width: '84%', height: '200px', padding: '10px',
-                                                    border: '2px solid blue', borderRadius: '10px', marginBottom: '20px'
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <div style={{ display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center' }}>
-                                        <h2 style={{ fontSize: '24px', color: '#096ECB' }}>Adjuntar Imagen</h2>
-                                        <div style={{
-                                            width: '100%', maxWidth: '350px', height: '200px', backgroundColor: '#ddd',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #ccc',
-                                            marginBottom: '20px'
-                                        }}>
-                                            {file ? (
-                                                <img
-                                                    src={URL.createObjectURL(file)}
-                                                    alt="Vista previa de la imagen"
-                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                                />
-                                            ) : (
-                                                <div style={{ textAlign: 'center', padding: '10px' }}>
-                                                    <p>No se ha seleccionado ninguna imagen.</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                        <button
-                                            type="button"
-                                            onClick={handleButtonClick}
-                                            style={{
-                                                padding: '10px 20px', backgroundColor: '#096ECB', color: 'white',
-                                                border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '20px'
-                                            }}
-                                        >
-                                            Seleccionar Imagen
-                                        </button>
+                        <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
+                        <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                            <div style={{
+                                width: '100%', display: 'flex', gap: '15px', boxSizing: 'border-box', flexWrap: 'wrap'
+                            }}>
+                                <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <label>Tipo De Caso</label>
+                                    <div style={{ position: 'relative', width: '70%' }}>
                                         <input
-                                            ref={fileInputRef}
-                                            type="file"
-                                            onChange={handleFileChange}
-                                            style={{ display: 'none' }}
-                                            accept=".jpeg, .jpg, .png"
+                                            type="text"
+                                            placeholder='Categorías'
+                                            onFocus={() => setShowCategories(true)}
+                                            readOnly
+                                            value={selectedCategorias.join(', ')}
+                                            style={{
+                                                padding: '8px', marginBottom: '5px',
+                                                borderRadius: '10px', outline: 'none', textAlign: 'center',
+                                                width: '100%', cursor: 'pointer'
+                                            }}
                                         />
+                                        {showCategories && (
+                                            <select
+                                                multiple
+                                                onChange={handleCategoriaChange}
+                                                onClick={() => setShowCategories(false)}
+                                                style={{
+                                                    position: 'absolute', zIndex: '1', width: '100%',
+                                                    display: showCategories ? 'block' : 'none', textAlign: 'center',
+                                                    borderRadius: '10px', marginTop: '3px'
+                                                }}
+                                            >
+                                                {TipoCaso.map(caso => (
+                                                    <option key={caso.id} value={caso.descripcion} data-id={caso.id} style={{ padding: '5px' }}>
+                                                        {caso.descripcion}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
                                 </div>
 
+                                <div style={{ flex: '1 1 300px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <label>Estado</label>
+                                    <div style={{ position: 'relative', width: '70%' }}>
+                                        <input
+                                            type="text"
+                                            placeholder='Estado'
+                                            onFocus={() => setShowEstado(true)}
+                                            readOnly
+                                            value={selectedEstado.join(', ')}
+                                            style={{
+                                                padding: '8px', marginBottom: '5px',
+                                                borderRadius: '10px', outline: 'none', textAlign: 'center',
+                                                width: '100%', cursor: 'pointer'
+                                            }}
+                                        />
+                                        {showEstado && (
+                                            <select
+                                                multiple
+                                                onChange={handleCategoriaChange2}
+                                                onClick={() => setShowEstado(false)}
+                                                style={{
+                                                    position: 'absolute', zIndex: '1', width: '100%',
+                                                    display: showEstado ? 'block' : 'none', textAlign: 'center',
+                                                    borderRadius: '10px', marginTop: '3px'
+                                                }}
+                                            >
+                                                {TipoEstado.map(caso => (
+                                                    <option key={caso.id} value={caso.estado} data-id={caso.id} style={{ padding: '5px' }}>
+                                                        {caso.estado}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
 
-                            </form>
+                            <label>Descripción</label>
+                            <textarea
+                                id="descripcionCaso"
+                                style={{
+                                    width: '84%', height: '180px', padding: '8px',
+                                    borderRadius: '10px', marginBottom: '15px'
+                                }}
+                            />
+
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <h2 style={{ fontSize: '24px', color: '#096ECB' }}>Adjuntar Imagen</h2>
+                                <div style={{
+                                    width: '100%', maxWidth: '350px', height: '180px', backgroundColor: '#ddd',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #ccc',
+                                    marginBottom: '15px'
+                                }}>
+                                    {file ? (
+                                        <img
+                                            src={URL.createObjectURL(file)}
+                                            alt="Vista previa de la imagen"
+                                            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        <div style={{ textAlign: 'center', padding: '5px' }}>
+                                            <p>No se ha seleccionado ninguna imagen.</p>
+                                        </div>
+                                    )}
+                                </div>
+                                <button
+                                    type="button"
+                                    onClick={handleButtonClick}
+                                    style={{
+                                        padding: '8px 16px', backgroundColor: '#096ECB', color: 'white',
+                                        border: 'none', borderRadius: '5px', cursor: 'pointer', marginBottom: '15px'
+                                    }}
+                                >
+                                    Seleccionar Imagen
+                                </button>
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    onChange={handleFileChange}
+                                    style={{ display: 'none' }}
+                                    accept=".jpeg, .jpg, .png"
+                                />
+                            </div>
+
                             <div style={{
                                 width: '100%',
                                 display: 'flex',
                                 justifyContent: 'center',
                                 gap: '10px',
-                                marginBottom: '20px'
+                                marginBottom: '15px'
                             }}>
                                 <button
-                                    style={{
-                                        width: '120px',
-                                        height: '40px',
-                                        backgroundColor: '#007BFF',
-                                        borderRadius: '8px',
-                                        color: 'white',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        fontSize: '16px',
-                                        fontWeight: '600',
-                                        transition: 'background-color 0.3s, transform 0.2s',
-                                    }}
                                     onClick={AbrirReportes}
-                                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0056b3'}
-                                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#007BFF'}
-                                    onFocus={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                    onBlur={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                                    style={{
+                                        width: '120px', height: '40px', backgroundColor: '#007BFF',
+                                        borderRadius: '8px', color: 'white', border: 'none', cursor: 'pointer',
+                                        fontSize: '16px', fontWeight: '600', transition: 'background-color 0.3s',
+                                    }}
                                 >
                                     Volver
                                 </button>
@@ -959,31 +923,18 @@ export default function ReportesSopor() {
                                 <button
                                     onClick={handleSubmitDetalle}
                                     style={{
-                                        width: '120px',
-                                        height: '40px',
-                                        backgroundColor: '#FF4D4D',
-                                        borderRadius: '8px',
-                                        color: 'white',
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        fontSize: '16px',
-                                        fontWeight: '600',
-                                        transition: 'background-color 0.3s, transform 0.2s',
+                                        width: '120px', height: '40px', backgroundColor: '#FF4D4D',
+                                        borderRadius: '8px', color: 'white', border: 'none', cursor: 'pointer',
+                                        fontSize: '16px', fontWeight: '600', transition: 'background-color 0.3s',
                                     }}
-                                    onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#cc0000'}
-                                    onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#FF4D4D'}
-                                    onFocus={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                                    onBlur={(e) => e.currentTarget.style.transform = 'scale(1)'}
                                 >
                                     Enviar
                                 </button>
                             </div>
-
-                        </div>
+                        </form>
                     </div>
-                </div >
+                </div>
             )}
-
 
 
 
@@ -1112,27 +1063,27 @@ export default function ReportesSopor() {
             {/*   LOADER O PANTALLA DE CARGA   */}
 
             {loading && (
-                    <div style={{
-                        position: 'fixed',
-                        top: '0',
-                        left: '0',
-                        width: '100%',
-                        height: '100%',
-                        background: 'white',
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        zIndex: 999999999999999
-                    }}>
-                        <MoonLoader
-                            color="#096ECB"
-                            loading={loading}
-                            size={150}
-                            speedMultiplier={1}
+                <div style={{
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999999999999999
+                }}>
+                    <MoonLoader
+                        color="#096ECB"
+                        loading={loading}
+                        size={150}
+                        speedMultiplier={1}
 
-                        />
-                    </div>
-                )}
+                    />
+                </div>
+            )}
         </>
     )
 }

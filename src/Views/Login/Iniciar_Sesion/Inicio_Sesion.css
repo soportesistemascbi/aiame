@@ -1,0 +1,6 @@
+.fondo{
+    background-image: url(../../Img/fondo_login.PNG);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

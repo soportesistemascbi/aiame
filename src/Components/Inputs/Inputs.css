@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap');
+
+body {
+  margin: 0;
+  padding: 0;
+  top: 0;
+
+}
+
+.fondo {
+  background-image: url(../../Img/fondo_login.PNG);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+/*Boton de Cedula*/
+.inputGroup {
+  margin-top: -20px;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 1em 0 1em 0;
+  width: auto;
+  position: relative;
+
+}
+
+.dropdown-content {
+  cursor: pointer;
+  width: 170px;
+  padding: 20px;
+  margin-top: -25px;
+  margin-left: 195px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  align-items: start;
+  position: absolute;
+  z-index: 4;
+  font-size: 15px;
+  box-shadow: 1px 2px 10px rgb(206, 205, 205);
+}
+
+
+.inputGroup input {
+  font-size: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 45px;
+  outline: none;
+  background-color: white;
+  border-radius: 10px;
+  border: none;
+  width: calc(15em + 6vw);
+}
+
+.inputGroup label {
+  font-size: 90%;
+  position: absolute;
+  left: 0;
+  padding: 0.8em;
+  margin-top: -43px;
+  margin-left: 2em;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  color: rgb(131, 131, 131);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+}
+
+.inputGroup input:focus~label,
+.inputGroup input:valid~label {
+  transform: translateY(-210%) scale(.9);
+  margin: 0;
+  margin-left: 0.3em;
+  padding: 0.4em;
+  color: black;
+  background-color: transparent;
+}
+
+.inputGroup input:focus,
+.inputGroup input:valid {
+  border-color: rgb(255, 255, 255);
+}

@@ -1,0 +1,83 @@
+.slider-container {
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 100px;
+    /* Ajusta según el tamaño de tu imagen */
+}
+
+.slick-prev:before,
+.slick-next:before {
+    color: black;
+}
+
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.slider-text {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    width: 80%;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Estilo para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .slider-text h3 {
+        font-size: 14px;
+        /* Ajusta el tamaño de fuente para pantallas más pequeñas */
+        white-space: normal;
+        /* Permite el salto de línea en pantallas más pequeñas */
+        overflow: visible;
+        /* Muestra todo el texto sin cortar */
+        text-overflow: clip;
+        /* Muestra todo el texto sin agregar "..." */
+    }
+
+    .slider-text p {
+        font-size: 12px;
+        /* Ajusta el tamaño de fuente para pantallas más pequeñas */
+        white-space: normal;
+        /* Permite el salto de línea en pantallas más pequeñas */
+        overflow: visible;
+        /* Muestra todo el texto sin cortar */
+        text-overflow: clip;
+        /* Muestra todo el texto sin agregar "..." */
+    }
+}
+
+/* Estilo para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .slider-text h3 {
+        font-size: 12px;
+        /* Ajusta aún más el tamaño de fuente para pantallas muy pequeñas */
+        white-space: normal;
+        /* Permite el salto de línea en pantallas muy pequeñas */
+        overflow: visible;
+        /* Muestra todo el texto sin cortar */
+        text-overflow: clip;
+        /* Muestra todo el texto sin agregar "..." */
+    }
+
+    .slider-text p {
+        font-size: 10px;
+        /* Ajusta aún más el tamaño de fuente para pantallas muy pequeñas */
+        white-space: normal;
+        /* Permite el salto de línea en pantallas muy pequeñas */
+        overflow: visible;
+        /* Muestra todo el texto sin cortar */
+        text-overflow: clip;
+        /* Muestra todo el texto sin agregar "..." */
+    }
+}

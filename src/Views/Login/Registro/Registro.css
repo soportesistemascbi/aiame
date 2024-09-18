@@ -1,0 +1,13 @@
+.Registro{
+    background-image: url(./Img/Fondo_Registro.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.circule{
+    background-image:radial-gradient(rgba(0, 0, 0, 0.37),rgba(0, 0, 0, 0.466)) ,url(./Img/Fondo_cir1.jpeg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}

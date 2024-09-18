@@ -1,0 +1,148 @@
+import { jsx as _jsx, jsxs as _jsxs } from "react/jsx-runtime";
+import { useState, useEffect } from 'react';
+export default function Tabla_Usuarios_SU() {
+    const [usuarios, setUsuarios] = useState([]);
+    const [busqueda, setBusqueda] = useState('');
+    const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
+    console.log(usuarios);
+    // Función que obtiene los datos de los usuarios
+    const fetchData = async () => {
+        try {
+            const response = await fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=9');
+            const data = await response.json();
+            if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
+                setUsuarios([]);
+                setUsuariosFiltrados([]);
+            }
+            else {
+                setUsuarios(data.rpta);
+                setUsuariosFiltrados(data.rpta);
+            }
+        }
+        catch (error) {
+            console.error('Error al obtener casos:', error);
+        }
+    };
+    useEffect(() => {
+        fetchData(); // Cargar los datos cuando se monta el componente
+    }, []);
+    useEffect(() => {
+        const resultados = usuarios.filter(item => {
+            const nombre = item.nombre ? item.nombre.toLowerCase() : '';
+            const correo = item.correo ? item.correo.toLowerCase() : '';
+            return nombre.includes(busqueda.toLowerCase()) || correo.includes(busqueda.toLowerCase());
+        });
+        setUsuariosFiltrados(resultados);
+    }, [busqueda, usuarios]);
+    function hexToRgba(hex, opacity) {
+        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
+            return `rgba(0, 0, 0, ${opacity})`;
+        }
+        hex = hex.replace('#', '');
+        let r = parseInt(hex.substring(0, 2), 16);
+        let g = parseInt(hex.substring(2, 4), 16);
+        let b = parseInt(hex.substring(4, 6), 16);
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    }
+    const getColor = (color) => {
+        if (!color || color.trim() === '') {
+            return '#000000';
+        }
+        return color.startsWith('#') ? color : `#${color}`;
+    };
+    // Función para eliminar un usuario
+    async function EliminarUsuarios(id) {
+        const estado = 2;
+        try {
+            const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
+            const response = await fetch(url, { method: 'GET' });
+            if (!response.ok) {
+                console.log("Error al actualizar el estado");
+            }
+            const data = await response.json();
+            if (data.rp === 'si') {
+                alert('Estado actualizado con éxito.');
+                fetchData(); // Recargar los datos después de eliminar
+            }
+            else {
+                console.log("No se pudo actualizar el estado.");
+            }
+        }
+        catch (error) {
+            console.log("Error al eliminar usuario:", error);
+        }
+    }
+    // Función para restaurar un usuario
+    async function RestaurarUsuario(id) {
+        const estado = 1;
+        try {
+            const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
+            const response = await fetch(url, { method: 'GET' });
+            if (!response.ok) {
+                console.log("Error al restaurar el estado");
+            }
+            const data = await response.json();
+            if (data.rp === 'si') {
+                alert('Estado actualizado con éxito.');
+                fetchData(); // Recargar los datos después de restaurar
+            }
+            else {
+                console.log("No se pudo restaurar el usuario.");
+            }
+        }
+        catch (error) {
+            console.log("Error al restaurar usuario:", error);
+        }
+    }
+    return (_jsxs("div", { style: {
+            width: 'calc(3em + 80vw)',
+            height: '85%',
+            background: 'white',
+            margin: 'auto',
+            boxShadow: '1px 1px 5px 1px #cccccc',
+            borderRadius: '10px',
+            display: 'flex',
+            flexDirection: 'column',
+            position: 'fixed',
+            bottom: '30px',
+            left: '96%',
+            transform: 'translateX(-98%) translateX(-4px)',
+            zIndex: '3'
+        }, children: [_jsx("div", { style: { width: '100%', padding: '20px', paddingLeft: '10px', display: 'flex' }, children: _jsx("input", { type: "text", placeholder: 'Buscar Usuarios', value: busqueda, onChange: (e) => setBusqueda(e.target.value), style: {
+                        width: '220px', padding: '9px', border: 'none',
+                        background: '#F5F7FA', borderRadius: '20px', outline: 'none',
+                        paddingLeft: '30px'
+                    } }) }), _jsx("div", { style: { width: '100%', height: '650px', overflowY: 'auto', overflowX: 'auto' }, children: _jsxs("table", { style: { width: '100%', borderCollapse: 'collapse' }, children: [_jsx("thead", { children: _jsxs("tr", { style: { height: '60px', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }, children: [_jsx("th", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: "Nombre completo" }), _jsx("th", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: "Correo" }), _jsx("th", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: "Cargo" }), _jsx("th", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: "Estado" }), _jsx("th", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: "Opciones" })] }) }), _jsx("tbody", { children: usuariosFiltrados.length === 0 ? (_jsx("tr", { children: _jsx("td", { colSpan: "5", style: { padding: '40px', textAlign: 'center' }, children: _jsxs("div", { style: {
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            alignItems: 'center',
+                                            justifyContent: 'center',
+                                            width: '100%',
+                                            height: '300px' // Aumenta el alto para centrar mejor verticalmente
+                                        }, children: [_jsx("img", { src: "https://img.icons8.com/ios/100/000000/nothing-found.png", alt: "No hay peticiones", style: { marginBottom: '20px', opacity: 0.8 } }), _jsx("span", { style: { fontWeight: 'bold', fontSize: '24px', color: '#333' }, children: "No hay usuarios disponibles" }), _jsx("span", { style: { fontSize: '18px', color: '#777', marginTop: '10px' }, children: "Vuelve a intentarlo mas tarde." })] }) }) })) : (usuariosFiltrados.map((item, index) => (_jsxs("tr", { style: { height: '60px', borderTop: 'solid 2px #f0f0f0', textAlign: 'center', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }, children: [_jsx("td", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: item.nombre }), _jsx("td", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: item.correo }), _jsx("td", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: item.rol }), _jsx("td", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: _jsx("button", { style: {
+                                                width: '120px', padding: '8px',
+                                                backgroundColor: hexToRgba(getColor(item.color), 0.4),
+                                                color: getColor(item.color),
+                                                border: 'none', borderRadius: '20px'
+                                            }, children: item.nombreEs }) }), _jsx("td", { style: { padding: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center' }, children: parseInt(item.estado) === 2 ? (_jsx("button", { onClick: () => RestaurarUsuario(item.id), style: {
+                                                backgroundColor: '#4CAF50',
+                                                color: 'white',
+                                                padding: '10px 20px',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                transition: 'background-color 0.3s ease'
+                                            }, children: "Restaurar" })) : (_jsx("button", { onClick: () => EliminarUsuarios(item.id), style: {
+                                                backgroundColor: '#F44336',
+                                                color: 'white',
+                                                padding: '10px 20px',
+                                                border: 'none',
+                                                borderRadius: '5px',
+                                                cursor: 'pointer',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                transition: 'background-color 0.3s ease'
+                                            }, children: "Eliminar" })) })] }, index)))) })] }) })] }));
+}

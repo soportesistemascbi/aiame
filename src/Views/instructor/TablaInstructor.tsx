@@ -420,7 +420,7 @@ export default function TablaInstructor() {
                                                     placeholder='SerialPc'
                                                     style={{
                                                         width: '70%', padding: '10px', marginBottom: '10px',
-                                                        borderRadius: '10px', border: '2px solid blue', outline: 'none', textAlign: 'center'
+                                                        borderRadius: '10px', outline: 'none', textAlign: 'center'
                                                     }}
                                                     id="serial_pc"
                                                 />
@@ -433,7 +433,7 @@ export default function TablaInstructor() {
                                                 id="descripcionCaso"
                                                 style={{
                                                     width: '84%', height: '200px', padding: '10px',
-                                                    border: '2px solid blue', borderRadius: '10px', marginBottom: '20px'
+                                                     borderRadius: '10px', marginBottom: '20px'
                                                 }}
                                             />
                                         </div>

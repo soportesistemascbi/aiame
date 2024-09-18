@@ -68,12 +68,6 @@ export default function Anuncios() {
         setDescripcion(true);
     };
 
-
-
-    const AbrirCaracteristicas = () => {
-        setReporte(!Reporte);
-    }
-
     return (
         <>
 

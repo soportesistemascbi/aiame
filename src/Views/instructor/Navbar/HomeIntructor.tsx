@@ -15,7 +15,8 @@ import TablaHistorial from '../tablaHistorial.js'
 import { useState, useEffect } from 'react';
 import TablaInstructor from '../TablaInstructor.js'
 import { Cerrar_Sesion } from '../../../Components/Botones/Botones.js'
-import Anuncios from '../../Soporte_Sitio/tablas/Anuncios.js'
+import Anuncios from '../Anuncios.js'
+
 
 
 
@@ -245,7 +246,7 @@ export default function HomeIntructor() {
                     style={{
                         width: '110px', margin: '10px auto'
                     }} />
-                {['Reportes', 'Historial', 'Noticias'].map((text, index) => (
+                {['Reportes', 'Noticias', 'Historial'].map((text, index) => (
                     <button
                         key={text}
                         style={{
@@ -275,12 +276,13 @@ export default function HomeIntructor() {
             {Reportes && (
                 <TablaInstructor />
             )};
-            {Historiall && (
-                <TablaHistorial />
-            )};
             {noticias && (
                 <Anuncios />
             )};
+            {Historiall && (
+                <TablaHistorial />
+            )};
+
             {showSearchIcon && (
                 <div className='Lateral'
                     style={{
@@ -296,7 +298,7 @@ export default function HomeIntructor() {
 
 
 
-                    {['Reportes', 'Historial', 'Noticias'].map((text, index) => (
+                    {['Reportes', 'Noticias', 'Historial'].map((text, index) => (
                         <button
                             key={text}
                             style={{

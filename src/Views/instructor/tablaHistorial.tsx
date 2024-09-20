@@ -40,7 +40,7 @@ export default function tablaHistorial() {
             const serialPc = item.serialPc ? item.serialPc.toLowerCase() : '';
 
             // Filtramos los casos basándonos en la búsqueda
-            return id.includes(busqueda.toLowerCase()) || nombreSoporte.includes(busqueda.toLowerCase())  || serialPc.includes(busqueda.toLowerCase());
+            return id.includes(busqueda.toLowerCase()) || nombreSoporte.includes(busqueda.toLowerCase()) || serialPc.includes(busqueda.toLowerCase());
         });
 
         setCasosFiltrados(resultados);
@@ -144,46 +144,56 @@ export default function tablaHistorial() {
                         <tbody>
                             {casosFiltrados.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ padding: '40px', textAlign: 'center' }}>
+                                    <td colSpan="9" style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle', width: '100%', height: '150px' }}>
                                         <div style={{
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
                                             justifyContent: 'center',
-                                            width: '100%',
-                                            height: '300px' // Aumenta el alto para centrar mejor verticalmente
+                                            height: '100%', // Asegúrate de que ocupe todo el alto
                                         }}>
-                                            <img src="https://img.icons8.com/ios/100/000000/nothing-found.png" alt="No hay peticiones" style={{ marginBottom: '20px', opacity: 0.8 }} />
-                                            <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>No hay historial disponibles</span>
-                                            <span style={{ fontSize: '18px', color: '#777', marginTop: '10px' }}>Vueve a intentarlo mas tarde.</span>
+                                            <img
+                                                src="https://img.icons8.com/ios/100/000000/nothing-found.png"
+                                                alt="No hay peticiones"
+                                                style={{ marginBottom: '20px', opacity: 0.8 }}
+                                            />
+                                            <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
+                                                No hay casos en proceso disponibles
+                                            </span>
+                                            <span style={{ fontSize: '18px', color: '#777', marginTop: '10px' }}>
+                                                Vuelve a intentarlo más tarde.
+                                            </span>
                                         </div>
                                     </td>
                                 </tr>
-                            ) : (casosFiltrados.map((item, index) => (
-                                <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                    <td style={{ padding: '10px' }}>{item.descripcion}</td>
-                                    <td style={{ padding: '10px' }}>{item.id}</td>
-                                    <td style={{ padding: '10px' }}>{item.nombreSoporte}</td>
-                                    <td style={{ padding: '10px' }}>{item.ubicacion}</td>
-                                    <td style={{ padding: '10px' }}>{item.serialPc}</td>
-                                    <td style={{ padding: '10px' }}>{item.fecha}</td>
-                                    <td style={{ padding: '10px' }}>
-                                        <button
-                                            style={{
-                                                width: '100%',
-                                                maxWidth: '120px',
-                                                padding: '8px',
-                                                backgroundColor: hexToRgba(getColor(item.color), 0.4),
-                                                color: getColor(item.color),
-                                                border: 'none',
-                                                borderRadius: '20px',
-                                            }}
-                                        >
-                                            {item.estado}
-                                        </button>
-                                    </td>
-                                </tr>
-                            )))},
+                            ) : (
+                                casosFiltrados.map((item, index) => (
+                                    <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                                        <td style={{ padding: '10px' }}>{item.descripcion}</td>
+                                        <td style={{ padding: '10px' }}>{item.id}</td>
+                                        <td style={{ padding: '10px' }}>{item.nombreSoporte}</td>
+                                        <td style={{ padding: '10px' }}>{item.ubicacion}</td>
+                                        <td style={{ padding: '10px' }}>{item.serialPc}</td>
+                                        <td style={{ padding: '10px' }}>{item.fecha}</td>
+                                        <td style={{ padding: '10px' }}>
+                                            <button
+                                                style={{
+                                                    width: '100%',
+                                                    maxWidth: '120px',
+                                                    padding: '8px',
+                                                    backgroundColor: hexToRgba(getColor(item.color), 0.4),
+                                                    color: getColor(item.color),
+                                                    border: 'none',
+                                                    borderRadius: '20px',
+                                                }}
+                                            >
+                                                {item.estado}
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
+
 
                         </tbody>
                     </table>

@@ -19,18 +19,18 @@ export default function Login() {
 
 
   // Importa el hook useNavigate de React Router para manejar la navegación.
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-// INICIAR LAS VARIABLES
-// Declara el estado para mostrar la alerta 1 (cuando hay campos vacíos).
-const [showAlert_inicio1, setShowAlert1] = useState(false);
-// Declara el estado para mostrar la alerta 2 (cuando hay un error en la respuesta).
-const [showAlert_inicio, setShowAlert] = useState(false);
-// Declara el estado de carga para indicar si se está procesando la solicitud.
-const [loading, setLoading] = useState(false);
+  // INICIAR LAS VARIABLES
+  // Declara el estado para mostrar la alerta 1 (cuando hay campos vacíos).
+  const [showAlert_inicio1, setShowAlert1] = useState(false);
+  // Declara el estado para mostrar la alerta 2 (cuando hay un error en la respuesta).
+  const [showAlert_inicio, setShowAlert] = useState(false);
+  // Declara el estado de carga para indicar si se está procesando la solicitud.
+  const [loading, setLoading] = useState(false);
 
-// Función para manejar el inicio de sesión.
-const handleLogin = async (e) => {
+  // Función para manejar el inicio de sesión.
+  const handleLogin = async (e) => {
     e.preventDefault(); // Previene el envío del formulario de manera tradicional.
 
     setLoading(true); // Inicia el loader al comenzar el proceso de inicio de sesión.
@@ -42,77 +42,77 @@ const handleLogin = async (e) => {
 
     // Verifica si alguno de los campos está vacío.
     if (!documento || !contraseñaIngresada) {
-        setShowAlert1(true); // Muestra la alerta 1 si hay campos vacíos.
-        setTimeout(() => {
-            setShowAlert1(false); // Oculta la alerta después de 3 segundos.
-        }, 3000);
-        setLoading(false); // Desactiva el loader.
-        return; // Sale de la función si hay campos vacíos.
+      setShowAlert1(true); // Muestra la alerta 1 si hay campos vacíos.
+      setTimeout(() => {
+        setShowAlert1(false); // Oculta la alerta después de 3 segundos.
+      }, 3000);
+      setLoading(false); // Desactiva el loader.
+      return; // Sale de la función si hay campos vacíos.
     }
 
     try {
-        // Construye la URL de la API para la solicitud de inicio de sesión.
-        const url = `https://instrudev.com/aiameapp/login/webserviceapp.php?case=4&usuarios=${documento}&contrasena=${contraseñaIngresada}`;
-        console.log(url); // Imprime la URL en la consola para depuración.
+      // Construye la URL de la API para la solicitud de inicio de sesión.
+      const url = `https://instrudev.com/aiameapp/login/webserviceapp.php?case=4&usuarios=${documento}&contrasena=${contraseñaIngresada}`;
+      console.log(url); // Imprime la URL en la consola para depuración.
 
-        // Realiza la solicitud a la API.
-        const response = await fetch(url, {
-            method: 'GET', // Método GET para la solicitud.
-        });
+      // Realiza la solicitud a la API.
+      const response = await fetch(url, {
+        method: 'GET', // Método GET para la solicitud.
+      });
 
-        // Verifica si la respuesta no fue exitosa.
-        if (!response.ok) {
-            setShowAlert(true); // Muestra la alerta 2 si hubo un error en la respuesta.
-            setTimeout(() => {
-                setShowAlert(false); // Oculta la alerta después de 3 segundos.
-            }, 3000);
-            setLoading(false); // Desactiva el loader.
-            return; // Sale de la función si hubo un error en la respuesta.
-        }
-
-        // Convierte la respuesta de la API a JSON.
-        const data = await response.json();
-        console.log(data); // Imprime los datos en la consola para depuración.
-
-        // Verifica si el inicio de sesión fue exitoso.
-        if (data.rp === 'si') {
-            const { id_rol } = data.usuario; // Obtiene el id_rol del usuario.
-
-            console.log(data); // Imprime nuevamente los datos para verificar.
-
-            // Almacena información del usuario en localStorage.
-            localStorage.setItem('idUsuario', data.usuario.id_usuario);
-            localStorage.setItem('id_usuario', data.usuario.nombre);
-            localStorage.setItem('id_rol', data.usuario.id_rol);
-            localStorage.setItem('correo', data.usuario.correo);
-            localStorage.setItem('rol', data.usuario.descripcion);
-
-            // Redirige al usuario según su rol.
-            if (id_rol === '1') {
-                navigate('/HomeIntructor'); // Navega a la página del instructor.
-                setLoading(false); // Desactiva el loader.
-            } else if (id_rol === '2') {
-                navigate('/HomeIntructor'); // También para el rol '2', navega a la página del instructor.
-                setLoading(false); // Desactiva el loader.
-            } else if (id_rol === '3') {
-                navigate('/HomeSoporte'); // Navega a la página de soporte para el rol '3'.
-                setLoading(false); // Desactiva el loader.
-            } else if (id_rol === '4') {
-                navigate('/HomeAdmin'); // Navega a la página del administrador para el rol '4'.
-                setLoading(false); // Desactiva el loader.
-            }
-        } else {
-            setShowAlert(true); // Muestra la alerta 2 si el inicio de sesión no fue exitoso.
-            setTimeout(() => {
-                setShowAlert(false); // Oculta la alerta después de 3 segundos.
-            }, 3000);
-            setLoading(false); // Desactiva el loader.
-        }
-    } catch (error) {
-        console.log("Error al iniciar sesión:", error); // Imprime el error en caso de que ocurra.
+      // Verifica si la respuesta no fue exitosa.
+      if (!response.ok) {
+        setShowAlert(true); // Muestra la alerta 2 si hubo un error en la respuesta.
+        setTimeout(() => {
+          setShowAlert(false); // Oculta la alerta después de 3 segundos.
+        }, 3000);
         setLoading(false); // Desactiva el loader.
+        return; // Sale de la función si hubo un error en la respuesta.
+      }
+
+      // Convierte la respuesta de la API a JSON.
+      const data = await response.json();
+      console.log(data); // Imprime los datos en la consola para depuración.
+
+      // Verifica si el inicio de sesión fue exitoso.
+      if (data.rp === 'si') {
+        const { id_rol } = data.usuario; // Obtiene el id_rol del usuario.
+
+        console.log(data); // Imprime nuevamente los datos para verificar.
+
+        // Almacena información del usuario en localStorage.
+        localStorage.setItem('idUsuario', data.usuario.id_usuario);
+        localStorage.setItem('id_usuario', data.usuario.nombre);
+        localStorage.setItem('id_rol', data.usuario.id_rol);
+        localStorage.setItem('correo', data.usuario.correo);
+        localStorage.setItem('rol', data.usuario.descripcion);
+
+        // Redirige al usuario según su rol.
+        if (id_rol === '1') {
+          navigate('/HomeIntructor'); // Navega a la página del instructor.
+          setLoading(false); // Desactiva el loader.
+        } else if (id_rol === '2') {
+          navigate('/HomeIntructor'); // También para el rol '2', navega a la página del instructor.
+          setLoading(false); // Desactiva el loader.
+        } else if (id_rol === '3') {
+          navigate('/HomeSoporte'); // Navega a la página de soporte para el rol '3'.
+          setLoading(false); // Desactiva el loader.
+        } else if (id_rol === '4') {
+          navigate('/HomeAdmin'); // Navega a la página del administrador para el rol '4'.
+          setLoading(false); // Desactiva el loader.
+        }
+      } else {
+        setShowAlert(true); // Muestra la alerta 2 si el inicio de sesión no fue exitoso.
+        setTimeout(() => {
+          setShowAlert(false); // Oculta la alerta después de 3 segundos.
+        }, 3000);
+        setLoading(false); // Desactiva el loader.
+      }
+    } catch (error) {
+      console.log("Error al iniciar sesión:", error); // Imprime el error en caso de que ocurra.
+      setLoading(false); // Desactiva el loader.
     }
-};
+  };
 
 
   return (
@@ -140,9 +140,11 @@ const handleLogin = async (e) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "start",
+          margin: '0',
+          padding: '0',
         }}
       >
-        <div
+        <div className="login-container"
           style={{
             width: "calc(20em + 10vw)",
             height: "600px",
@@ -152,7 +154,7 @@ const handleLogin = async (e) => {
             position: "fixed",
             textAlign: "center",
             flexDirection: "column",
-            marginLeft: "calc(0em + 10vw)",
+
           }}
         >
           <img
@@ -179,7 +181,7 @@ const handleLogin = async (e) => {
           >
             Iniciar sesion
           </h1>
-          <form onSubmit={handleLogin} style={{ display: 'flex', width: '100%', alignItems: 'center', justifyItems: 'center', flexDirection: 'column' }}>
+          <form onSubmit={handleLogin} style={{ width: '100%', textAlign: 'center' }}>
 
             <div className="inputGroup">
               <input type="text" required autoComplete="off" id="numero" />
@@ -211,8 +213,8 @@ const handleLogin = async (e) => {
               <p
                 style={{
                   fontSize: "12px",
-                  marginTop: "-5px",
-                  marginLeft: "-190%",
+
+                  marginLeft: "-60%",
                   cursor: "pointer", color: 'black'
                 }}
               >

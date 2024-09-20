@@ -32,7 +32,7 @@ export default function NuevaContraseña() {
 
         const encryptedPassword = await bcrypt1.hash(contraseña, 10);
         const id = localStorage.getItem('usuarios');
-       console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
+        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id)
         if (contraseña.length < 8) {
             alert("La contraseña debe tener 8 dígitos.");
             setLoading(false); // Detiene el loader
@@ -108,7 +108,7 @@ export default function NuevaContraseña() {
         <>
 
             <div className="fondo1">
-                <div
+                <div className='container'
                     style={{
                         width: 'calc(20em + 10vw)', height: '100%',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'fixed', textAlign: 'center',
@@ -158,10 +158,10 @@ export default function NuevaContraseña() {
                         </Link>
                         <button onClick={cambiarContrasena}
                             style={{
-                                width: '130px', padding: '12px',
+                                width: '130px', height: '41px', padding: '12px',
                                 borderRadius: '5px', border: 'none',
                                 background: '#096ECB', color: 'white',
-                                marginTop: '25px', cursor: 'pointer'
+                                marginTop: '34px', cursor: 'pointer'
                             }}>Aceptar</button>
                     </div>
 
@@ -171,7 +171,7 @@ export default function NuevaContraseña() {
                 </div>
             </div>
 
-                            {/*   LOADER O PANTALLA DE CARGA   */}
+            {/*   LOADER O PANTALLA DE CARGA   */}
 
             {loading && (
                 <div style={{

@@ -1,6 +1,94 @@
-.fondo{
+/* Inicio_Sesion.css */
+
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+.fondo {
     background-image: url(../../Img/fondo_login.PNG);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+}
+
+
+
+
+.logo {
+    width: 100px;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #096ECB;
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.inputGroup {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+input {
+    width: 100%;
+    padding: 10px 40px;
+    /* Espacio para el icono */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+
+.login-container {
+    margin-left: calc(0em + 10vw);
+}
+
+.input-icon {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 20px;
+    /* Ajusta el tamaño del icono */
+}
+
+a {
+    color: black;
+    text-decoration: none;
+    margin-top: 10px;
+    font-size: 12px;
+}
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 20px;
+        /* Tamaño de fuente más pequeño */
+    }
+
+    .fondo {
+        padding: 0 10px;
+        /* Menos padding en pantallas pequeñas */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 18px;
+        /* Ajuste adicional para móviles */
+    }
+
+    input {
+        padding: 10px 30px;
+        /* Ajustar el padding */
+    }
+
+    .login-container {
+        margin: 0;
+    }
+
+
 }

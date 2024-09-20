@@ -44,13 +44,13 @@ export default function Olvido_Contraseña() {
             setLoading(false); //DETIENE LA ANIMACION DE CARGA
             return;
         }
-
+        console.log(correo)
         try {
             const response = await fetch(`https://instrudev.com/aiameapp/correo/olvidoContraseña.php?case=1&correo=${correo}`, {
                 method: 'GET',
-             
+
             });
-         
+
             if (!response.ok) {
                 setLoading(false); //DETIENE LA ANIMACION DE CARGA
                 throw new Error(`Error HTTP: ${response.status}`);
@@ -61,7 +61,7 @@ export default function Olvido_Contraseña() {
             console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', data.rpta[0].id)
             localStorage.setItem('usuarios', data.rpta[0].id);
 
-          
+
             if (data.rp === 'si') {
                 alert('Correo enviado con éxito');
                 navigate('/Codigo_Vef');
@@ -81,12 +81,12 @@ export default function Olvido_Contraseña() {
         <>
 
             <div className="fondo1">
-                <div
+                <div className="container"
                     style={{
                         width: 'calc(20em + 10vw)', height: '100%',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'fixed', textAlign: 'center',
                         flexDirection: 'column',
-                        marginLeft: 'calc(0em + 10vw)'
+
                     }}>
                     <img src={Logo}
                         style={{
@@ -122,10 +122,10 @@ export default function Olvido_Contraseña() {
 
                         <button onClick={enviarCorreo}
                             style={{
-                                width: '130px', padding: '12px',
+                                width: '130px', height: '41px', padding: '12px',
                                 borderRadius: '5px', border: 'none',
                                 background: '#096ECB', color: 'white',
-                                marginTop: '25px', cursor: 'pointer'
+                                marginTop: '34px', cursor: 'pointer'
                             }}>Aceptar</button>
 
                     </div>

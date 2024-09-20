@@ -191,7 +191,9 @@ export default function Historial() {
         setLoading(true);
 
 
-        const id = DatosCaso[0].idEquipo;
+        const id = 
+        
+        [0].idEquipo;
         const idCaso = idcaso;
         const observacion = document.getElementById('descripcionCaso').value;
         const idUsuarioSoporte = localStorage.getItem('idUsuario');

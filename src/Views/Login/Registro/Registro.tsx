@@ -287,169 +287,122 @@ export default function Registro() {
                 }}>
                 {/* Diseño donde se registra la información del usuario */}
                 <div
-                    style={{
-                        width: '40%', height: '100%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        flexDirection: 'column', gap: '2px'
-                    }}>
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', width: '100%', alignItems: 'center', justifyItems: 'center', flexDirection: 'column' }}>
-                        <h1
-                            style={{
-                                color: '#096ECB',
-                                fontFamily: '"fredoka",sans-serif',
-                                fontOpticalSizing: 'auto',
-                                fontWeight: '600',
-                                fontVariationSettings: '"wdth" 100',
-                                fontSize: '40px'
-                            }}>Registro</h1>
-                        <p
-                            style={{
-                                marginTop: '-10px'
-                            }}>Accede a todos los reportes y anuncios</p>
+                    className="form-container">
+                    <form onSubmit={handleSubmit} style={{ zIndex: '10' }}>
+                        <h1>Registro</h1>
+                        <p>Accede a todos los reportes y anuncios</p>
 
                         <Nombre />
-                        <div style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-                            <div style={{ position: 'relative', marginBottom: '15px' }}>
-                                <input
-                                    type="text"
-                                    placeholder='Tipo de documento'
-                                    onFocus={() => setShowDocumentos(true)}
-                                    readOnly
-                                    value={selectedDocumento.join(', ')}
-                                    style={{
-                                        width: '380px',
-                                        padding: '10px',
-                                        borderRadius: '10px',
+                        {/* Document and Role Selectors */}
+                        <div className="inputGroup">
 
-                                        border: 'none',
-                                        outline: 'none',
-                                        display: 'flex',
-                                        textAlign: 'center',
-                                    }}
-                                    id="clase_categoria"
-                                    className="placeholder-style"
-                                />
-                                <style jsx>{`
+                            <input
+                                type="text"
+                                placeholder='Tipo de documento'
+                                onFocus={() => setShowDocumentos(true)}
+                                readOnly
+                                value={selectedDocumento.join(', ')}
+
+                                id="clase_categoria"
+                                className="placeholder-style"
+                            />
+                            <style jsx>{`
                                             .placeholder-style::placeholder {
                                                 color: rgba(0, 0, 0); 
                                             }
                                         `}</style>
-                                <select
-                                    multiple
-                                    onChange={handleDocumentoChange}
-                                    onClick={() => setShowDocumentos(false)}
-                                    id="tipoDocumento"
-                                    style={{
-                                        position: 'absolute',
-                                        top: '100%',
-                                        left: '0',
-                                        zIndex: '1',
-                                        width: '100%',
-                                        display: showDocumentos ? 'block' : 'none',
-                                        textAlign: 'center',
-                                        backgroundColor: 'white',
-                                        scrollbarWidth: 'none',
-                                        color: 'black'
-                                    }}
-                                >
-                                    {tipoDocumento.map(Caso => (
-                                        <option key={Caso.id} value={Caso.tipoDocumento} data-id={Caso.id}>
-                                            {Caso.tipoDocumento}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <div style={{ position: 'relative' }}>
-                                <input
-                                    type="text"
-                                    placeholder='Cargo'
-                                    onFocus={() => setShowCargos(true)}
-                                    readOnly
-                                    value={selectedCargo.join(', ')}
-                                    style={{
-                                        width: '380px',
-                                        padding: '10px',
-                                        borderRadius: '10px',
-                                        border: 'none',
-                                        outline: 'none',
-                                        display: 'flex',
-                                        textAlign: 'center',
-                                    }}
-                                    id="clase_categoria"
-                                    className="placeholder-style"
-                                />
-                                <select
-                                    multiple
-                                    onChange={handleCargoChange}
-                                    onClick={() => setShowCargos(false)}
-                                    id="tipo de cargo"
-                                    style={{
-                                        position: 'absolute',
-                                        top: '100%',
-                                        left: '0',
-                                        zIndex: '1',
-                                        width: '100%',
-                                        display: showCargo ? 'block' : 'none',
-                                        textAlign: 'center',
-                                        backgroundColor: 'white',
-                                        scrollbarWidth: 'none',
-                                        color: 'black'
-                                    }}
-                                >
-                                    {tipoCargo.map(Caso => (
-                                        <option key={Caso.id} value={Caso.descripcion} data-id={Caso.id}>
-                                            {Caso.descripcion}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            <NDocumento />
-                            <NumeroTelefono />
-                            <Gmail />
-                            <Contraseña />
-                            <div className="inputGroup" id='confirmarContrasena'
+                            <select
+                                multiple
+                                onChange={handleDocumentoChange}
+                                onClick={() => setShowDocumentos(false)}
+                                id="tipoDocumento"
                                 style={{
-                                    marginTop: '2px'
-                                }}>
-                                <input
-                                    type="password"
-                                    required
-                                    autoComplete="off"
-                                    id="name1"
-                                    name="nombre"
-
-                                />
-                                <img
-                                    src={RContraseñas}
-                                    alt="Icono de usuario"
-                                    style={{
-                                        position: 'absolute',
-                                        top: '-2px',
-                                        left: '10px',
-                                        marginTop: '10px'
-                                    }}
-                                />
-                                <label htmlFor="name">Confirmar Contraseña</label>
-                            </div>
-
-                            {/* DIV DE LOS BOTONES DE REGRESAR Y REGISTRARSE */}
-
-                            <div style={{ display: 'flex', justifyContent: 'center' }}>
-
-                                <Link to={'/'}>
-                                    <Atras />
-                                </Link>
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: '0',
+                                    zIndex: '1',
+                                    width: '100%',
+                                    display: showDocumentos ? 'block' : 'none',
+                                    textAlign: 'center',
+                                    backgroundColor: 'white',
+                                    scrollbarWidth: 'none',
+                                    color: 'black'
+                                }}
+                            >
+                                {tipoDocumento.map(Caso => (
+                                    <option key={Caso.id} value={Caso.tipoDocumento} data-id={Caso.id}>
+                                        {Caso.tipoDocumento}
+                                    </option>
+                                ))}
+                            </select>
 
 
-                                <Registrarme />
+                        </div>
 
 
 
-                            </div>
+
+
+
+
+
+
+
+
+
+
+                        <div className="inputGroup">
+
+                            <input
+                                type="text"
+                                placeholder='Cargo'
+                                onFocus={() => setShowCargos(true)}
+                                readOnly
+                                value={selectedCargo.join(', ')}
+
+                                id="clase_categoria"
+                                className="placeholder-style"
+                            />
+                            <select
+                                multiple
+                                onChange={handleCargoChange}
+                                onClick={() => setShowCargos(false)}
+                                id="tipo de cargo"
+                                style={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: '0',
+                                    zIndex: '1',
+                                    width: '100%',
+                                    display: showCargo ? 'block' : 'none',
+                                    textAlign: 'center',
+                                    backgroundColor: 'white',
+                                    scrollbarWidth: 'none',
+                                    color: 'black'
+                                }}
+                            >
+                                {tipoCargo.map(Caso => (
+                                    <option key={Caso.id} value={Caso.descripcion} data-id={Caso.id}>
+                                        {Caso.descripcion}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <NDocumento />
+                        <NumeroTelefono />
+                        <Gmail />
+                        <Contraseña />
+
+                        <div className="inputGroup">
+                            <input type="password" id="name1" required placeholder="Confirmar Contraseña" />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Link to={'/'}>
+                                <Atras />
+                            </Link>
+                            <Registrarme />
                         </div>
                     </form>
 
@@ -493,7 +446,7 @@ export default function Registro() {
                             borderRadius: '50%', position: 'fixed',
                             bottom: '-440px', right: '-300px',
                         }}></div>
-                    <div
+                    <div className='contenedorImagenLogo'
                         style={{
                             width: '500px', height: '500px',
                             background: 'white', borderRadius: '50%', position: 'fixed',
@@ -501,13 +454,13 @@ export default function Registro() {
                             display: 'flex', justifyContent: 'center',
                             alignItems: 'center',
                         }}>
-                        <img src={Logo} alt="Logo"
+                        <img src={Logo} alt="Logo" className='imgLogo'
                             style={{
                                 width: '200px',
                                 marginRight: '80px', marginBottom: '80px'
                             }} />
                     </div>
-                    <img src={Mujer}
+                    <img src={Mujer} className='imagenMujer'
                         style={{
                             position: 'fixed',
                             bottom: '0px', left: '36%'

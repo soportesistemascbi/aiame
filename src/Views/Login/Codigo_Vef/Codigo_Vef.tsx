@@ -74,12 +74,12 @@ export default function Codigo_Vef() {
         <>
 
             <div className="fondo1">
-                <div
+                <div className='container'
                     style={{
                         width: 'calc(20em + 10vw)', height: '100%',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'fixed', textAlign: 'center',
                         flexDirection: 'column',
-                        marginLeft: 'calc(0em + 10vw)'
+
                     }}>
                     <img src={Logo}
                         style={{
@@ -115,10 +115,10 @@ export default function Codigo_Vef() {
 
                         <button onClick={verificarCodigo}
                             style={{
-                                width: '130px', padding: '12px',
+                                width: '130px', height: '41px', padding: '12px',
                                 borderRadius: '5px', border: 'none',
                                 background: '#096ECB', color: 'white',
-                                marginTop: '25px', cursor: 'pointer'
+                                marginTop: '34px', cursor: 'pointer'
                             }}>Aceptar</button>
                     </div>
 

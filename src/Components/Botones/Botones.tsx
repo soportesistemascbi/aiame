@@ -45,7 +45,7 @@ export function Iniciar() {
 
 export function Registrarme() {
     return (
-        <>  
+        <>
             <button
                 style={{
                     width: '130px', padding: '12px',

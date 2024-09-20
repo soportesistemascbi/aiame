@@ -85,10 +85,24 @@ export default function Anuncios() {
       <body style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <table
           style={{
-            width: 'calc(5em + 80vw)', height: '85%', background: 'white', margin: 'auto',
-            boxShadow: '1px 1px 5px 1px #cccccc', borderRadius: '10px', display: 'flex', alignItems: 'start',
-            justifyContent: 'start', textAlign: 'center',
-            position: 'fixed', bottom: '30px', zIndex: '3', flexDirection: 'column', right: '50px'
+            width: 'calc(3em + 80vw)',
+            height: '85%',
+            background: 'white',
+            boxShadow: '1px 1px 5px 1px #cccccc',
+            borderRadius: '10px',
+            display: 'flex',
+            alignItems: 'start',
+            justifyContent: 'start',
+            textAlign: 'start',
+            flexDirection: 'column',
+            position: 'fixed',
+            bottom: '30px',
+            left: '96%',  // Centramos la tabla en el eje horizontal
+            transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
+            zIndex: '3',
+            borderCollapse: 'collapse',
+            maxWidth: '100vw',  // Evitar que la tabla exceda el ancho de la pantalla
+            overflow: 'auto'
           }}
         >
           {/* TITULOS */}
@@ -173,44 +187,6 @@ export default function Anuncios() {
         </table>
       </body>
 
-      {/* Aquí viene el estilo para responsividad sin cambiar body ni tabla */}
-      <style>
-        {`
-          @media (max-width: 768px) {
-            input {
-              width: calc(100% - 20px); /* Ajuste del ancho del input para móviles */
-            }
-
-            select {
-              width: calc(100% - 20px); /* Ajuste del ancho del select para móviles */
-            }
-
-            img {
-              width: 100%;
-              height: auto;
-            }
-
-            table {
-              width: 90vw; /* Ajuste del ancho de la tabla para móviles */
-              right: 10px; /* Ajuste de la posición de la tabla */
-            }
-
-            .descripcion {
-              width: 100%; /* Ajuste del ancho del textbox para móviles */
-              height: auto; /* Ajuste de la altura del textbox para móviles */
-            }
-
-            .button-container {
-              flex-direction: column; /* Ajuste de la dirección del flex en los botones */
-              align-items: center; /* Alineación central de los botones */
-            }
-
-            .button-container button {
-              margin: 10px 0; /* Espaciado vertical entre los botones */
-            }
-          }
-        `}
-      </style>
 
       {/*   LOADER O PANTALLA DE CARGA   */}
 
@@ -237,6 +213,7 @@ export default function Anuncios() {
         </div>
       )}
 
+    
     </>
   );
 }

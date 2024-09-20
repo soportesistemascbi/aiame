@@ -330,36 +330,35 @@ export default function TablaInstructor() {
             {Reporte && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '89%',
-                    backgroundColor: 'transparent',
+                    height: '85%',
+                    background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'start',
                     textAlign: 'center',
                     position: 'fixed',
-                    bottom: '10px',
+                    bottom: '30px',
                     left: '96%',
                     transform: 'translateX(-98%) translateX(-4px)',
-                    zIndex: '2',
+                    zIndex: '5',
                     borderCollapse: 'collapse',
                     maxWidth: '100vw',
-
                 }}>
                     <div style={{
                         width: '100%',
                         height: '100%',
+                        overflow: 'auto', // Mantén esta línea
                         background: '#ffffff',
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                         borderRadius: '12px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start', // Cambia a flex-start
                         textAlign: 'center',
-                        overflow: 'auto', // Agregar esta línea
                     }}>
                         <h1 style={{ color: '#1E90FF', marginBottom: '20px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

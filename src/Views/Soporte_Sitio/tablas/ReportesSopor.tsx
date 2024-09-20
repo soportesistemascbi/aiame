@@ -243,7 +243,6 @@ export default function ReportesSopor() {
         const idUsuarioSoporte = localStorage.getItem('idUsuario');
         const tipoCaso = selectedCategoriaIds;
         const estado = selectedEstadoIds;
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', selectedCategoriaIds)
 
         // Validaciones
         if (!observacion) {
@@ -311,9 +310,11 @@ export default function ReportesSopor() {
                 setLoading(false);
                 return;
             }
-
+           
             if (data.rpta[0].rp === 'si') {
                 try {
+
+
                     const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`);
 
                     if (!checkResponse.ok) {
@@ -748,35 +749,32 @@ export default function ReportesSopor() {
             {Reportes && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '89%',
-                    background: 'transparent',
+                    height: '85%',
+                    background: 'white',
+                    margin: 'auto',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    textAlign: 'center',
                     position: 'fixed',
-                    bottom: '10px',
-                    left: '96%',
-                    transform: 'translateX(-98%) translateX(-4px)',
-                    zIndex: '5',
-                    borderCollapse: 'collapse',
-                    maxWidth: '100vw',
+                    bottom: '30px',
+                    left: '96%',  // Centrar la tabla en el eje horizontal
+                    transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
+                    zIndex: '5'
                 }}>
                     <div style={{
                         width: '100%',
                         height: '100%',
+                        overflow: 'auto', // Mantén esta línea
                         background: '#ffffff',
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                         borderRadius: '12px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start', // Cambia a flex-start
                         textAlign: 'center',
-                        overflow: 'auto', // Agregar esta línea
+
                     }}>
                         <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

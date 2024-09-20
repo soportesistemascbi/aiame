@@ -191,9 +191,8 @@ export default function Historial() {
         setLoading(true);
 
 
-        const id =
+        const id = DatosCaso[0].idEquipo;
 
-            [0].idEquipo;
         const idCaso = idcaso;
         const observacion = document.getElementById('descripcionCaso').value;
         const idUsuarioSoporte = localStorage.getItem('idUsuario');
@@ -313,35 +312,36 @@ export default function Historial() {
             {Reportes && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '89%',
-                    background: 'transparent',
+                    height: '85%',
+                    background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
-                    flexDirection: 'column',
                     alignItems: 'center',
-                    justifyContent: 'center',
+                    justifyContent: 'start',
                     textAlign: 'center',
+                    flexDirection: 'column',
                     position: 'fixed',
-                    bottom: '10px',
-                    left: '96%',
-                    transform: 'translateX(-98%) translateX(-4px)',
+                    bottom: '30px',
+                    left: '96%',  // Centramos la tabla en el eje horizontal
+                    transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
                     zIndex: '5',
                     borderCollapse: 'collapse',
-                    maxWidth: '100vw',
+                    maxWidth: '100vw',  // Evitar que la tabla exceda el ancho de la pantalla
                 }}>
                     <div style={{
                         width: '100%',
                         height: '100%',
+                        overflow: 'auto', // Mantén esta línea
                         background: '#ffffff',
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
                         borderRadius: '12px',
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'flex-start', // Cambia a flex-start
                         textAlign: 'center',
-                        overflow: 'auto', // Agregar esta línea
+
                     }}>
                         <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -519,7 +519,6 @@ export default function Historial() {
                     position: 'fixed',
                     bottom: '30px',
                     left: '96%',  // Centramos la tabla en el eje horizontal
-
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
                     zIndex: '3',
                     borderCollapse: 'collapse',

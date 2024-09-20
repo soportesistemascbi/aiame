@@ -331,7 +331,7 @@ export default function TablaInstructor() {
                 <div style={{
                     width: 'calc(3em + 80vw)',
                     height: '89%',
-                    background: 'red',
+                    backgroundColor: 'transparent',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
@@ -346,6 +346,7 @@ export default function TablaInstructor() {
                     zIndex: '2',
                     borderCollapse: 'collapse',
                     maxWidth: '100vw',
+
                 }}>
                     <div style={{
                         width: '100%',
@@ -358,7 +359,7 @@ export default function TablaInstructor() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
-
+                        overflow: 'auto', // Agregar esta línea
                     }}>
                         <h1 style={{ color: '#1E90FF', marginBottom: '20px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

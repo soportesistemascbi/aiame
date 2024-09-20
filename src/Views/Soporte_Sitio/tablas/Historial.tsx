@@ -191,9 +191,9 @@ export default function Historial() {
         setLoading(true);
 
 
-        const id = 
-        
-        [0].idEquipo;
+        const id =
+
+            [0].idEquipo;
         const idCaso = idcaso;
         const observacion = document.getElementById('descripcionCaso').value;
         const idUsuarioSoporte = localStorage.getItem('idUsuario');
@@ -314,7 +314,7 @@ export default function Historial() {
                 <div style={{
                     width: 'calc(3em + 80vw)',
                     height: '89%',
-                    background: 'red',
+                    background: 'transparent',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
@@ -341,6 +341,7 @@ export default function Historial() {
                         alignItems: 'center',
                         justifyContent: 'center',
                         textAlign: 'center',
+                        overflow: 'auto', // Agregar esta línea
                     }}>
                         <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

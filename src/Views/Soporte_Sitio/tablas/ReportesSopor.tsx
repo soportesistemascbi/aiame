@@ -10,6 +10,7 @@ import Hola from '../../Tablas/icon/icon.svg'
 export default function ReportesSopor() {
 
     const [caracteristicas_pc, setcaracteristicas_pc] = useState(false);
+    const [hoveredRow, setHoveredRow] = useState(null);
     const [Reportes, setReporetes] = useState(false);
     const [usuarios, setUsuarios] = useState([]);
     const [busqueda, setBusqueda] = useState('');
@@ -1015,42 +1016,62 @@ export default function ReportesSopor() {
 
 
                                 return (
-                                    <tr key={index} style={{ height: '60px', borderTop: 'solid 2px #f0f0f0', textAlign: 'center', cursor: 'pointer' }} onClick={() => Aceptarpeticion(item.idEquipo)} >
-                                        <td style={{ padding: '10px' }}>{item.codigo}</td>
-                                        <td style={{ padding: '10px' }}>{item.fecha}</td>
-                                        <td style={{ padding: '10px' }}>{item.nombre}</td>
-                                        <td style={{ padding: '10px' }}>{item.rolReporte}</td>
-                                        <td style={{ padding: '10px' }}>{item.serialPc}</td>
-
-                                        <td style={{ padding: '10px' }}>{item.ubicacion}</td>
-
-                                        <td style={{ padding: '10px' }}>{item.descripcion}</td>
-                                        <td style={{ padding: '10px' }}>
-                                            <button
-                                                style={{
-                                                    width: '120px',
-                                                    padding: '8px',
-                                                    backgroundColor: hexToRgba(getColor(item.color), 0.4),
-                                                    color: getColor(item.color),
-                                                    border: 'none',
-                                                    borderRadius: '20px'
-                                                }}>
-                                                {item.estado}
-                                            </button>
-                                        </td>
-                                        <td style={{ padding: '10px' }}>
-                                            <button
-                                                style={{ width: '120px', padding: '8px', background: '#1874B7', color: 'white', border: 'none', borderRadius: '20px', cursor: 'pointer' }}
-                                                onClick={(e) => {
-                                                    e.stopPropagation(); // Detener la propagación del evento
-                                                    AbrirReportes(item.id);
-                                                }}
-                                            >
-                                                Gestionar caso
-
-                                            </button>
-                                        </td>
-                                    </tr>
+                                    <tr
+                                    key={index}
+                                    style={{
+                                      height: '60px',
+                                      borderTop: 'solid 2px #f0f0f0',
+                                      textAlign: 'center',
+                                      cursor: 'pointer',
+                                      backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent', // Cambia el color cuando el mouse pasa
+                                      transition: 'background-color 0.3s ease'
+                                    }}
+                                    onClick={() => Aceptarpeticion(item.idEquipo)}
+                                    onMouseEnter={() => setHoveredRow(index)} // Cambiar estado al pasar el mouse
+                                    onMouseLeave={() => setHoveredRow(null)}  // Limpiar el estado cuando el mouse se va
+                                  >
+                                    <td style={{ padding: '10px' }}>{item.codigo}</td>
+                                    <td style={{ padding: '10px' }}>{item.fecha}</td>
+                                    <td style={{ padding: '10px' }}>{item.nombre}</td>
+                                    <td style={{ padding: '10px' }}>{item.rolReporte}</td>
+                                    <td style={{ padding: '10px' }}>{item.serialPc}</td>
+                                    <td style={{ padding: '10px' }}>{item.ubicacion}</td>
+                                    <td style={{ padding: '10px' }}>{item.descripcion}</td>
+                                    <td style={{ padding: '10px' }}>
+                                      <button
+                                        style={{
+                                          width: '120px',
+                                          padding: '8px',
+                                          backgroundColor: hexToRgba(getColor(item.color), 0.4),
+                                          color: getColor(item.color),
+                                          border: 'none',
+                                          borderRadius: '20px'
+                                        }}
+                                      >
+                                        {item.estado}
+                                      </button>
+                                    </td>
+                                    <td style={{ padding: '10px' }}>
+                                      <button
+                                        style={{
+                                          width: '120px',
+                                          padding: '8px',
+                                          background: '#1874B7',
+                                          color: 'white',
+                                          border: 'none',
+                                          borderRadius: '20px',
+                                          cursor: 'pointer'
+                                        }}
+                                        onClick={(e) => {
+                                          e.stopPropagation(); // Detener la propagación del evento
+                                          AbrirReportes(item.id);
+                                        }}
+                                      >
+                                        Gestionar caso
+                                      </button>
+                                    </td>
+                                  </tr>
+                                  
                                 );
                             }))}
                         </tbody>

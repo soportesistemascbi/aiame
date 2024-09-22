@@ -38,16 +38,6 @@ export default function Anuncios() {
         fetchNoticias();
     }, []);
 
-
-
-
-
-
-
-
-
-
-
     const carouselSettings = {
         dots: true,
         infinite: false, // Si es 'true', el carrusel podría repetirse infinitamente
@@ -141,56 +131,36 @@ export default function Anuncios() {
             }}>
 
 
-                <div style={{ width: '100%', overflowY: 'auto' }}>
+                <div style={{ width: '100%', overflowY: 'auto',height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>
                     {/*                 BLOQUE PARA LAS NOTICIAS               */}
 
 
 
+                    <div style={{ width: '100%', height: '100%', overflowY: 'auto', maxHeight: '100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
                     {noticias.length === 0 ? (
-                        <tr>
-                            <td style={{ padding: '40px', textAlign: 'center', verticalAlign: 'middle' }}>
-                                <div style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    width: '100%',
-                                    height: '100px' // Puedes ajustar la altura según tus necesidades
-                                }}>
-
-                                    <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
-                                        No hay anuncios disponibles.
-                                    </span>
-                                </div>
-                            </td>
-                        </tr>
+                        <div style={{ padding: '40px', textAlign: 'center' }}>
+                            <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
+                                No hay anuncios disponibles.
+                            </span>
+                        </div>
                     ) : (
-                        noticias.length > 0 && (
-                            <div style={{ width: '100%', maxWidth: '600px', marginTop: '-10px', marginBottom: '0px', background: '#f9f9f9', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', boxSizing: 'border-box' }}>
-                                <Slider {...carouselSettings}>
-                                    {noticias.map((noticia) => (
-                                        <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
-                                            <img
-                                                src={noticia.urlImagen}
-                                                alt={`Imagen de noticia ${noticia.id}`}
-                                                className="slider-image"
-                                                style={{ width: '100%', height: '100px', borderRadius: '5px' }}
-                                            />
-                                            <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%', boxSizing: 'border-box' }}>
-                                                <h3 style={{ margin: '0', fontSize: '16px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                    {noticia.descripcion}
-                                                </h3>
-                                                <p style={{ margin: '5px 0', fontSize: '14px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                                                    {noticia.fecha}
-                                                </p>
-                                            </div>
+                        <div style={{display:'flex', alignItems:'center', justifyContent:'center', }}>
+                        <div style={{ width: '1500px', height: '750px', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                            <Slider {...carouselSettings}>
+                                {noticias.map((noticia) => (
+                                    <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
+                                        <img src={noticia.urlImagen} alt={`Imagen de noticia ${noticia.id}`} className="slider-image" style={{ width: '100%', height: '750px', borderRadius: '5px' }} />
+                                        <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%' }}>
+                                            <h3 style={{ margin: '0', fontSize: '16px' }}>{noticia.descripcion}</h3>
+                                            <p style={{ margin: '5px 0', fontSize: '14px' }}>{noticia.fecha}</p>
                                         </div>
-                                    ))}
-                                </Slider>
-
-
-                            </div>
-                        ))}
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
+                        </div>
+                    )}
+                </div>
 
 
                     {/*                 FIN DE ANUNCIOS Y COMIENZO DE LA TABLA               */}

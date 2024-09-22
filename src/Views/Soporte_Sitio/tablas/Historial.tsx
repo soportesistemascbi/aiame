@@ -39,7 +39,7 @@ export default function Historial() {
             console.log("Error al obtener componentes:", error); // Registra cualquier error.
         }
     };
-
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', casos)
     // useEffect para obtener categorías cuando el componente se monta.
     useEffect(() => {
         fetchCategorias();
@@ -561,8 +561,9 @@ export default function Historial() {
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
+                                <th style={{ padding: '10px' }}>Codigo del caso</th>
                                 <th style={{ padding: '10px' }}>Tipo del caso</th>
-                                <th style={{ padding: '10px' }}>Número del caso</th>
+
                                 <th style={{ padding: '10px' }}>Remitente</th>
                                 <th style={{ padding: '10px' }}>Cargo</th>
                                 <th style={{ padding: '10px' }}>Serial del pc</th>
@@ -591,8 +592,9 @@ export default function Historial() {
                                 </tr>
                             ) : (casosFiltrados.map((item, index) => (
                                 <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                    <td style={{ padding: '10px' }}>{item.descripcion}</td>
-                                    <td style={{ padding: '10px' }}>{item.id}</td>
+                                    <td style={{ padding: '10px' }}>{item.codigo}</td>
+                                    <td style={{ padding: '10px' }}>{item.nomTipoCaso}</td>
+
                                     <td style={{ padding: '10px' }}>{item.nombreReporte}</td>
                                     <td style={{ padding: '10px' }}>{item.rolReporte}</td>
                                     <td style={{ padding: '10px' }}>{item.serialPc}</td>

@@ -31,14 +31,17 @@ export default function ReportesSopor() {
     const [DatosCaso, setDatosCaso] = useState([]);
     const [idcaso, setIdCaso] = useState([]);
     const [file, setFile] = useState(null);
+    const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]);
 
     const AbrirCaracteristicas = () => {
         setcaracteristicas_pc(!caracteristicas_pc);
     }
 
     const AbrirReportes = async (id) => {
+
         setReporetes(!Reportes);
         setIdCaso(id);
+
         try {
             const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`;
             const response = await fetch(url);
@@ -156,38 +159,61 @@ export default function ReportesSopor() {
 
     async function Aceptarpeticion(id) {
         setcaracteristicas_pc(!caracteristicas_pc);
+        setLoading(true);
         try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${id}`;
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`;
             const response = await fetch(url);
             const data1 = await response.json();
-            setComponentes(data1.rpta);
+            const idEquipoCaso = await (data1.rpta[0].idEquipo);
+            setDatosCasoCracteristicas(data1.rpta);
+            try {
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`;
+                const response = await fetch(url);
+                const data1 = await response.json();
+                setComponentes(data1.rpta);
+            } catch (error) {
+                console.log("Error al obtener componentes:", error);
+            }
+
+            try {
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`;
+                const response = await fetch(url);
+                const data2 = await response.json();
+                setInflo(data2.rpta);
+            } catch (error) {
+                console.log("Error al obtener información adicional:", error);
+            }
+
+            try {
+                const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${idEquipoCaso}`;
+                const response = await fetch(url);
+                const data3 = await response.json();
+
+                if (data3.rpta && data3.rpta[0].rp === "no") {
+                    setNoHayCasos(true); // Actualiza el estado si no hay casos
+                    setLoading(false);
+                } else {
+                    setNoHayCasos(false); // Si hay casos, desactiva la bandera de "no hay casos"
+                    setCaso(data3.rpta);
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.log("Error al obtener casos:", error);
+                setLoading(false);
+            }
+
+
         } catch (error) {
+            setLoading(false);
             console.log("Error al obtener componentes:", error);
         }
 
-        try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${id}`;
-            const response = await fetch(url);
-            const data2 = await response.json();
-            setInflo(data2.rpta);
-        } catch (error) {
-            console.log("Error al obtener información adicional:", error);
-        }
 
-        try {
-            const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${id}`;
-            const response = await fetch(url);
-            const data3 = await response.json();
 
-            if (data3.rpta && data3.rpta[0].rp === "no") {
-                setNoHayCasos(true); // Actualiza el estado si no hay casos
-            } else {
-                setNoHayCasos(false); // Si hay casos, desactiva la bandera de "no hay casos"
-                setCaso(data3.rpta);
-            }
-        } catch (error) {
-            console.log("Error al obtener casos:", error);
-        }
+
+
+
+
     }
 
 
@@ -202,9 +228,6 @@ export default function ReportesSopor() {
         item.serialPc.toLowerCase().includes(busqueda.toLowerCase())
     );
 
-
-    const componenteMouse = Componentes.filter(item => item.tipoComponente === 'MOUSE');
-    const componenteMonitor = Componentes.filter(item => item.tipoComponente === 'MONITOR');
 
     function hexToRgba(hex, opacity) {
         if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
@@ -311,7 +334,7 @@ export default function ReportesSopor() {
                 setLoading(false);
                 return;
             }
-           
+
             if (data.rpta[0].rp === 'si') {
                 try {
 
@@ -496,21 +519,19 @@ export default function ReportesSopor() {
                                                 padding: '10px',
                                                 boxSizing: 'border-box',
                                             }}>
-                                            {componenteMonitor.length === 0 ? (
-                                                <p>No hay monitores disponibles.</p>
+                                            {CasoCaracteristicas.length === 0 ? (
+                                                <p>No hay una imagen disponibles.</p>
                                             ) : (
-                                                componenteMonitor.map((item, index) => (
-                                                    <div key={index}>
-                                                        <img src={item.urlIcon}
+                                                CasoCaracteristicas.map((item, index) => (
+                                                    <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                                        <p>Imagen de evidencia del caso</p>
+                                                        <img src={item.urlArchivo}
                                                             style={{
                                                                 width: '100px',
                                                                 marginBottom: '10px',
                                                             }} />
-                                                        <div>
-                                                            <b>{item.tipoComponente}</b>
-                                                            <p>Serial monitor</p>
-                                                        </div>
-                                                        <p>{item.serial}</p>
+
+
                                                     </div>
                                                 ))
                                             )}
@@ -530,21 +551,17 @@ export default function ReportesSopor() {
                                                 padding: '10px',
                                                 boxSizing: 'border-box',
                                             }}>
-                                            {componenteMouse.length === 0 ? (
-                                                <p>No hay ratones disponibles.</p>
+                                            {CasoCaracteristicas.length === 0 ? (
+                                                <p>No hay descripcion disponibles.</p>
                                             ) : (
-                                                componenteMouse.map((item, index) => (
-                                                    <div key={index}>
-                                                        <img src={item.urlIcon}
-                                                            style={{
-                                                                width: '100px',
-                                                                marginBottom: '10px',
-                                                            }} />
+                                                CasoCaracteristicas.map((item, index) => (
+                                                    <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+                                                        <p>Descripcion del caso</p>
                                                         <div>
-                                                            <b>{item.tipoComponente}</b>
-                                                            <p>Serial mouse</p>
+                                                            <b>{item.descripcion}</b>
+
                                                         </div>
-                                                        <p>{item.serial}</p>
+
                                                     </div>
                                                 ))
                                             )}
@@ -981,16 +998,17 @@ export default function ReportesSopor() {
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ height: '60px', }}>
-                                <th style={{ padding: '10px', minWidth: '100px' }}>Código</th>
-                                <th style={{ padding: '10px', minWidth: '150px' }}>Fecha</th>
-                                <th style={{ padding: '10px', minWidth: '200px' }}>Nombre</th>
-                                <th style={{ padding: '10px', minWidth: '150px' }}>Cargo</th>
+                                <th style={{ padding: '10px' }}>Código</th>
+                                <th style={{ padding: '10px' }}>Tipo del caso</th>
+                                <th style={{ padding: '10px' }}>Fecha</th>
+                                <th style={{ padding: '10px' }}>Nombre</th>
+                                <th style={{ padding: '10px' }}>Cargo</th>
                                 <th style={{ padding: '10px' }}>Serial del pc</th>
 
-                                <th style={{ padding: '10px', minWidth: '150px' }}>Lugar</th>
-                                <th style={{ padding: '10px', minWidth: '250px' }}>Descripción</th>
-                                <th style={{ padding: '10px', minWidth: '100px' }}>Estado</th>
-                                <th style={{ padding: '10px', minWidth: '100px' }}>Acciones</th>
+                                <th style={{ padding: '10px' }}>Lugar</th>
+                                <th style={{ padding: '10px' }}>Descripción</th>
+                                <th style={{ padding: '10px' }}>Estado</th>
+                                <th style={{ padding: '10px' }}>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -1017,61 +1035,62 @@ export default function ReportesSopor() {
 
                                 return (
                                     <tr
-                                    key={index}
-                                    style={{
-                                      height: '60px',
-                                      borderTop: 'solid 2px #f0f0f0',
-                                      textAlign: 'center',
-                                      cursor: 'pointer',
-                                      backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent', // Cambia el color cuando el mouse pasa
-                                      transition: 'background-color 0.3s ease'
-                                    }}
-                                    onClick={() => Aceptarpeticion(item.idEquipo)}
-                                    onMouseEnter={() => setHoveredRow(index)} // Cambiar estado al pasar el mouse
-                                    onMouseLeave={() => setHoveredRow(null)}  // Limpiar el estado cuando el mouse se va
-                                  >
-                                    <td style={{ padding: '10px' }}>{item.codigo}</td>
-                                    <td style={{ padding: '10px' }}>{item.fecha}</td>
-                                    <td style={{ padding: '10px' }}>{item.nombre}</td>
-                                    <td style={{ padding: '10px' }}>{item.rolReporte}</td>
-                                    <td style={{ padding: '10px' }}>{item.serialPc}</td>
-                                    <td style={{ padding: '10px' }}>{item.ubicacion}</td>
-                                    <td style={{ padding: '10px' }}>{item.descripcion}</td>
-                                    <td style={{ padding: '10px' }}>
-                                      <button
+                                        key={index}
                                         style={{
-                                          width: '120px',
-                                          padding: '8px',
-                                          backgroundColor: hexToRgba(getColor(item.color), 0.4),
-                                          color: getColor(item.color),
-                                          border: 'none',
-                                          borderRadius: '20px'
+                                            height: '60px',
+                                            borderTop: 'solid 2px #f0f0f0',
+                                            textAlign: 'center',
+                                            cursor: 'pointer',
+                                            backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent', // Cambia el color cuando el mouse pasa
+                                            transition: 'background-color 0.3s ease'
                                         }}
-                                      >
-                                        {item.estado}
-                                      </button>
-                                    </td>
-                                    <td style={{ padding: '10px' }}>
-                                      <button
-                                        style={{
-                                          width: '120px',
-                                          padding: '8px',
-                                          background: '#1874B7',
-                                          color: 'white',
-                                          border: 'none',
-                                          borderRadius: '20px',
-                                          cursor: 'pointer'
-                                        }}
-                                        onClick={(e) => {
-                                          e.stopPropagation(); // Detener la propagación del evento
-                                          AbrirReportes(item.id);
-                                        }}
-                                      >
-                                        Gestionar caso
-                                      </button>
-                                    </td>
-                                  </tr>
-                                  
+                                        onClick={() => Aceptarpeticion(item.id)}
+                                        onMouseEnter={() => setHoveredRow(index)} // Cambiar estado al pasar el mouse
+                                        onMouseLeave={() => setHoveredRow(null)}  // Limpiar el estado cuando el mouse se va
+                                    >
+                                        <td style={{ padding: '10px' }}>{item.codigo}</td>
+                                        <td style={{ padding: '10px' }}>{item.nomTipoCaso}</td>
+                                        <td style={{ padding: '10px' }}>{item.fecha}</td>
+                                        <td style={{ padding: '10px' }}>{item.nombre}</td>
+                                        <td style={{ padding: '10px' }}>{item.rolReporte}</td>
+                                        <td style={{ padding: '10px' }}>{item.serialPc}</td>
+                                        <td style={{ padding: '10px' }}>{item.ubicacion}</td>
+                                        <td style={{ padding: '10px' }}>{item.descripcion}</td>
+                                        <td style={{ padding: '10px' }}>
+                                            <button
+                                                style={{
+                                                    width: '120px',
+                                                    padding: '8px',
+                                                    backgroundColor: hexToRgba(getColor(item.color), 0.4),
+                                                    color: getColor(item.color),
+                                                    border: 'none',
+                                                    borderRadius: '20px'
+                                                }}
+                                            >
+                                                {item.estado}
+                                            </button>
+                                        </td>
+                                        <td style={{ padding: '10px' }}>
+                                            <button
+                                                style={{
+                                                    width: '120px',
+                                                    padding: '8px',
+                                                    background: '#1874B7',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    borderRadius: '20px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                onClick={(e) => {
+                                                    e.stopPropagation(); // Detener la propagación del evento
+                                                    AbrirReportes(item.id);
+                                                }}
+                                            >
+                                                Gestionar caso
+                                            </button>
+                                        </td>
+                                    </tr>
+
                                 );
                             }))}
                         </tbody>

@@ -15,6 +15,7 @@ export default function Tabla_Equipos_SU() {
 
     //Modal que muestra la informacion unica de cada equipo
     const [caracteristicas_pc, setcaracteristicas_pc] = useState(false);
+    const [hoveredRow, setHoveredRow] = useState(null);
     const [busqueda, setBusqueda] = useState('');
     const AbrirCaracteristicas = () => {
         setcaracteristicas_pc(!caracteristicas_pc);
@@ -277,10 +278,13 @@ export default function Tabla_Equipos_SU() {
                                                             width: '60px',
                                                             marginBottom: '10px',
                                                         }} />
-                                                    <div>
-                                                        <b>Nombre:</b> <p>{item.modelo}</p>
-                                                        <b>Tipo de equipo:</b> <p>{item.tipo}</p>
-                                                        <b>Marca:</b> <p>{item.marca}</p>
+                                                    <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                            <div style={{ display: 'flex', flexDirection: 'row', paddingBottom: '15px' }}> <b style={{ marginRight: '10px' }}>Nombre:</b> <p style={{ margin: '0' }}>{item.modelo}</p></div>
+                                                            <div ><b >Tipo de equipo:</b> <p style={{ margin: '0' }}>{item.tipo}</p></div></div>
+                                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                            <div style={{ display: 'flex', flexDirection: 'row' }} ><b style={{ marginRight: '10px' }}>Marca:</b> <p style={{ margin: '0' }}>{item.marca}</p></div>
+                                                        </div>
                                                     </div>
                                                     <img src={Hola}
                                                         style={{
@@ -614,7 +618,7 @@ export default function Tabla_Equipos_SU() {
                     >
                         <thead>
                             <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
-                                <th style={{ padding: '10px' }}>Id</th>
+
                                 <th style={{ padding: '10px' }}>Modelo</th>
                                 <th style={{ padding: '10px' }}>Marca</th>
                                 <th style={{ padding: '10px' }}>Tipo</th>
@@ -646,8 +650,12 @@ export default function Tabla_Equipos_SU() {
                                 </tr>
                             ) : (
                                 equiposFiltrados.map((item, index) => (
-                                    <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }} onClick={() => Aceptarpeticion(item.id)}>
-                                        <td style={{ padding: '10px' }}>{item.id}</td>
+                                    <tr key={index} style={{ borderBottom: '1px solid #f0f0f0', backgroundColor: hoveredRow === index ? '#f0f0f0' : 'transparent', }}
+                                        onClick={() => Aceptarpeticion(item.id)}
+                                        onMouseEnter={() => setHoveredRow(index)} // Cambiar estado al pasar el mouse
+                                        onMouseLeave={() => setHoveredRow(null)}  // Limpiar el estado cuando el mouse se va
+                                    >
+
                                         <td style={{ padding: '10px' }}>{item.modelo}</td>
                                         <td style={{ padding: '10px' }}>{item.marca}</td>
                                         <td style={{ padding: '10px' }}>{item.tipo}</td>

@@ -132,8 +132,9 @@ export default function tablaHistorial() {
                     >
                         <thead>
                             <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
+                                <th style={{ padding: '10px' }}>Codigo del caso</th>
                                 <th style={{ padding: '10px' }}>Tipo del caso</th>
-                                <th style={{ padding: '10px' }}>Número del caso</th>
+
                                 <th style={{ padding: '10px' }}>Encargado</th>
                                 <th style={{ padding: '10px' }}>Aula</th>
                                 <th style={{ padding: '10px' }}>Serial del pc</th>
@@ -169,8 +170,9 @@ export default function tablaHistorial() {
                             ) : (
                                 casosFiltrados.map((item, index) => (
                                     <tr key={index} style={{ borderBottom: '1px solid #f0f0f0' }}>
+                                        <td style={{ padding: '10px' }}>{item.codigo}</td>
                                         <td style={{ padding: '10px' }}>{item.descripcion}</td>
-                                        <td style={{ padding: '10px' }}>{item.id}</td>
+
                                         <td style={{ padding: '10px' }}>{item.nombreSoporte}</td>
                                         <td style={{ padding: '10px' }}>{item.ubicacion}</td>
                                         <td style={{ padding: '10px' }}>{item.serialPc}</td>

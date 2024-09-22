@@ -196,7 +196,7 @@ export default function Login() {
               />
               <label htmlFor="name"> Numero de documento</label>
             </div>
-            <div className="inputGroup" style={{}}>
+            <div className="inputGroup">
               <input type="password" required autoComplete="off" id="contraseña" />
               <img
                 src={Contraseña}

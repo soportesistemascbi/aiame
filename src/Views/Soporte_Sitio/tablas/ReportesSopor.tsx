@@ -678,6 +678,7 @@ export default function ReportesSopor() {
                                 boxShadow: '1px 1px 5px #d4d4d4',
                                 padding: '10px',
                                 boxSizing: 'border-box',
+                                overflowY: 'auto',
                             }}>
                                 <div style={{ borderBottom: '1px solid #EAEAEA', paddingBottom: '10px', marginBottom: '10px' }}>
                                     Otras características

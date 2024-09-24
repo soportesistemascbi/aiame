@@ -368,14 +368,14 @@ export default function Tabla_Equipos_SU() {
                                     <div
                                         style={{
                                             width: '100%',
-                                            height: '50%',
+                                            height: '60%',
                                             maxWidth: '922px',
                                             background: 'white',
                                             borderRadius: '10px',
                                             boxShadow: '1px 1px 5px #d4d4d4',
                                             padding: '10px',
                                             boxSizing: 'border-box',
-                                            marginTop: '1rem',
+                                            marginTop: '2rem',
                                         }}>
                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
                                             <img src={reportes}
@@ -412,7 +412,7 @@ export default function Tabla_Equipos_SU() {
                                                 <div
                                                     style={{
                                                         width: '100%',
-                                                        height: '50%',
+                                                        height: '60%',
                                                         maxWidth: '922px',
                                                         background: 'white',
                                                         borderRadius: '10px',
@@ -434,7 +434,7 @@ export default function Tabla_Equipos_SU() {
                                                         padding: '10px',
                                                         boxSizing: 'border-box',
                                                         overflowY: 'auto',
-                                                        maxHeight: '350px',
+                                                        maxHeight: '420px',
                                                     }}>
                                                     {caso.map((item, index) => {
                                                         const color = item.color && item.color.startsWith('#') ? item.color : `#${item.color || '000000'}`;
@@ -512,6 +512,7 @@ export default function Tabla_Equipos_SU() {
                                     boxShadow: '1px 1px 5px #d4d4d4',
                                     padding: '10px',
                                     boxSizing: 'border-box',
+                                    overflowY: 'auto',
                                 }}>
                                 <div style={{ borderBottom: '1px solid #EAEAEA', paddingBottom: '10px', marginBottom: '10px' }}>
                                     Otras características

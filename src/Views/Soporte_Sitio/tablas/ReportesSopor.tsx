@@ -398,7 +398,20 @@ export default function ReportesSopor() {
                     zIndex: '4',
                     overflow: 'hidden',
                 }}>
-
+                    <div style={{
+                        width: 'auto',
+                        height: '100%',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'start',
+                        padding: '10px',
+                    }}>
+                        <img src={Flecha} onClick={AbrirCaracteristicas}
+                            style={{
+                                marginLeft: '25px',
+                                cursor: 'pointer',
+                            }} />
+                    </div>
                     <div style={{
                         width: '100%',
                         height: '100%',
@@ -407,20 +420,6 @@ export default function ReportesSopor() {
                         overflowY: 'auto',
 
                     }}>
-                        <div style={{
-                            width: 'auto',
-                            height: '100%',
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'start',
-                            padding: '10px',
-                        }}>
-                            <img src={Flecha} onClick={AbrirCaracteristicas}
-                                style={{
-                                    marginLeft: '25px',
-                                    cursor: 'pointer',
-                                }} />
-                        </div>
                         {/* Main content area */}
                         <div style={{
                             flex: '1',

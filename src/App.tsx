@@ -17,7 +17,7 @@ const ProtegerRuta = ({ allowRoutes }) => {
 
   console.log(id);
 
-  return allowRoutes.includes(id) ? <Outlet /> : <Navigate to="/Error404" />;
+  return allowRoutes.includes(id) ? <Outlet /> : <Navigate to="Error404" />;
 }
 
 const AppRouter = () => {
@@ -26,21 +26,21 @@ const AppRouter = () => {
       <Routes>
 
         <Route path="/" element={<Login />} />
-        <Route path="/Error404" element={<Error404 />} />
+        <Route path="Error404" element={<Error404 />} />
 
-        <Route path="/Olvido_Contraseña" element={<Olvido_Contraseña />} />
-        <Route path="/Codigo_Vef" element={<Codigo_Vef />} />
-        <Route path="/NuevaContraseña" element={<NuevaContraseña />} />
-        <Route path="/Registro" element={<Registro />} />
+        <Route path="Olvido_Contraseña" element={<Olvido_Contraseña />} />
+        <Route path="Codigo_Vef" element={<Codigo_Vef />} />
+        <Route path="NuevaContraseña" element={<NuevaContraseña />} />
+        <Route path="Registro" element={<Registro />} />
 
         <Route element={<ProtegerRuta allowRoutes={[1, 2]} />} >
-          <Route path='/HomeIntructor' element={<HomeIntructor />} />
+          <Route path='HomeIntructor' element={<HomeIntructor />} />
 
         </Route>
 
         <Route element={<ProtegerRuta allowRoutes={[3]} />} >
-          <Route path="/HomeSoporte" element={<HomeSoporte />} />
-          <Route path='/Anuncios' element={<Anuncios />} />
+          <Route path="HomeSoporte" element={<HomeSoporte />} />
+          <Route path='Anuncios' element={<Anuncios />} />
         </Route>
         {/* 
 
@@ -50,7 +50,7 @@ const AppRouter = () => {
     
     */}
         <Route element={<ProtegerRuta allowRoutes={[4]} />}>
-          <Route path='/HomeAdmin' element={<HomeAdmin />} />
+          <Route path='HomeAdmin' element={<HomeAdmin />} />
         </Route>
 
 

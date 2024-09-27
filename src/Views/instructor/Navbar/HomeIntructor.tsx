@@ -152,7 +152,14 @@ export default function HomeIntructor() {
         setNoticias(false);
     };
 
-
+    const cerrar = () => {
+        localStorage.removeItem('idUsuario');
+        localStorage.removeItem('id_usuario');
+        localStorage.removeItem('id_rol');
+        localStorage.removeItem('correo');
+        localStorage.removeItem('rol');
+        localStorage.removeItem('usuarios');
+    }
 
 
     const idUsuario = localStorage.getItem('id_usuario');
@@ -231,7 +238,7 @@ export default function HomeIntructor() {
                         marginTop: '-5px', marginBottom: '-10px'
                     }}>{correo}</p>
 
-                <a href="/">
+                <a href="/" onClick={cerrar}>
                     <Cerrar_Sesion />
                 </a>
                 <p style={{ margin: '0', fontSize: '11px', cursor: 'pointer' }} onClick={AMCS}>cancelar</p>

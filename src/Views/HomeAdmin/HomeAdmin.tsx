@@ -190,6 +190,14 @@ export default function HomeAdmin() {
     const correo = localStorage.getItem('correo');
     const cargo = localStorage.getItem('rol');
 
+    const cerrar = () => {
+        localStorage.removeItem('idUsuario');
+        localStorage.removeItem('id_usuario');
+        localStorage.removeItem('id_rol');
+        localStorage.removeItem('correo');
+        localStorage.removeItem('rol');
+        localStorage.removeItem('usuarios');
+    }
     return (
         <>
 
@@ -260,10 +268,10 @@ export default function HomeAdmin() {
                         marginTop: '-5px', marginBottom: '-10px'
                     }}>{correo}</p>
 
-                <a href="/">
+                <a href="/" onClick={cerrar}>
                     <Cerrar_Sesion />
                 </a>
-                <p style={{ margin: '0', fontSize: '11px', cursor:'pointer' }} onClick={AMCS}>cancelar</p>
+                <p style={{ margin: '0', fontSize: '11px', cursor: 'pointer' }} onClick={AMCS}>cancelar</p>
             </div>
             <div className={`AMCL ${MCL ? 'ALCL' : ''}`}>
                 <img src={Cerrar} onClick={CMCL}

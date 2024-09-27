@@ -518,9 +518,10 @@ export default function ReportesSopor() {
                                                 borderRadius: '10px',
                                                 boxShadow: '1px 1px 5px #d4d4d4',
                                                 display: 'flex',
+                                                height: '100%',
                                                 flexDirection: 'column',
                                                 alignItems: 'center',
-                                                justifyContent: 'center',
+                                                justifyContent: window.innerWidth <= 344 ? 'start' : 'center',
                                                 padding: '10px',
                                                 boxSizing: 'border-box',
                                             }}>
@@ -542,9 +543,10 @@ export default function ReportesSopor() {
                                                 borderRadius: '10px',
                                                 boxShadow: '1px 1px 5px #d4d4d4',
                                                 display: 'flex',
+                                                height: '100%',
                                                 flexDirection: 'column',
                                                 alignItems: 'center',
-                                                justifyContent: 'center',
+                                                justifyContent: window.innerWidth <= 344 ? 'start' : 'center',
                                                 padding: '10px',
                                                 boxSizing: 'border-box',
                                             }}>

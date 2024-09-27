@@ -170,7 +170,12 @@ export default function ReportesSopor() {
                 const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`;
                 const response = await fetch(url);
                 const data1 = await response.json();
-                setComponentes(data1.rpta);
+                if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
+                    setComponentes([])
+                } else {
+                    setComponentes(data1.rpta);
+                }
+
             } catch (error) {
                 console.log("Error al obtener componentes:", error);
             }
@@ -179,7 +184,13 @@ export default function ReportesSopor() {
                 const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`;
                 const response = await fetch(url);
                 const data2 = await response.json();
-                setInflo(data2.rpta);
+
+                if (data2.rpta && data2.rpta.length === 1 && data2.rpta[0].rp === "no") {
+                    setInflo([])
+                } else {
+                    setInflo(data2.rpta);
+                }
+
             } catch (error) {
                 console.log("Error al obtener información adicional:", error);
             }
@@ -418,7 +429,6 @@ export default function ReportesSopor() {
                         display: 'flex',
                         flexDirection: window.innerWidth <= 768 ? 'column' : 'row', // Change direction based on screen size
                         overflowY: 'auto',
-
                     }}>
                         {/* Main content area */}
                         <div style={{
@@ -464,44 +474,43 @@ export default function ReportesSopor() {
                                             marginBottom: '1rem',
                                         }}>
                                             {info.length === 0 ? (
-                                                <p>No hay información disponible.</p>
-                                            ) : (info.map((item, index) => (
-                                                <div key={index} style={{
-                                                    flex: '1 1 calc(30% - 10px)', // Responsive width
-                                                    background: 'white',
-                                                    borderRadius: '10px',
-                                                    boxShadow: '1px 1px 5px #d4d4d4',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'flex-start',
-                                                    padding: '10px',
-                                                    boxSizing: 'border-box',
-                                                }}>
-                                                    <img src={PC} style={{
-                                                        width: '60px',
-                                                        marginBottom: '10px',
-                                                    }} />
-                                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: '100%', width: '100%' }}>
-                                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                            <div style={{ display: 'flex', paddingBottom: '15px' }}>
-                                                                <b style={{ marginRight: '10px' }}>Nombre:</b>
-                                                                <p style={{ margin: '0' }}>{item.modelo}</p>
+                                                <p>No hay información disponible.</p>) : (info.map((item, index) => (
+                                                    <div key={index} style={{
+                                                        flex: '1 1 calc(30% - 10px)', // Responsive width
+                                                        background: 'white',
+                                                        borderRadius: '10px',
+                                                        boxShadow: '1px 1px 5px #d4d4d4',
+                                                        display: 'flex',
+                                                        flexDirection: 'column',
+                                                        alignItems: 'flex-start',
+                                                        padding: '10px',
+                                                        boxSizing: 'border-box',
+                                                    }}>
+                                                        <img src={PC} style={{
+                                                            width: '60px',
+                                                            marginBottom: '10px',
+                                                        }} />
+                                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', height: '100%', width: '100%' }}>
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <div style={{ display: 'flex', paddingBottom: '15px' }}>
+                                                                    <b style={{ marginRight: '10px' }}>Nombre:</b>
+                                                                    <p style={{ margin: '0' }}>{item.modelo}</p>
+                                                                </div>
+                                                                <div><b>Tipo de equipo:</b> <p style={{ margin: '0' }}>{item.tipo}</p></div>
                                                             </div>
-                                                            <div><b>Tipo de equipo:</b> <p style={{ margin: '0' }}>{item.tipo}</p></div>
-                                                        </div>
-                                                        <div style={{ display: 'flex', justifyContent: 'center' }}>
-                                                            <div style={{ display: 'flex', flexDirection: 'row' }}>
-                                                                <b style={{ marginRight: '10px' }}>Marca:</b>
-                                                                <p style={{ margin: '0' }}>{item.marca}</p>
+                                                            <div style={{ display: 'flex', justifyContent: 'center' }}>
+                                                                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                                                                    <b style={{ marginRight: '10px' }}>Marca:</b>
+                                                                    <p style={{ margin: '0' }}>{item.marca}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
+                                                        <img src={Hola} style={{
+                                                            width: '60px',
+                                                            marginTop: '10px',
+                                                        }} />
                                                     </div>
-                                                    <img src={Hola} style={{
-                                                        width: '60px',
-                                                        marginTop: '10px',
-                                                    }} />
-                                                </div>
-                                            )))}
+                                                )))}
                                             {/* Case Evidence Image */}
                                             <div style={{
                                                 flex: '1 1 calc(30% - 10px)', // Responsive width
@@ -516,16 +525,15 @@ export default function ReportesSopor() {
                                                 boxSizing: 'border-box',
                                             }}>
                                                 {CasoCaracteristicas.length === 0 ? (
-                                                    <p>No hay imágenes disponibles.</p>
-                                                ) : (CasoCaracteristicas.map((item, index) => (
-                                                    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                        <p>Imagen de evidencia del caso</p>
-                                                        <img src={item.urlArchivo} style={{
-                                                            width: '100px',
-                                                            marginBottom: '10px',
-                                                        }} />
-                                                    </div>
-                                                )))}
+                                                    <p>No hay imágenes disponibles.</p>) : (CasoCaracteristicas.map((item, index) => (
+                                                        <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                            <p>Imagen de evidencia del caso</p>
+                                                            <img src={item.urlArchivo} style={{
+                                                                width: '100px',
+                                                                marginBottom: '10px',
+                                                            }} />
+                                                        </div>
+                                                    )))}
                                             </div>
                                             {/* Case Description */}
                                             <div style={{
@@ -541,15 +549,14 @@ export default function ReportesSopor() {
                                                 boxSizing: 'border-box',
                                             }}>
                                                 {CasoCaracteristicas.length === 0 ? (
-                                                    <p>No hay descripciones disponibles.</p>
-                                                ) : (CasoCaracteristicas.map((item, index) => (
-                                                    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                        <p>Descripción del caso</p>
-                                                        <div>
-                                                            <b>{item.descripcion}</b>
+                                                    <p>No hay descripciones disponibles.</p>) : (CasoCaracteristicas.map((item, index) => (
+                                                        <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                            <p>Descripción del caso</p>
+                                                            <div>
+                                                                <b>{item.descripcion}</b>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                )))}
+                                                    )))}
                                             </div>
                                         </div>
                                         {/* Reports Section */}
@@ -608,69 +615,68 @@ export default function ReportesSopor() {
                                                     }}>
                                                         <p>No hay casos disponibles.</p>
                                                     </div>
-                                                ) : (
-                                                    <div style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'column',
-                                                        padding: '10px',
-                                                        boxSizing: 'border-box',
-                                                        overflowY: 'auto',
-                                                        maxHeight: '420px',
-                                                    }}>
-                                                        {caso.map((item, index) => {
-                                                            const color = item.color && item.color.startsWith('#') ? item.color : `#${item.color || '000000'}`;
-                                                            const backgroundColor = hexToRgba(color, 0.4);
+                                                ) : (<div style={{
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    padding: '10px',
+                                                    boxSizing: 'border-box',
+                                                    overflowY: 'auto',
+                                                    maxHeight: '420px',
+                                                }}>
+                                                    {caso.map((item, index) => {
+                                                        const color = item.color && item.color.startsWith('#') ? item.color : `#${item.color || '000000'}`;
+                                                        const backgroundColor = hexToRgba(color, 0.4);
 
-                                                            return (
-                                                                <div key={index} style={{
-                                                                    background: '#F8F9FA',
-                                                                    borderRadius: '10px',
-                                                                    boxShadow: '1px 1px 5px #d4d4d4',
-                                                                    padding: '10px',
-                                                                    marginBottom: '10px',
+                                                        return (
+                                                            <div key={index} style={{
+                                                                background: '#F8F9FA',
+                                                                borderRadius: '10px',
+                                                                boxShadow: '1px 1px 5px #d4d4d4',
+                                                                padding: '10px',
+                                                                marginBottom: '10px',
+                                                                display: 'flex',
+                                                                justifyContent: 'space-between',
+                                                                alignItems: 'center',
+                                                            }}>
+                                                                <div style={{
                                                                     display: 'flex',
-                                                                    justifyContent: 'space-between',
-                                                                    alignItems: 'center',
+                                                                    flexDirection: 'column',
+                                                                    alignItems: 'flex-start',
                                                                 }}>
-                                                                    <div style={{
-                                                                        display: 'flex',
-                                                                        flexDirection: 'column',
-                                                                        alignItems: 'flex-start',
-                                                                    }}>
-                                                                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                                                                            <img src={persona} style={{
-                                                                                width: '30px',
-                                                                            }} />
-                                                                            <p>{item.nombreSoporte}</p>
-                                                                        </div>
-                                                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
-                                                                            <p>Cargo: <b>{item.rolSoporte}</b></p>
-                                                                            <p>Correo: <b>{item.correoSoporte}</b></p>
-                                                                            <p>Fecha: <b>{item.fecha}</b></p>
-                                                                            <p>Caso: <b>{item.nomTipoCaso}</b></p>
-                                                                        </div>
+                                                                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                                                                        <img src={persona} style={{
+                                                                            width: '30px',
+                                                                        }} />
+                                                                        <p>{item.nombreSoporte}</p>
                                                                     </div>
-                                                                    <div style={{
-                                                                        display: 'flex',
-                                                                        flexDirection: 'column',
-                                                                        alignItems: 'center',
-                                                                    }}>
-                                                                        <p>Estado</p>
-                                                                        <button style={{
-                                                                            width: '120px',
-                                                                            padding: '8px',
-                                                                            backgroundColor: backgroundColor,
-                                                                            color: color.startsWith('#') ? color : `#${color}`,
-                                                                            border: 'none',
-                                                                            borderRadius: '20px'
-                                                                        }}>
-                                                                            {item.estado}
-                                                                        </button>
+                                                                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'start' }}>
+                                                                        <p>Cargo: <b>{item.rolSoporte}</b></p>
+                                                                        <p>Correo: <b>{item.correoSoporte}</b></p>
+                                                                        <p>Fecha: <b>{item.fecha}</b></p>
+                                                                        <p>Caso: <b>{item.nomTipoCaso}</b></p>
                                                                     </div>
                                                                 </div>
-                                                            );
-                                                        })}
-                                                    </div>
+                                                                <div style={{
+                                                                    display: 'flex',
+                                                                    flexDirection: 'column',
+                                                                    alignItems: 'center',
+                                                                }}>
+                                                                    <p>Estado</p>
+                                                                    <button style={{
+                                                                        width: '120px',
+                                                                        padding: '8px',
+                                                                        backgroundColor: backgroundColor,
+                                                                        color: color.startsWith('#') ? color : `#${color}`,
+                                                                        border: 'none',
+                                                                        borderRadius: '20px'
+                                                                    }}>
+                                                                        {item.estado}
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </div>
                                                 )}
                                             </div>
                                         </div>

@@ -134,6 +134,7 @@ export default function ReportesSopor() {
         setFile(e.target.files[0]);
     };
     const fetchData = async () => {
+        setLoading(true);
         try {
             const response = await fetch('https://instrudev.com/aiameapp/caso/casos.php?case=5');
 
@@ -143,13 +144,14 @@ export default function ReportesSopor() {
             // Si la respuesta contiene [{"rp":"no"}], no hay casos
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
                 setUsuarios([]);
-
+                setLoading(false);
             } else {
                 setUsuarios(data.rpta);
-
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error al obtener casos:', error);
+            setLoading(false);
         }
     };
     useEffect(() => {
@@ -430,13 +432,14 @@ export default function ReportesSopor() {
                         overflowY: 'hidden',
                     }}>
                         <div style={{
-                            width: '100%',
+                            width: '90%',
                             height: '100%',
                             display: 'flex',
                             flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
                             overflowX: 'auto', // Allow horizontal scrolling
                             padding: '10px',
                             boxSizing: 'border-box',
+                            marginLeft: '5%'
                         }}>
                             {/* Main Content Area */}
                             <div style={{
@@ -447,7 +450,7 @@ export default function ReportesSopor() {
                                 padding: '10px',
                                 boxSizing: 'border-box',
                             }}>
-                                <div style={{ height: '100%', display: 'flex', flexDirection: window.innerWidth <= 768 ? 'column' : 'row', }}>
+                                <div style={{ width: '100%', display: 'flex', flexDirection: window.innerWidth <= 768 ? 'column' : 'row', }}>
                                     <div style={{
                                         flex: '1 1 auto',
                                         background: 'white',
@@ -460,7 +463,7 @@ export default function ReportesSopor() {
                                         padding: '10px',
                                         width: '100%',
                                         boxSizing: 'border-box',
-
+                                        margin: '10px'
                                     }}>
                                         {/* Info Container */}
                                         {info.length === 0 ? (
@@ -513,6 +516,7 @@ export default function ReportesSopor() {
                                         padding: '10px',
                                         width: '100%',
                                         boxSizing: 'border-box',
+                                        margin: '10px'
                                     }}>
                                         {CasoCaracteristicas.length === 0 ? (
                                             <p>No hay imágenes disponibles.</p>
@@ -542,6 +546,7 @@ export default function ReportesSopor() {
                                         padding: '10px',
                                         width: '100%',
                                         boxSizing: 'border-box',
+                                        margin: '10px'
                                     }}>
                                         {CasoCaracteristicas.length === 0 ? (
                                             <p>No hay descripciones disponibles.</p>

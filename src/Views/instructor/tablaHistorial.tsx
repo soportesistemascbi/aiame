@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
+import { MoonLoader } from 'react-spinners';
 
 export default function tablaHistorial() {
     const [casos, setCasos] = useState([]);
     const [busqueda, setBusqueda] = useState('');
     const [casosFiltrados, setCasosFiltrados] = useState([]);
-
+    const [loading, setLoading] = useState(false);
     const id = localStorage.getItem('idUsuario');
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             try {
                 const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=7&id=${id}`);
@@ -16,13 +18,16 @@ export default function tablaHistorial() {
                 // Si la respuesta contiene [{"rp":"no"}], no hay casos
                 if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
                     setCasos([]);
+                    setLoading(false);
                     setCasosFiltrados([]);
                 } else {
                     setCasos(data.rpta);
                     setCasosFiltrados(data.rpta); // Inicialmente muestra todos los casos
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Error al obtener casos:', error);
+                setLoading(false);
             }
         };
 
@@ -202,7 +207,30 @@ export default function tablaHistorial() {
                 </div>
             </table>
 
+            {/*   LOADER O PANTALLA DE CARGA   */}
 
+            {loading && (
+                <div style={{
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999999999999999
+                }}>
+                    <MoonLoader
+                        color="#096ECB"
+                        loading={loading}
+                        size={150}
+                        speedMultiplier={1}
+
+                    />
+                </div>
+            )}
         </>
     );
 }

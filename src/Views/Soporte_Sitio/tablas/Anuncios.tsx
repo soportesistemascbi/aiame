@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import MoonLoader from 'react-spinners/MoonLoader';
 
 
 
 export default function Anuncios() {
 
-
   const [options, setOptions] = useState([]);
   const [selectedOption, setSelectedOption] = useState(null);
   const [showAlert_inicio, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
-
 
   useEffect(() => {
+    setLoading(true); //COMIENZA LA ANIMACION DE CARGA
     const fetchData = async () => {
       try {
         const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=2');
@@ -24,11 +20,14 @@ export default function Anuncios() {
         }
         const data = await response.json();
         setOptions(data.rpta);
+        setLoading(false); //DETIENE LA ANIMACION DE CARGA
         if (data.rpta.length > 0) {
           setSelectedOption(data.rpta[0]); // Establecer la primera opción como seleccionada
+          setLoading(false); //DETIENE LA ANIMACION DE CARGA
         }
       } catch (error) {
         console.error('Error al obtener los datos:', error);
+        setLoading(false); //DETIENE LA ANIMACION DE CARGA
       }
     };
 

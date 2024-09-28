@@ -25,7 +25,6 @@ export default function Historial() {
 
     const AbrirReportes = async (id) => {
         // Función para abrir reportes para un ID de caso específico.
-        console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', id); // Registro de depuración.
         setReporetes(!Reportes); // Alterna el estado de visibilidad de los reportes.
         setIdCaso(id); // Establece el ID del caso actual.
 
@@ -124,6 +123,7 @@ export default function Historial() {
     console.log(id); // Registro del ID de usuario.
 
     const fetchData = async () => {
+        setLoading(true);
         // Función para obtener casos desde la API.
         try {
             const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=5&id=${id}`);
@@ -133,9 +133,11 @@ export default function Historial() {
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
                 setCasos([]); // Establece casos como vacío.
                 setCasosFiltrados([]); // Establece casos filtrados como vacío.
+                setLoading(false);
             } else {
                 setCasos(data.rpta); // Almacena los casos en el estado.
                 setCasosFiltrados(data.rpta); // Inicialmente muestra todos los casos.
+                setLoading(false);
             }
         } catch (error) {
             console.error('Error al obtener casos:', error); // Registra errores al obtener casos.

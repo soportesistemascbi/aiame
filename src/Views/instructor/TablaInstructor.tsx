@@ -1,7 +1,5 @@
-import { Link, useNavigate } from 'react-router-dom';
 import suma from '../../Views/Tablas/icon/suma.svg';
 import { useEffect, useRef, useState } from 'react';
-import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./carrusel.css";
@@ -28,6 +26,7 @@ export default function TablaInstructor() {
 
 
     useEffect(() => {
+        setLoading(true);
         const fetchCasos = async () => {
             try {
                 const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=4&id=${id}`);
@@ -35,12 +34,15 @@ export default function TablaInstructor() {
                 if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
                     setCasos([]);
                     setCasosFiltrados([]);
+                    setLoading(false);
                 } else {
                     setCasos(data.rpta);
                     setCasosFiltrados(data.rpta);
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Error al obtener casos:', error);
+                setLoading(false);
             }
         };
 
@@ -114,10 +116,6 @@ export default function TablaInstructor() {
         autoplaySpeed: 5000,
     };
 
-    const handleNoticiaClick = (noticia) => {
-        setNoticiaSeleccionada(noticia);
-        setDescripcion(true);
-    };
 
 
 
@@ -569,7 +567,7 @@ export default function TablaInstructor() {
                             />
                         </div>
 
-                        <div style={{ display: 'flex', flexDirection: 'column', marginRight: '100px' }} onClick={AbrirCaracteristicas}>
+                        <div style={{ display: 'flex', flexDirection: 'column', marginRight: '100px', cursor: 'pointer' }} onClick={AbrirCaracteristicas}>
                             <img
                                 src={suma}
                                 alt="Agregar"
@@ -682,10 +680,24 @@ export default function TablaInstructor() {
 
             {loading && (
                 <div style={{
-                    position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', background: 'white',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999999999999999
                 }}>
-                    <MoonLoader color="#096ECB" loading={loading} size={150} speedMultiplier={1} />
+                    <MoonLoader
+                        color="#096ECB"
+                        loading={loading}
+                        size={150}
+                        speedMultiplier={1}
+
+                    />
                 </div>
             )}
         </>

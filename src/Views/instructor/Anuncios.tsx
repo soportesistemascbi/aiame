@@ -17,6 +17,7 @@ export default function Anuncios() {
 
 
     useEffect(() => {
+        setLoading(true);
         const fetchNoticias = async () => {
             try {
                 const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=3');
@@ -25,13 +26,14 @@ export default function Anuncios() {
 
                 if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
                     setNoticias([]);
-
+                    setLoading(false);
                 } else {
                     setNoticias(data.rpta);
-
+                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Error al obtener noticias:', error);
+                setLoading(false);
             }
         };
 
@@ -131,36 +133,36 @@ export default function Anuncios() {
             }}>
 
 
-                <div style={{ width: '100%', overflowY: 'auto',height: '100%', display: 'flex', justifyContent: 'center', alignItems:'center'}}>
+                <div style={{ width: '100%', overflowY: 'auto', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     {/*                 BLOQUE PARA LAS NOTICIAS               */}
 
 
 
-                    <div style={{ width: '100%', height: '100%', overflowY: 'auto', maxHeight: '100%', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                    {noticias.length === 0 ? (
-                        <div style={{ padding: '40px', textAlign: 'center' }}>
-                            <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
-                                No hay anuncios disponibles.
-                            </span>
-                        </div>
-                    ) : (
-                        <div style={{display:'flex', alignItems:'center', justifyContent:'center', }}>
-                        <div style={{ width: '1500px', height: '750px', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
-                            <Slider {...carouselSettings}>
-                                {noticias.map((noticia) => (
-                                    <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
-                                        <img src={noticia.urlImagen} alt={`Imagen de noticia ${noticia.id}`} className="slider-image" style={{ width: '100%', height: '750px', borderRadius: '5px' }} />
-                                        <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%' }}>
-                                            <h3 style={{ margin: '0', fontSize: '16px' }}>{noticia.descripcion}</h3>
-                                            <p style={{ margin: '5px 0', fontSize: '14px' }}>{noticia.fecha}</p>
-                                        </div>
-                                    </div>
-                                ))}
-                            </Slider>
-                        </div>
-                        </div>
-                    )}
-                </div>
+                    <div style={{ width: '100%', height: '100%', overflowY: 'auto', maxHeight: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {noticias.length === 0 ? (
+                            <div style={{ padding: '40px', textAlign: 'center' }}>
+                                <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>
+                                    No hay anuncios disponibles.
+                                </span>
+                            </div>
+                        ) : (
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
+                                <div style={{ width: '1500px', height: '750px', padding: '10px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+                                    <Slider {...carouselSettings}>
+                                        {noticias.map((noticia) => (
+                                            <div key={noticia.id} className="slider-container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} onClick={() => handleNoticiaClick(noticia)}>
+                                                <img src={noticia.urlImagen} alt={`Imagen de noticia ${noticia.id}`} className="slider-image" style={{ width: '100%', height: '750px', borderRadius: '5px' }} />
+                                                <div className="slider-text" style={{ padding: '10px', textAlign: 'center', width: '100%' }}>
+                                                    <h3 style={{ margin: '0', fontSize: '16px' }}>{noticia.descripcion}</h3>
+                                                    <p style={{ margin: '5px 0', fontSize: '14px' }}>{noticia.fecha}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </Slider>
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
 
                     {/*                 FIN DE ANUNCIOS Y COMIENZO DE LA TABLA               */}
@@ -173,12 +175,28 @@ export default function Anuncios() {
 
             {loading && (
                 <div style={{
-                    position: 'fixed', top: '0', left: '0', width: '100%', height: '100%', background: 'white',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 9999
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    width: '100%',
+                    height: '100%',
+                    background: 'white',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: 999999999999999
                 }}>
-                    <MoonLoader color="#096ECB" loading={loading} size={150} speedMultiplier={1} />
+                    <MoonLoader
+                        color="#096ECB"
+                        loading={loading}
+                        size={150}
+                        speedMultiplier={1}
+
+                    />
                 </div>
             )}
+
+
         </>
     );
 }

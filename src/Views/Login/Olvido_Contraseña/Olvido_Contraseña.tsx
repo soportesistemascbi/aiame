@@ -15,64 +15,67 @@ import { useState } from 'react';
 
 export default function Olvido_Contraseña() {
 
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+    const navigate = useNavigate(); // Hook de React Router para navegar entre rutas
+    const [loading, setLoading] = useState(false); // Estado para manejar la animación de carga
 
+    // Función que se ejecuta al enviar el formulario
     const handleSubmit = async (e) => {
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
 
-        e.preventDefault();
+        const correo = document.getElementById('name').value; // Obtiene el valor del input con ID 'name'
 
-
-        const correo = document.getElementById('name').value;
-
+        // Expresión regular para validar el formato de correo electrónico
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailPattern.test(correo)) {
-            alert("Por favor ingresa un correo electrónico válido.");
-            return;
+        if (!emailPattern.test(correo)) { // Verifica si el correo es válido
+            alert("Por favor ingresa un correo electrónico válido."); // Muestra alerta si el correo no es válido
+            return; // Termina la función si el correo no es válido
         }
     }
 
-
+    // Función para enviar el correo de recuperación de contraseña
     const enviarCorreo = async () => {
-        setLoading(true); //COMIENZA LA ANIMACION DE CARGA
+        setLoading(true); // Inicia la animación de carga
 
-        const correo = document.getElementById('name').value;
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const correo = document.getElementById('name').value; // Obtiene el valor del input con ID 'name'
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el correo
 
+        // Verifica si el correo es válido
         if (!emailPattern.test(correo)) {
-            alert("Por favor ingresa un correo electrónico válido.");
-            setLoading(false); //DETIENE LA ANIMACION DE CARGA
-            return;
+            alert("Por favor ingresa un correo electrónico válido."); // Muestra alerta si el correo no es válido
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
-        console.log(correo)
-        try {
-            const response = await fetch(`https://instrudev.com/aiameapp/correo/olvidoContraseña.php?case=1&correo=${correo}`, {
-                method: 'GET',
 
+        console.log(correo); // Imprime el correo en la consola para depuración
+
+        try {
+            // Realiza una solicitud HTTP GET para enviar el correo
+            const response = await fetch(`https://instrudev.com/aiameapp/correo/olvidoContraseña.php?case=1&correo=${correo}`, {
+                method: 'GET', // Especifica el método HTTP
             });
 
-            if (!response.ok) {
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
-                throw new Error(`Error HTTP: ${response.status}`);
+            if (!response.ok) { // Verifica si la respuesta no es OK
+                setLoading(false); // Detiene la animación de carga
+                throw new Error(`Error HTTP: ${response.status}`); // Lanza un error si la respuesta no es válida
             }
 
-            const data = await response.json();
-
-            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', data.rpta[0].id)
-            localStorage.setItem('usuarios', data.rpta[0].id);
+            const data = await response.json(); // Convierte la respuesta en formato JSON
 
 
+            localStorage.setItem('usuarios', data.rpta[0].id); // Almacena el ID del usuario en el almacenamiento local
+
+            // Verifica si el envío del correo fue exitoso
             if (data.rp === 'si') {
-                alert('Correo enviado con éxito');
-                navigate('/Codigo_Vef');
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
+                alert('Correo enviado con éxito'); // Muestra un mensaje de éxito
+                navigate('/Codigo_Vef'); // Navega a la ruta de verificación de código
+                setLoading(false); // Detiene la animación de carga
             } else {
-                alert(data.mensaje);
+                alert(data.mensaje); // Muestra el mensaje de error recibido del servidor
             }
         } catch (error) {
-            console.error('Error al enviar el correo:', error);
-            alert('Ocurrió un error al procesar la solicitud.');
-            setLoading(false); //DETIENE LA ANIMACION DE CARGA
+            console.error('Error al enviar el correo:', error); // Imprime el error en la consola
+            alert('Ocurrió un error al procesar la solicitud.'); // Muestra un mensaje de error al usuario
+            setLoading(false); // Detiene la animación de carga
         }
     };
 

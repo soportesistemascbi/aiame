@@ -2,108 +2,120 @@ import React, { useState, useEffect } from 'react';
 import { MoonLoader } from 'react-spinners';
 
 export default function Tabla_Usuarios_SU() {
-    const [usuarios, setUsuarios] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [usuariosFiltrados, setUsuariosFiltrados] = useState([]);
-    console.log(usuarios);
+    // Inicializa los estados necesarios
+    const [usuarios, setUsuarios] = useState([]); // Estado para almacenar la lista de usuarios
+    const [busqueda, setBusqueda] = useState(''); // Estado para almacenar el término de búsqueda
+    const [loading, setLoading] = useState(false); // Estado para manejar el estado de carga
+    const [usuariosFiltrados, setUsuariosFiltrados] = useState([]); // Estado para almacenar los usuarios filtrados
+    console.log(usuarios); // Imprime la lista de usuarios en la consola para depuración
 
     // Función que obtiene los datos de los usuarios
     const fetchData = async () => {
-        setLoading(true);
+        setLoading(true); // Establece 'loading' a true para indicar que se está cargando
         try {
+            // Realiza una solicitud HTTP a la API para obtener usuarios
             const response = await fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=9');
-            const data = await response.json();
+            const data = await response.json(); // Convierte la respuesta en formato JSON
 
+            // Verifica si la respuesta contiene un objeto con "rp" igual a "no"
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                setUsuarios([]);
-                setLoading(false);
-                setUsuariosFiltrados([]);
+                setUsuarios([]); // Si no hay usuarios, establece 'usuarios' como un array vacío
+                setLoading(false); // Detiene la animación de carga
+                setUsuariosFiltrados([]); // Asegura que 'usuariosFiltrados' también esté vacío
             } else {
-                setUsuarios(data.rpta);
-                setLoading(false);
-                setUsuariosFiltrados(data.rpta);
+                setUsuarios(data.rpta); // Si hay usuarios, establece 'usuarios' con los datos recibidos
+                setLoading(false); // Detiene la animación de carga
+                setUsuariosFiltrados(data.rpta); // Inicializa 'usuariosFiltrados' con los datos de usuarios
             }
         } catch (error) {
+            // Maneja errores en la solicitud
             console.error('Error al obtener casos:', error);
-            setLoading(false);
+            setLoading(false); // Detiene la animación de carga en caso de error
         }
     };
 
+    // useEffect para cargar datos cuando el componente se monta
     useEffect(() => {
-        fetchData(); // Cargar los datos cuando se monta el componente
-    }, []);
+        fetchData(); // Llama a la función fetchData
+    }, []); // El array vacío asegura que esto solo se ejecute una vez al montar el componente
 
+    // useEffect para filtrar usuarios cuando cambian 'busqueda' o 'usuarios'
     useEffect(() => {
         const resultados = usuarios.filter(item => {
-            const nombre = item.nombre ? item.nombre.toLowerCase() : '';
-            const correo = item.correo ? item.correo.toLowerCase() : '';
+            const nombre = item.nombre ? item.nombre.toLowerCase() : ''; // Obtiene el nombre en minúsculas
+            const correo = item.correo ? item.correo.toLowerCase() : ''; // Obtiene el correo en minúsculas
 
+            // Filtra los usuarios que coincidan con el término de búsqueda en nombre o correo
             return nombre.includes(busqueda.toLowerCase()) || correo.includes(busqueda.toLowerCase());
         });
 
-        setUsuariosFiltrados(resultados);
-    }, [busqueda, usuarios]);
+        setUsuariosFiltrados(resultados); // Actualiza el estado 'usuariosFiltrados' con los resultados
+    }, [busqueda, usuarios]); // Dependencias para ejecutar el efecto
 
+    // Función para convertir un color hexadecimal a formato RGBA
     function hexToRgba(hex, opacity) {
         if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            return `rgba(0, 0, 0, ${opacity})`;
+            return `rgba(0, 0, 0, ${opacity})`; // Retorna un color negro si el formato no es válido
         }
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        hex = hex.replace('#', ''); // Elimina el carácter '#' si está presente
+        let r = parseInt(hex.substring(0, 2), 16); // Extrae el valor rojo
+        let g = parseInt(hex.substring(2, 4), 16); // Extrae el valor verde
+        let b = parseInt(hex.substring(4, 6), 16); // Extrae el valor azul
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Retorna el color en formato RGBA
     }
 
+    // Función para obtener un color válido
     const getColor = (color) => {
         if (!color || color.trim() === '') {
-            return '#000000';
+            return '#000000'; // Color negro predeterminado
         }
-        return color.startsWith('#') ? color : `#${color}`;
+        return color.startsWith('#') ? color : `#${color}`; // Agrega '#' si el color no lo tiene
     };
 
     // Función para eliminar un usuario
     async function EliminarUsuarios(id) {
-        const estado = 2;
+        const estado = 2; // Define el estado para "eliminar"
         try {
+            // Construye la URL para la solicitud de eliminación
             const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' });
+            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
             if (!response.ok) {
-                console.log("Error al actualizar el estado");
+                console.log("Error al actualizar el estado"); // Maneja errores en la respuesta
             }
-            const data = await response.json();
+            const data = await response.json(); // Convierte la respuesta en formato JSON
             if (data.rp === 'si') {
-                alert('Estado actualizado con éxito.');
-                fetchData(); // Recargar los datos después de eliminar
+                alert('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                fetchData(); // Recarga los datos después de eliminar
             } else {
-                console.log("No se pudo actualizar el estado.");
+                console.log("No se pudo actualizar el estado."); // Muestra un mensaje de error
             }
         } catch (error) {
-            console.log("Error al eliminar usuario:", error);
+            console.log("Error al eliminar usuario:", error); // Maneja errores en la solicitud
         }
     }
 
     // Función para restaurar un usuario
     async function RestaurarUsuario(id) {
-        const estado = 1;
+        const estado = 1; // Define el estado para "restaurar"
         try {
+            // Construye la URL para la solicitud de restauración
             const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' });
+            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
             if (!response.ok) {
-                console.log("Error al restaurar el estado");
+                console.log("Error al restaurar el estado"); // Maneja errores en la respuesta
             }
-            const data = await response.json();
+            const data = await response.json(); // Convierte la respuesta en formato JSON
             if (data.rp === 'si') {
-                alert('Estado actualizado con éxito.');
-                fetchData(); // Recargar los datos después de restaurar
+                alert('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                fetchData(); // Recarga los datos después de restaurar
             } else {
-                console.log("No se pudo restaurar el usuario.");
+                console.log("No se pudo restaurar el usuario."); // Muestra un mensaje de error
             }
         } catch (error) {
-            console.log("Error al restaurar usuario:", error);
+            console.log("Error al restaurar usuario:", error); // Maneja errores en la solicitud
         }
     }
+
 
     return (
         <>

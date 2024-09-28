@@ -4,77 +4,92 @@ import MoonLoader from 'react-spinners/MoonLoader';
 
 export default function Tabla_Peticiones_Ingreso() {
 
-    const [usuarios, setUsuarios] = useState([]);
-    const [loading, setLoading] = useState(false);
+    // Importamos useState y useEffect desde React
+    const [usuarios, setUsuarios] = useState([]); // Inicializa el estado 'usuarios' como un array vacío
+    const [loading, setLoading] = useState(false); // Inicializa el estado 'loading' como false
 
-
+    // Función asíncrona para obtener datos
     const fetchData = async () => {
-        setLoading(true);
-        try {
-            const response = await fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=8');
-            const data = await response.json();
+        setLoading(true); // Establece 'loading' a true para indicar que se está cargando
 
-            // Si la respuesta contiene [{"rp":"no"}], no hay casos
+        try {
+            // Realiza una solicitud HTTP a la API
+            const response = await fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=8');
+            const data = await response.json(); // Convierte la respuesta en formato JSON
+
+            // Verifica si la respuesta contiene un objeto con "rp" igual a "no"
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                setUsuarios([]);
-                setLoading(false);
+                setUsuarios([]); // Si no hay casos, establece 'usuarios' como un array vacío
+                setLoading(false); // Detiene la animación de carga
             } else {
-                setUsuarios(data.rpta);
-                setLoading(false);
+                setUsuarios(data.rpta); // Si hay casos, establece 'usuarios' con los datos recibidos
+                setLoading(false); // Detiene la animación de carga
             }
         } catch (error) {
+            // Maneja errores en la solicitud
             console.error('Error al obtener casos:', error);
         }
     };
+
+    // useEffect para llamar a fetchData cuando el componente se monta
     useEffect(() => {
-        fetchData();
-    }, []);
+        fetchData(); // Llama a la función fetchData
+    }, []); // El array vacío asegura que esto solo se ejecute una vez al montar el componente
 
-
-
+    // Función para aceptar una petición
     async function Aceptarpeticion(id) {
-        setLoading(true); //COMIENZA LA ANIMACION DE CARGA 
+        setLoading(true); // Establece 'loading' a true para indicar que se está cargando
 
-        const estado = 1;
+        const estado = 1; // Define el estado para "aceptar"
         try {
+            // Construye la URL para la solicitud
             const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' });
-            const data = await response.json();
+            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
+            const data = await response.json(); // Convierte la respuesta en formato JSON
+
+            // Verifica si la respuesta indica que la operación fue exitosa
             if (data.rp === 'si') {
-                fetchData();
-                alert("Estado actualizado con éxito.");
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
+                fetchData(); // Llama a fetchData para refrescar los datos
+                alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                setLoading(false); // Detiene la animación de carga
             } else {
-                alert("No se pudo actualizar el estado.");
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
+                alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                setLoading(false); // Detiene la animación de carga
             }
         } catch (error) {
-            alert("Error al actualizar estado:", error);
-            setLoading(false); //DETIENE LA ANIMACION DE CARGA
+            // Maneja errores en la solicitud
+            alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+            setLoading(false); // Detiene la animación de carga
         }
     }
 
+    // Función para rechazar una petición
     async function Rechazarpeticion(id) {
-        setLoading(true); //COMIENZA LA ANIMACION DE CARGA 
+        setLoading(true); // Establece 'loading' a true para indicar que se está cargando
 
-        const estado = 2;
+        const estado = 2; // Define el estado para "rechazar"
         try {
+            // Construye la URL para la solicitud
             const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' });
-            const data = await response.json();
+            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
+            const data = await response.json(); // Convierte la respuesta en formato JSON
+
+            // Verifica si la respuesta indica que la operación fue exitosa
             if (data.rp === 'si') {
-                fetchData();
-                alert("Estado actualizado con éxito.");
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
+                fetchData(); // Llama a fetchData para refrescar los datos
+                alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                setLoading(false); // Detiene la animación de carga
             } else {
-                alert("No se pudo actualizar el estado.");
-                setLoading(false); //DETIENE LA ANIMACION DE CARGA
+                alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                setLoading(false); // Detiene la animación de carga
             }
         } catch (error) {
-            alert("Error al actualizar estado:", error);
-            setLoading(false); //DETIENE LA ANIMACION DE CARGA
+            // Maneja errores en la solicitud
+            alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+            setLoading(false); // Detiene la animación de carga
         }
     }
+
 
     return (
         <>

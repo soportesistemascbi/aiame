@@ -9,11 +9,17 @@ import { MoonLoader } from 'react-spinners';
 
 export default function Tabla_Equipos_SU() {
 
-    //Modal que muestra la informacion unica de cada equipo
+    // Modal que muestra la información única de cada equipo
     const [caracteristicas_pc, setcaracteristicas_pc] = useState(false);
+    // Estado para controlar la visibilidad del modal de características del PC
     const [hoveredRow, setHoveredRow] = useState(null);
+    // Estado para almacenar la fila actualmente en la que se está pasando el mouse
     const [busqueda, setBusqueda] = useState('');
+    // Estado para almacenar el término de búsqueda
     const [loading, setLoading] = useState(false);
+    // Estado para controlar si se está cargando información
+
+    // Función para abrir o cerrar el modal de características
     const AbrirCaracteristicas = () => {
         setcaracteristicas_pc(!caracteristicas_pc);
     }
@@ -21,82 +27,87 @@ export default function Tabla_Equipos_SU() {
     // CONEXIÓN A BASE DE DATOS PARA MOSTRAR LOS EQUIPOS
 
     const [equipos, setEquipos] = useState([]);
+    // Estado para almacenar la lista de equipos
     const [Componentes, setComponentes] = useState([]);
+    // Estado para almacenar los componentes de un equipo
     const [info, setInflo] = useState([]);
+    // Estado para almacenar información adicional
     const [caso, setCaso] = useState([]);
+    // Estado para almacenar casos relacionados con los equipos
     const [noHayCasos, setNoHayCasos] = useState(false);
-    console.log('aaaaaaaaaaaaaaa soy  equipos', equipos)
+    // Estado para indicar si no hay casos disponibles
 
-
+    // Función para obtener los datos de equipos desde la base de datos
     const fetchData = async () => {
-        setLoading(true);
+        setLoading(true); // Indica que se está cargando información
         try {
             const response = await fetch('https://instrudev.com/aiameapp/equipos/equiposquery.php?case=1');
             const data = await response.json();
 
             // Si la respuesta contiene [{"rp":"no"}], no hay casos
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                setEquipos([]);
+                setEquipos([]); // Si no hay casos, establece la lista de equipos como vacía
                 setLoading(false);
             } else {
-                setEquipos(data.rpta);
+                setEquipos(data.rpta); // Establece la lista de equipos con los datos recibidos
                 setLoading(false);
-
             }
         } catch (error) {
             console.error('Error al obtener casos:', error);
-            setLoading(false);
+            setLoading(false); // Detiene el estado de carga en caso de error
         }
     };
+
+    // useEffect para ejecutar fetchData al montar el componente
     useEffect(() => {
         fetchData();
-    }, []);
+    }, []); // El array vacío significa que solo se ejecuta una vez al inicio
 
-    console.log(equipos);
-
+    // Maneja el cambio en el campo de búsqueda
     const handleSearchChange = (event) => {
-        setBusqueda(event.target.value);
+        setBusqueda(event.target.value); // Actualiza el término de búsqueda
     }
 
-    // Filtrar los usuarios en función del término de búsqueda
     // Filtrar los equipos en función del término de búsqueda
     const equiposFiltrados = equipos.filter(item =>
         (item.placaPc && item.placaPc.toLowerCase().includes(busqueda.toLowerCase())) ||
         (item.serial && item.serial.toLowerCase().includes(busqueda.toLowerCase()))
     );
 
+    // Función para convertir un color hexadecimal a RGBA
     function hexToRgba(hex, opacity) {
         if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            // Si hex es vacío, no tiene el formato adecuado, o no tiene el tamaño adecuado
-            return `rgba(0, 0, 0, ${opacity})`;  // Retorna un color negro con la opacidad deseada como valor predeterminado
+            // Retorna un color negro con la opacidad deseada como valor predeterminado
+            return `rgba(0, 0, 0, ${opacity})`;
         }
 
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        hex = hex.replace('#', ''); // Quita el símbolo '#' si está presente
+        let r = parseInt(hex.substring(0, 2), 16); // Extrae el componente rojo
+        let g = parseInt(hex.substring(2, 4), 16); // Extrae el componente verde
+        let b = parseInt(hex.substring(4, 6), 16); // Extrae el componente azul
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Retorna el color en formato RGBA
     }
 
+    // Función para obtener un color válido
     const getColor = (color) => {
         if (!color || color.trim() === '') {
-            return '#000000';  // Color negro predeterminado
+            return '#000000'; // Color negro predeterminado si no se proporciona un color
         }
-        return color.startsWith('#') ? color : `#${color}`;
+        return color.startsWith('#') ? color : `#${color}`; // Asegura que el color tenga el formato adecuado
     };
 
-
+    // Función para aceptar una petición y obtener datos del equipo
     async function Aceptarpeticion(id) {
-        setLoading(true);
-        setcaracteristicas_pc(!caracteristicas_pc);
+        setLoading(true); // Indica que se está cargando información
+        setcaracteristicas_pc(!caracteristicas_pc); // Alterna la visibilidad del modal
         try {
             const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${id}`;
             const response = await fetch(url);
             const data1 = await response.json();
             if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
-                setComponentes([])
+                setComponentes([]); // No hay componentes, establece como vacío
             } else {
-                setComponentes(data1.rpta);
+                setComponentes(data1.rpta); // Establece la lista de componentes
             }
         } catch (error) {
             console.log("Error al obtener componentes:", error);
@@ -107,9 +118,9 @@ export default function Tabla_Equipos_SU() {
             const response = await fetch(url);
             const data2 = await response.json();
             if (data2.rpta && data2.rpta.length === 1 && data2.rpta[0].rp === "no") {
-                setInflo([])
+                setInflo([]); // No hay información, establece como vacío
             } else {
-                setInflo(data2.rpta);
+                setInflo(data2.rpta); // Establece la información adicional
             }
         } catch (error) {
             console.log("Error al obtener información adicional:", error);
@@ -122,25 +133,26 @@ export default function Tabla_Equipos_SU() {
 
             if (data3.rpta && data3.rpta[0].rp === "no") {
                 setLoading(false);
-                setNoHayCasos(true);
+                setNoHayCasos(true); // Marca que no hay casos
             } else {
                 setNoHayCasos(false); // Si hay casos, desactiva la bandera de "no hay casos"
                 setLoading(false);
-                setCaso(data3.rpta);
+                setCaso(data3.rpta); // Establece la lista de casos
             }
         } catch (error) {
             setLoading(false);
             console.log("Error al obtener casos:", error);
         }
     }
+
+    // Filtra los componentes de tipo 'MOUSE' y 'MONITOR'
     const componenteMouse = Componentes.filter(item => item.tipoComponente === 'MOUSE');
     const componenteMonitor = Componentes.filter(item => item.tipoComponente === 'MONITOR');
 
-
-    // Función para eliminar un usuario
+    // Función para eliminar un equipo
     async function EliminarEquipos(id) {
-        setLoading(true);
-        const estado = 2;
+        setLoading(true); // Indica que se está cargando información
+        const estado = 2; // Estado para indicar que el equipo está eliminado
         try {
             const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=3&id=${id}&estado=${estado}`;
             const response = await fetch(url, { method: 'GET' });
@@ -149,9 +161,8 @@ export default function Tabla_Equipos_SU() {
             }
             const data = await response.json();
             if (data.rp === 'si') {
-                fetchData(); // Recargar los datos después de eliminar
+                fetchData(); // Recarga los datos después de eliminar
                 setLoading(false);
-
             } else {
                 console.log("No se pudo actualizar el estado.");
                 setLoading(false);
@@ -162,10 +173,10 @@ export default function Tabla_Equipos_SU() {
         }
     }
 
-    // Función para restaurar un usuario
+    // Función para restaurar un equipo
     async function RestaurarEquipos(id) {
-        setLoading(true);
-        const estado = 1;
+        setLoading(true); // Indica que se está cargando información
+        const estado = 1; // Estado para indicar que el equipo está restaurado
         try {
             const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=3&id=${id}&estado=${estado}`;
             const response = await fetch(url, { method: 'GET' });
@@ -174,7 +185,7 @@ export default function Tabla_Equipos_SU() {
             }
             const data = await response.json();
             if (data.rp === 'si') {
-                fetchData(); // Recargar los datos después de restaurar
+                fetchData(); // Recarga los datos después de restaurar
                 setLoading(false);
             } else {
                 console.log("No se pudo restaurar el usuario.");
@@ -185,6 +196,7 @@ export default function Tabla_Equipos_SU() {
             setLoading(false);
         }
     }
+
     return (
         <>
             {/* Modal de características únicas de cada pc */}

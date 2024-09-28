@@ -1,77 +1,77 @@
-import React, { useState, useEffect } from 'react';
-import MoonLoader from 'react-spinners/MoonLoader';
+import React, { useState, useEffect } from 'react'; // Importa React y hooks de estado y efecto
+import MoonLoader from 'react-spinners/MoonLoader'; // Importa un componente de carga
 
+export default function Anuncios() { // Define el componente funcional
 
+  const [options, setOptions] = useState([]); // Estado para almacenar opciones
+  const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
+  const [showAlert_inicio, setShowAlert] = useState(false); // Estado para mostrar alerta
+  const [loading, setLoading] = useState(false); // Estado de carga
 
-export default function Anuncios() {
-
-  const [options, setOptions] = useState([]);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [showAlert_inicio, setShowAlert] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true); //COMIENZA LA ANIMACION DE CARGA
-    const fetchData = async () => {
+  useEffect(() => { // Hook para cargar datos al montar el componente
+    setLoading(true); // Comienza la animación de carga
+    const fetchData = async () => { // Función asíncrona para obtener datos
       try {
+        // Realiza una solicitud a la API
         const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=2');
-        if (!response.ok) {
-          throw new Error('Error al obtener los datos');
+        if (!response.ok) { // Verifica si la respuesta es correcta
+          throw new Error('Error al obtener los datos'); // Lanza un error si la respuesta no es correcta
         }
-        const data = await response.json();
-        setOptions(data.rpta);
-        setLoading(false); //DETIENE LA ANIMACION DE CARGA
-        if (data.rpta.length > 0) {
-          setSelectedOption(data.rpta[0]); // Establecer la primera opción como seleccionada
-          setLoading(false); //DETIENE LA ANIMACION DE CARGA
+        const data = await response.json(); // Convierte la respuesta a JSON
+        setOptions(data.rpta); // Almacena las opciones obtenidas
+        setLoading(false); // Detiene la animación de carga
+        if (data.rpta.length > 0) { // Verifica si hay opciones disponibles
+          setSelectedOption(data.rpta[0]); // Establece la primera opción como seleccionada
+          setLoading(false); // Detiene la animación de carga
         }
-      } catch (error) {
-        console.error('Error al obtener los datos:', error);
-        setLoading(false); //DETIENE LA ANIMACION DE CARGA
+      } catch (error) { // Manejo de errores
+        console.error('Error al obtener los datos:', error); // Imprime el error en consola
+        setLoading(false); // Detiene la animación de carga
       }
     };
 
-    fetchData();
-  }, []);
+    fetchData(); // Llama a la función para obtener datos
+  }, []); // Se ejecuta una vez al montar el componente
 
-  const handleChange = (event) => {
-    const selectedValue = event.target.value;
-    const selected = options.find(option => option.id === selectedValue);
-    setSelectedOption(selected);
+  const handleChange = (event) => { // Maneja el cambio en la selección de opciones
+    const selectedValue = event.target.value; // Obtiene el valor seleccionado
+    const selected = options.find(option => option.id === selectedValue); // Busca la opción seleccionada
+    setSelectedOption(selected); // Actualiza la opción seleccionada
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true); //COMIENZA LA ANIMACION DE CARGA
+  const handleSubmit = async (e) => { // Maneja el envío del formulario
+    e.preventDefault(); // Previene el comportamiento por defecto del formulario
+    setLoading(true); // Comienza la animación de carga
 
-    const descripcion = document.getElementById('descripcion').value;
-    const estado = '1';
-    const imgId = selectedOption.id;
-
+    const descripcion = document.getElementById('descripcion').value; // Obtiene la descripción ingresada
+    const estado = '1'; // Establece el estado
+    const imgId = selectedOption.id; // Obtiene el ID de la imagen seleccionada
 
     try {
+      // Realiza una solicitud para guardar el anuncio
       const checkResponse = await fetch(`https://instrudev.com/aiameapp/anuncio/anuncio.php?case=1&descripcion=${descripcion}&img=${imgId}&estado=${estado}`);
-      if (!checkResponse.ok) {
-        throw new Error('Error en la respuesta del servidor');
+      if (!checkResponse.ok) { // Verifica si la respuesta es correcta
+        throw new Error('Error en la respuesta del servidor'); // Lanza un error si no es correcta
       }
-      const checkData = await checkResponse.json();
-      console.log(checkData);
-      if (checkData.rp === 'si') {
-        alert('El anuncio ha sido enviado con éxito');
-        window.location.reload()
-        setLoading(false); //DETIENE LA ANIMACION DE CARGA
+      const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
+      console.log(checkData); // Imprime la respuesta en consola
+      if (checkData.rp === 'si') { // Si el anuncio se guardó exitosamente
+        alert('El anuncio ha sido enviado con éxito'); // Alerta de éxito
+        window.location.reload(); // Recarga la página
+        setLoading(false); // Detiene la animación de carga
       } else {
-        setShowAlert(true);
-        setLoading(false); //DETIENE LA ANIMACION DE CARGA
-        setTimeout(() => setShowAlert(false), 3000);
+        setShowAlert(true); // Muestra alerta si hubo un error
+        setLoading(false); // Detiene la animación de carga
+        setTimeout(() => setShowAlert(false), 3000); // Oculta la alerta después de 3 segundos
       }
     } catch (error) {
-      console.error("Error al guardar el anuncio :", error);
-      setLoading(false); //DETIENE LA ANIMACION DE CARGA
+      console.error("Error al guardar el anuncio :", error); // Manejo de errores al guardar el anuncio
+      setLoading(false); // Detiene la animación de carga
     }
   };
-  const handleCancel = () => {
-    window.location.reload(); // Recarga la página al hacer clic en el botón "Rechazar"
+
+  const handleCancel = () => { // Maneja el clic en el botón "Rechazar"
+    window.location.reload(); // Recarga la página
   };
   return (
     <>

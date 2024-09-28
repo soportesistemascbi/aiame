@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import Enviar from '../../../Icon/Enviar.svg';
 import { MoonLoader } from 'react-spinners';
 
 export default function Historial() {
@@ -188,122 +187,121 @@ export default function Historial() {
 
     // Función para manejar el envío del detalle del caso.
 
-    const handleSubmitDetalle = async (e) => {
-        e.preventDefault();
-        setLoading(true);
+    const handleSubmitDetalle = async (e) => { // Maneja el envío del formulario de detalles
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario
+        setLoading(true); // Comienza la animación de carga
 
-
-        const id = DatosCaso[0].idEquipo;
-
-        const idCaso = idcaso;
-        const observacion = document.getElementById('descripcionCaso').value;
-        const idUsuarioSoporte = localStorage.getItem('idUsuario');
-        const tipoCaso = selectedCategoriaIds;
-        const estado = selectedEstadoIds;
-
+        const id = DatosCaso[0].idEquipo; // Obtiene el ID del equipo desde los datos del caso
+        const idCaso = idcaso; // Obtiene el ID del caso
+        const observacion = document.getElementById('descripcionCaso').value; // Obtiene la descripción del caso
+        const idUsuarioSoporte = localStorage.getItem('idUsuario'); // Obtiene el ID del usuario de soporte
+        const tipoCaso = selectedCategoriaIds; // Obtiene los IDs de las categorías seleccionadas
+        const estado = selectedEstadoIds; // Obtiene el estado seleccionado
 
         // Validaciones
-        if (!observacion) {
-            alert('No ha puesto una descripcion');
-            setLoading(false);
-            return;
+        if (!observacion) { // Verifica si la observación está vacía
+            alert('No ha puesto una descripcion'); // Muestra alerta si falta la descripción
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
-        if (!file) {
-            alert('No ha puesto una imagen');
-            setLoading(false);
-            return;
+        if (!file) { // Verifica si no se ha seleccionado un archivo
+            alert('No ha puesto una imagen'); // Muestra alerta si falta la imagen
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
-        if (!tipoCaso) {
-            alert('No ha puesto un tipo de caso');
-            setLoading(false);
-            return;
+        if (!tipoCaso) { // Verifica si no se ha seleccionado un tipo de caso
+            alert('No ha puesto un tipo de caso'); // Muestra alerta si falta el tipo de caso
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
-        if (!estado) {
-            alert('No ha puesto un estado para el caso');
-            setLoading(false);
-            return;
+        if (!estado) { // Verifica si no se ha seleccionado un estado
+            alert('No ha puesto un estado para el caso'); // Muestra alerta si falta el estado
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
-        if (!id) {
-            alert('No ha puesto un equipo para el caso');
-            setLoading(false);
-            return;
+        if (!id) { // Verifica si el ID del equipo no está definido
+            alert('No ha puesto un equipo para el caso'); // Muestra alerta si falta el equipo
+            setLoading(false); // Detiene la animación de carga
+            return; // Termina la función
         }
 
-
-
+        // Crea un nuevo objeto FormData para enviar los datos
         const formData = new FormData();
-        formData.append('case', '2');
-        formData.append('idCaso', idCaso);
-        formData.append('observacion', observacion);
-        formData.append('idEquipo', id);
-        formData.append('idUsuarioSoporte', idUsuarioSoporte!);
-        formData.append('tipoCaso', tipoCaso);
-        if (file) {
-            formData.append('urlArchivo', file);
+        formData.append('case', '2'); // Añade el tipo de caso
+        formData.append('idCaso', idCaso); // Añade el ID del caso
+        formData.append('observacion', observacion); // Añade la observación
+        formData.append('idEquipo', id); // Añade el ID del equipo
+        formData.append('idUsuarioSoporte', idUsuarioSoporte); // Añade el ID del usuario de soporte
+        formData.append('tipoCaso', tipoCaso); // Añade el tipo de caso
+        if (file) { // Si hay un archivo seleccionado
+            formData.append('urlArchivo', file); // Añade el archivo
         }
 
         try {
+            // Envía la solicitud al servidor para guardar el caso
             const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', {
-                method: 'POST',
-                body: formData,
+                method: 'POST', // Método de la solicitud
+                body: formData, // Cuerpo de la solicitud
             });
 
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
+            if (!response.ok) { // Verifica si la respuesta es correcta
+                throw new Error('Error en la respuesta del servidor'); // Lanza un error si no es correcta
             }
 
-            const text = await response.text();
-            let data;
+            const text = await response.text(); // Convierte la respuesta a texto
+            let data; // Variable para almacenar los datos
 
             try {
-                data = JSON.parse(text);
+                data = JSON.parse(text); // Intenta convertir el texto a JSON
             } catch (jsonError) {
-                console.error('Error al parsear JSON:', jsonError);
-                setLoading(false);
-                return;
+                console.error('Error al parsear JSON:', jsonError); // Maneja errores de parsing
+                setLoading(false); // Detiene la animación de carga
+                return; // Termina la función
             }
 
-            if (!data) {
-                console.error('La respuesta del servidor está vacía');
-                setLoading(false);
-                return;
+            if (!data) { // Verifica si no hay datos
+                console.error('La respuesta del servidor está vacía'); // Imprime un mensaje de error
+                setLoading(false); // Detiene la animación de carga
+                return; // Termina la función
             }
 
-            if (data.rpta[0].rp === 'si') {
+            if (data.rpta[0].rp === 'si') { // Si el caso se ha guardado exitosamente
                 try {
+                    // Realiza otra solicitud para actualizar el estado del caso
                     const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`);
 
-                    if (!checkResponse.ok) {
-                        throw new Error('Error en la respuesta del servidor');
+                    if (!checkResponse.ok) { // Verifica si la respuesta es correcta
+                        throw new Error('Error en la respuesta del servidor'); // Lanza un error si no es correcta
                     }
 
-                    const checkData = await checkResponse.json();
+                    const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
 
-                    if (checkData.rp === 'si') {
-                        fetchData();
-                        AbrirReportes(false);
-                        setLoading(false);
+                    if (checkData.rp === 'si') { // Si la actualización fue exitosa
+                        fetchData(); // Vuelve a cargar los datos
+                        AbrirReportes(false); // Cierra la vista de reportes
+                        setLoading(false); // Detiene la animación de carga
+                        // Reinicia los estados seleccionados
                         setSelectedEstado([]);
                         setSelectedEstadoIds([]);
                         setSelectedCategorias([]);
                         setSelectedCategoriasIds([]);
-                        setFile(null);
-                        alert("Caso reportado con éxito.");
+                        setFile(null); // Resetea el archivo
+                        alert("Caso reportado con éxito."); // Muestra alerta de éxito
                     } else {
-                        alert('Error al guardar el caso');
+                        alert('Error al guardar el caso'); // Muestra alerta si hubo un error
                     }
                 } catch (error) {
-                    console.error("Error al guardar el caso:", error);
+                    console.error("Error al guardar el caso:", error); // Manejo de errores
                 } finally {
-                    setLoading(false);
+                    setLoading(false); // Detiene la animación de carga
                 }
             } else {
-                console.log("No se pudo subir el caso:", data.mensaje);
-                setLoading(false);
+                console.log("No se pudo subir el caso:", data.mensaje); // Imprime un mensaje de error
+                setLoading(false); // Detiene la animación de carga
             }
         } catch (error) {
-            console.error("Error al subir el caso:", error);
-            setLoading(false);
+            console.error("Error al subir el caso:", error); // Manejo de errores
+            setLoading(false); // Detiene la animación de carga
         }
     };
 

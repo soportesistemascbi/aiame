@@ -1,392 +1,358 @@
-import { useEffect, useRef, useState } from 'react';
-import MoonLoader from 'react-spinners/MoonLoader';
-import Flecha from '../../Tablas/icon/Flecha.svg'
-import reportes from '../../Tablas/icon/Reportes.svg'
-import linea from '../../Tablas/icon/linea.svg'
-import persona from '../../Tablas/icon/Ppersona.svg'
-import PC from '../../Tablas/icon/Pc.svg'
-import Hola from '../../Tablas/icon/icon.svg'
+import { useEffect, useRef, useState } from 'react'; // Importing React hooks for state and lifecycle management.
+import MoonLoader from 'react-spinners/MoonLoader'; // Importing a loading spinner component.
+import Flecha from '../../Tablas/icon/Flecha.svg'; // Importing an icon.
+import reportes from '../../Tablas/icon/Reportes.svg'; // Importing another icon.
+import linea from '../../Tablas/icon/linea.svg'; // Importing another icon.
+import persona from '../../Tablas/icon/Ppersona.svg'; // Importing another icon.
+import PC from '../../Tablas/icon/Pc.svg'; // Importing another icon.
+import Hola from '../../Tablas/icon/icon.svg'; // Importing another icon.
 
-export default function ReportesSopor() {
+export default function ReportesSopor() { // Declaring the functional component.
 
-    const [caracteristicas_pc, setcaracteristicas_pc] = useState(false);
-    const [hoveredRow, setHoveredRow] = useState(null);
-    const [Reportes, setReporetes] = useState(false);
-    const [usuarios, setUsuarios] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [Componentes, setComponentes] = useState([]);
-    const [info, setInflo] = useState([]);
-    const [caso, setCaso] = useState([]);
-    const [noHayCasos, setNoHayCasos] = useState(false);
-    const fileInputRef = useRef<HTMLInputElement>(null);
-    const [TipoCaso, setCategorias] = useState([]);
-    const [TipoEstado, setEstado] = useState([]);
-    const [selectedEstado, setSelectedEstado] = useState([]);
-    const [selectedEstadoIds, setSelectedEstadoIds] = useState([]);
-    const [selectedCategorias, setSelectedCategorias] = useState([]);
-    const [showCategories, setShowCategories] = useState(false);
-    const [showEstado, setShowEstado] = useState(false);
-    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]);
-    const [DatosCaso, setDatosCaso] = useState([]);
-    const [idcaso, setIdCaso] = useState([]);
-    const [file, setFile] = useState(null);
-    const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]);
+    const [caracteristicas_pc, setcaracteristicas_pc] = useState(false); // State for toggling PC characteristics visibility.
+    const [hoveredRow, setHoveredRow] = useState(null); // State for tracking hovered row.
+    const [Reportes, setReporetes] = useState(false); // State for toggling report visibility.
+    const [usuarios, setUsuarios] = useState([]); // State for storing users.
+    const [busqueda, setBusqueda] = useState(''); // State for search input.
+    const [loading, setLoading] = useState(false); // State for loading status.
+    const [Componentes, setComponentes] = useState([]); // State for storing components.
+    const [info, setInflo] = useState([]); // State for storing additional info.
+    const [caso, setCaso] = useState([]); // State for storing case data.
+    const [noHayCasos, setNoHayCasos] = useState(false); // State for tracking if there are no cases.
+    const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input element.
+    const [TipoCaso, setCategorias] = useState([]); // State for storing case categories.
+    const [TipoEstado, setEstado] = useState([]); // State for storing statuses.
+    const [selectedEstado, setSelectedEstado] = useState([]); // State for selected statuses.
+    const [selectedEstadoIds, setSelectedEstadoIds] = useState([]); // State for selected status IDs.
+    const [selectedCategorias, setSelectedCategorias] = useState([]); // State for selected categories.
+    const [showCategories, setShowCategories] = useState(false); // State for showing categories dropdown.
+    const [showEstado, setShowEstado] = useState(false); // State for showing status dropdown.
+    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]); // State for selected category IDs.
+    const [DatosCaso, setDatosCaso] = useState([]); // State for storing case data.
+    const [idcaso, setIdCaso] = useState([]); // State for storing case ID.
+    const [file, setFile] = useState(null); // State for storing uploaded file.
+    const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]); // State for storing case characteristics.
 
-    const AbrirCaracteristicas = () => {
-        setcaracteristicas_pc(!caracteristicas_pc);
+    const AbrirCaracteristicas = () => { // Function to toggle the visibility of PC characteristics.
+        setcaracteristicas_pc(!caracteristicas_pc); // Toggle the state.
     }
 
-    const AbrirReportes = async (id) => {
-
-        setReporetes(!Reportes);
-        setIdCaso(id);
+    const AbrirReportes = async (id) => { // Function to toggle report visibility and fetch case data.
+        setReporetes(!Reportes); // Toggle the report state.
+        setIdCaso(id); // Set the case ID.
 
         try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`;
-            const response = await fetch(url);
-            const data1 = await response.json();
-            setDatosCaso(data1.rpta);
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL to fetch case data.
+            const response = await fetch(url); // Fetching data from the server.
+            const data1 = await response.json(); // Parsing the response as JSON.
+            setDatosCaso(data1.rpta); // Storing the response data in state.
         } catch (error) {
-            console.log("Error al obtener componentes:", error);
+            console.log("Error al obtener componentes:", error); // Log error if fetching fails.
         }
     };
 
-
-    useEffect(() => {
-        fetchCategorias();
+    useEffect(() => { // Hook to fetch categories on component mount.
+        fetchCategorias(); // Call function to fetch categories.
     }, []);
 
-
-    const fetchCategorias = () => {
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener las categorías');
+    const fetchCategorias = () => { // Function to fetch case categories from the server.
+        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2') // Fetching categories from the server.
+            .then(response => { // Handling the response.
+                if (!response.ok) { // Check if the response is okay.
+                    throw new Error('Error al obtener las categorías'); // Throw an error if not.
                 }
-                return response.text();
+                return response.text(); // Return response as text.
             })
-            .then(text => {
+            .then(text => { // Handling the text response.
                 try {
-                    const data = JSON.parse(text);
-                    setCategorias(data.rpta);
+                    const data = JSON.parse(text); // Parse the text as JSON.
+                    setCategorias(data.rpta); // Store the categories in state.
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
+                    console.error('Error al parsear JSON:', error); // Log JSON parsing errors.
+                    console.error('Respuesta recibida:', text); // Log the received response for debugging.
                 }
             })
-            .catch(error => console.error('Error al obtener las categorías:', error));
+            .catch(error => console.error('Error al obtener las categorías:', error)); // Log errors if fetching fails.
     };
 
-
-    useEffect(() => {
-        fetchEstados();
+    useEffect(() => { // Hook to fetch statuses on component mount.
+        fetchEstados(); // Call function to fetch statuses.
     }, []);
 
-
-    const fetchEstados = () => {
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=7')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener las categorías');
+    const fetchEstados = () => { // Function to fetch case statuses from the server.
+        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=7') // Fetching statuses from the server.
+            .then(response => { // Handling the response.
+                if (!response.ok) { // Check if the response is okay.
+                    throw new Error('Error al obtener las categorías'); // Throw an error if not.
                 }
-                return response.text();
+                return response.text(); // Return response as text.
             })
-            .then(text => {
+            .then(text => { // Handling the text response.
                 try {
-                    const data = JSON.parse(text);
-                    setEstado(data.rpta);
+                    const data = JSON.parse(text); // Parse the text as JSON.
+                    setEstado(data.rpta); // Store the statuses in state.
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
+                    console.error('Error al parsear JSON:', error); // Log JSON parsing errors.
+                    console.error('Respuesta recibida:', text); // Log the received response for debugging.
                 }
             })
-            .catch(error => console.error('Error al obtener las categorías:', error));
+            .catch(error => console.error('Error al obtener las categorías:', error)); // Log errors if fetching fails.
     };
 
-
-    const handleCategoriaChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene los valores seleccionados.
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene los IDs seleccionados.
-        setSelectedCategorias(selectedOptions); // Actualiza las categorías seleccionadas en el estado.
-        setSelectedCategoriasIds(selectedOptionsIds); // Actualiza los IDs de categorías seleccionadas en el estado.
+    const handleCategoriaChange = (e) => { // Function to handle category selection changes.
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Get selected category values.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Get selected category IDs.
+        setSelectedCategorias(selectedOptions); // Update selected categories in state.
+        setSelectedCategoriasIds(selectedOptionsIds); // Update selected category IDs in state.
     };
 
-
-    // Maneja los cambios en los estados seleccionados.
-    const handleCategoriaChange2 = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene los valores seleccionados.
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene los IDs seleccionados.
-        setSelectedEstado(selectedOptions); // Actualiza los estados seleccionados en el estado.
-        setSelectedEstadoIds(selectedOptionsIds); // Actualiza los IDs de estados seleccionados en el estado.
+    const handleCategoriaChange2 = (e) => { // Function to handle status selection changes.
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Get selected status values.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Get selected status IDs.
+        setSelectedEstado(selectedOptions); // Update selected statuses in state.
+        setSelectedEstadoIds(selectedOptionsIds); // Update selected status IDs in state.
     };
 
-
-    const handleButtonClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
+    const handleButtonClick = () => { // Function to handle button click for file input.
+        if (fileInputRef.current) { // Check if the ref is set.
+            fileInputRef.current.click(); // Trigger the file input click.
         }
     };
 
-
-
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+    const handleFileChange = (e) => { // Function to handle file input changes.
+        setFile(e.target.files[0]); // Store the uploaded file in state.
     };
-    const fetchData = async () => {
-        setLoading(true);
+
+    const fetchData = async () => { // Function to fetch user cases from the server.
+        setLoading(true); // Set loading state to true.
         try {
-            const response = await fetch('https://instrudev.com/aiameapp/caso/casos.php?case=5');
+            const response = await fetch('https://instrudev.com/aiameapp/caso/casos.php?case=5'); // Fetching user cases.
 
+            const data = await response.json(); // Parse response as JSON.
 
-            const data = await response.json();
-
-            // Si la respuesta contiene [{"rp":"no"}], no hay casos
+            // Check if there are no cases in the response.
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                setUsuarios([]);
-                setLoading(false);
+                setUsuarios([]); // Clear users if no cases are found.
+                setLoading(false); // Set loading state to false.
             } else {
-                setUsuarios(data.rpta);
-                setLoading(false);
+                setUsuarios(data.rpta); // Store cases in state.
+                setLoading(false); // Set loading state to false.
             }
         } catch (error) {
-            console.error('Error al obtener casos:', error);
-            setLoading(false);
+            console.error('Error al obtener casos:', error); // Log errors if fetching fails.
+            setLoading(false); // Set loading state to false.
         }
     };
-    useEffect(() => {
-        fetchData();
+
+    useEffect(() => { // Hook to fetch user cases on component mount.
+        fetchData(); // Call function to fetch cases.
     }, []);
 
-
-    async function Aceptarpeticion(id) {
-        setcaracteristicas_pc(!caracteristicas_pc);
-        setLoading(true);
+    async function Aceptarpeticion(id) { // Function to accept a request and fetch associated data.
+        setcaracteristicas_pc(!caracteristicas_pc); // Toggle visibility of PC characteristics.
+        setLoading(true); // Set loading state to true.
         try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`;
-            const response = await fetch(url);
-            const data1 = await response.json();
-            const idEquipoCaso = await (data1.rpta[0].idEquipo);
-            setDatosCasoCracteristicas(data1.rpta);
-            try {
-                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`;
-                const response = await fetch(url);
-                const data1 = await response.json();
-                if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
-                    setComponentes([])
-                } else {
-                    setComponentes(data1.rpta);
-                }
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL to fetch case details.
+            const response = await fetch(url); // Fetching case data.
+            const data1 = await response.json(); // Parse response as JSON.
+            const idEquipoCaso = await (data1.rpta[0].idEquipo); // Get the equipment ID from case data.
+            setDatosCasoCracteristicas(data1.rpta); // Store case characteristics in state.
 
+            // Fetch components related to the case.
+            try {
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`; // URL to fetch components.
+                const response = await fetch(url); // Fetching components data.
+                const data1 = await response.json(); // Parse response as JSON.
+                if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
+                    setComponentes([]); // Clear components if none found.
+                } else {
+                    setComponentes(data1.rpta); // Store components in state.
+                }
             } catch (error) {
-                console.log("Error al obtener componentes:", error);
+                console.log("Error al obtener componentes:", error); // Log errors if fetching fails.
             }
 
+            // Fetch additional info related to the case.
             try {
-                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`;
-                const response = await fetch(url);
-                const data2 = await response.json();
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`; // URL to fetch additional info.
+                const response = await fetch(url); // Fetching additional info.
+                const data2 = await response.json(); // Parse response as JSON.
 
                 if (data2.rpta && data2.rpta.length === 1 && data2.rpta[0].rp === "no") {
-                    setInflo([])
+                    setInflo([]); // Clear info if none found.
                 } else {
-                    setInflo(data2.rpta);
+                    setInflo(data2.rpta); // Store additional info in state.
                 }
-
             } catch (error) {
-                console.log("Error al obtener información adicional:", error);
+                console.log("Error al obtener información adicional:", error); // Log errors if fetching fails.
             }
 
+            // Fetch cases related to the equipment.
             try {
-                const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${idEquipoCaso}`;
-                const response = await fetch(url);
-                const data3 = await response.json();
+                const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${idEquipoCaso}`; // URL to fetch equipment cases.
+                const response = await fetch(url); // Fetching equipment cases.
+                const data3 = await response.json(); // Parse response as JSON.
 
                 if (data3.rpta && data3.rpta[0].rp === "no") {
-                    setNoHayCasos(true); // Actualiza el estado si no hay casos
-                    setLoading(false);
+                    setNoHayCasos(true); // Set no cases flag if none found.
+                    setLoading(false); // Set loading state to false.
                 } else {
-                    setNoHayCasos(false); // Si hay casos, desactiva la bandera de "no hay casos"
-                    setCaso(data3.rpta);
-                    setLoading(false);
+                    setNoHayCasos(false); // Reset no cases flag if cases found.
+                    setCaso(data3.rpta); // Store cases in state.
+                    setLoading(false); // Set loading state to false.
                 }
             } catch (error) {
-                console.log("Error al obtener casos:", error);
-                setLoading(false);
+                console.log("Error al obtener casos:", error); // Log errors if fetching fails.
+                setLoading(false); // Set loading state to false.
             }
-
-
         } catch (error) {
-            setLoading(false);
-            console.log("Error al obtener componentes:", error);
+            setLoading(false); // Set loading state to false on error.
+            console.log("Error al obtener componentes:", error); // Log errors if fetching fails.
         }
-
-
-
-
-
-
-
     }
 
-
-
-    const handleSearchChange = (event) => {
-        setBusqueda(event.target.value);
+    const handleSearchChange = (event) => { // Function to handle search input changes.
+        setBusqueda(event.target.value); // Update search input in state.
     }
 
-    const usuariosFiltrados = usuarios.filter(item =>
-        item.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-        item.codigo.toLowerCase().includes(busqueda.toLowerCase()) ||
-        item.serialPc.toLowerCase().includes(busqueda.toLowerCase())
+    const usuariosFiltrados = usuarios.filter(item => // Filtering users based on search input.
+        item.nombre.toLowerCase().includes(busqueda.toLowerCase()) || // Filter by name.
+        item.codigo.toLowerCase().includes(busqueda.toLowerCase()) || // Filter by code.
+        item.serialPc.toLowerCase().includes(busqueda.toLowerCase()) // Filter by serial number.
     );
 
-
-    function hexToRgba(hex, opacity) {
-        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            // Si hex es vacío, no tiene el formato adecuado, o no tiene el tamaño adecuado
-            return `rgba(0, 0, 0, ${opacity})`;  // Retorna un color negro con la opacidad deseada como valor predeterminado
+    function hexToRgba(hex, opacity) { // Function to convert HEX color to RGBA.
+        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) { // Check for valid HEX format.
+            return `rgba(0, 0, 0, ${opacity})`; // Return black color if invalid.
         }
 
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        hex = hex.replace('#', ''); // Remove '#' from HEX.
+        let r = parseInt(hex.substring(0, 2), 16); // Get red component.
+        let g = parseInt(hex.substring(2, 4), 16); // Get green component.
+        let b = parseInt(hex.substring(4, 6), 16); // Get blue component.
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Return RGBA string.
     }
 
-    const getColor = (color) => {
-        if (!color || color.trim() === '') {
-            return '#000000';  // Color negro predeterminado
+    const getColor = (color) => { // Function to ensure a valid color value.
+        if (!color || color.trim() === '') { // Check if color is empty.
+            return '#000000'; // Return black as default.
         }
-        return color.startsWith('#') ? color : `#${color}`;
+        return color.startsWith('#') ? color : `#${color}`; // Return color with '#' if not present.
     };
 
+    const handleSubmitDetalle = async (e) => { // Function to handle form submission.
+        e.preventDefault(); // Prevent default form submission behavior.
+        setLoading(true); // Set loading state to true.
 
+        const id = DatosCaso[0].idEquipo; // Get equipment ID from case data.
+        const idCaso = idcaso; // Get case ID from state.
+        const observacion = document.getElementById('descripcionCaso').value; // Get observation input value.
+        const idUsuarioSoporte = localStorage.getItem('idUsuario'); // Get user ID from local storage.
+        const tipoCaso = selectedCategoriaIds; // Get selected case types from state.
+        const estado = selectedEstadoIds; // Get selected statuses from state.
 
-
-
-
-
-
-    const handleSubmitDetalle = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-
-        const id = DatosCaso[0].idEquipo;
-        const idCaso = idcaso;
-        const observacion = document.getElementById('descripcionCaso').value;
-        const idUsuarioSoporte = localStorage.getItem('idUsuario');
-        const tipoCaso = selectedCategoriaIds;
-        const estado = selectedEstadoIds;
-
-        // Validaciones
-        if (!observacion) {
-            alert('No ha puesto una descripcion');
-            setLoading(false);
-            return;
+        // Validations
+        if (!observacion) { // Check if observation is empty.
+            alert('No ha puesto una descripcion'); // Alert user to provide description.
+            setLoading(false); // Set loading state to false.
+            return; // Exit function.
         }
-        if (!file) {
-            alert('No ha puesto una imagen');
-            setLoading(false);
-            return;
+        if (!file) { // Check if file is not provided.
+            alert('No ha puesto una imagen'); // Alert user to provide an image.
+            setLoading(false); // Set loading state to false.
+            return; // Exit function.
         }
-        if (!tipoCaso) {
-            alert('No ha puesto un tipo de caso');
-            setLoading(false);
-            return;
+        if (!tipoCaso) { // Check if case type is not selected.
+            alert('No ha puesto un tipo de caso'); // Alert user to select a case type.
+            setLoading(false); // Set loading state to false.
+            return; // Exit function.
         }
-        if (!estado) {
-            alert('No ha puesto un estado para el caso');
-            setLoading(false);
-            return;
+        if (!estado) { // Check if status is not selected.
+            alert('No ha puesto un estado para el caso'); // Alert user to select a status.
+            setLoading(false); // Set loading state to false.
+            return; // Exit function.
         }
-        if (!id) {
-            alert('No ha puesto un equipo para el caso');
-            setLoading(false);
-            return;
+        if (!id) { // Check if equipment ID is not available.
+            alert('No ha puesto un equipo para el caso'); // Alert user to provide an equipment ID.
+            setLoading(false); // Set loading state to false.
+            return; // Exit function.
         }
 
-
-
-        const formData = new FormData();
-        formData.append('case', '2');
-        formData.append('idCaso', idCaso);
-        formData.append('observacion', observacion);
-        formData.append('idEquipo', id);
-        formData.append('idUsuarioSoporte', idUsuarioSoporte!);
-        formData.append('tipoCaso', tipoCaso);
-        if (file) {
-            formData.append('urlArchivo', file);
+        const formData = new FormData(); // Create a new FormData object to send form data.
+        formData.append('case', '2'); // Append case type to form data.
+        formData.append('idCaso', idCaso); // Append case ID to form data.
+        formData.append('observacion', observacion); // Append observation to form data.
+        formData.append('idEquipo', id); // Append equipment ID to form data.
+        formData.append('idUsuarioSoporte', idUsuarioSoporte!); // Append user ID to form data.
+        formData.append('tipoCaso', tipoCaso); // Append case types to form data.
+        if (file) { // Check if a file is selected.
+            formData.append('urlArchivo', file); // Append file to form data.
         }
 
         try {
-            const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', {
-                method: 'POST',
-                body: formData,
+            const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', { // Sending form data to server.
+                method: 'POST', // Using POST method.
+                body: formData, // Sending the form data.
             });
 
-            if (!response.ok) {
-                throw new Error('Error en la respuesta del servidor');
+            if (!response.ok) { // Check if the response is okay.
+                throw new Error('Error en la respuesta del servidor'); // Throw an error if not.
             }
 
-            const text = await response.text();
-            let data;
+            const text = await response.text(); // Parse response as text.
+            let data; // Variable to store parsed data.
 
             try {
-                data = JSON.parse(text);
+                data = JSON.parse(text); // Parse text as JSON.
             } catch (jsonError) {
-                console.error('Error al parsear JSON:', jsonError);
-                setLoading(false);
-                return;
+                console.error('Error al parsear JSON:', jsonError); // Log JSON parsing errors.
+                setLoading(false); // Set loading state to false.
+                return; // Exit function.
             }
 
-            if (!data) {
-                console.error('La respuesta del servidor está vacía');
-                setLoading(false);
-                return;
+            if (!data) { // Check if data is empty.
+                console.error('La respuesta del servidor está vacía'); // Log empty response.
+                setLoading(false); // Set loading state to false.
+                return; // Exit function.
             }
 
-            if (data.rpta[0].rp === 'si') {
+            if (data.rpta[0].rp === 'si') { // Check if the response indicates success.
                 try {
-
-
-                    const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`);
-
-                    if (!checkResponse.ok) {
-                        throw new Error('Error en la respuesta del servidor');
+                    const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`); // Check case status.
+                    if (!checkResponse.ok) { // Check if the response is okay.
+                        throw new Error('Error en la respuesta del servidor'); // Throw an error if not.
                     }
 
-                    const checkData = await checkResponse.json();
+                    const checkData = await checkResponse.json(); // Parse response as JSON.
 
-                    if (checkData.rp === 'si') {
-                        fetchData();
-                        AbrirReportes(false);
-                        setLoading(false);
-                        setSelectedEstado([]);
-                        setSelectedEstadoIds([]);
-                        setSelectedCategorias([]);
-                        setSelectedCategoriasIds([]);
-                        setFile(null);
-                        alert("Caso reportado con éxito.");
+                    if (checkData.rp === 'si') { // Check if the response indicates success.
+                        fetchData(); // Fetch updated data.
+                        AbrirReportes(false); // Close reports.
+                        setLoading(false); // Set loading state to false.
+                        setSelectedEstado([]); // Clear selected status.
+                        setSelectedEstadoIds([]); // Clear selected status IDs.
+                        setSelectedCategorias([]); // Clear selected categories.
+                        setSelectedCategoriasIds([]); // Clear selected category IDs.
+                        setFile(null); // Clear selected file.
+                        alert("Caso reportado con éxito."); // Alert user of success.
                     } else {
-                        alert('Error al guardar el caso');
+                        alert('Error al guardar el caso'); // Alert user if saving the case fails.
                     }
                 } catch (error) {
-                    console.error("Error al guardar el caso:", error);
+                    console.error("Error al guardar el caso:", error); // Log errors if saving fails.
                 } finally {
-                    setLoading(false);
+                    setLoading(false); // Set loading state to false after attempt.
                 }
             } else {
-                console.log("No se pudo subir el caso:", data.mensaje);
-                setLoading(false);
+                console.log("No se pudo subir el caso:", data.mensaje); // Log case submission errors.
+                setLoading(false); // Set loading state to false.
             }
         } catch (error) {
-            console.error("Error al subir el caso:", error);
-            setLoading(false);
+            console.error("Error al subir el caso:", error); // Log errors if submission fails.
+            setLoading(false); // Set loading state to false.
         }
     };
+
 
 
     return (

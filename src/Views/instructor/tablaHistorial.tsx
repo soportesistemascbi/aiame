@@ -1,76 +1,75 @@
-import { useEffect, useState } from 'react';
-import { MoonLoader } from 'react-spinners';
+import { useEffect, useState } from 'react'; // Importa hooks de React para manejo de estado y efectos
+import { MoonLoader } from 'react-spinners'; // Importa un componente de carga
 
-export default function tablaHistorial() {
-    const [casos, setCasos] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
-    const [casosFiltrados, setCasosFiltrados] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const id = localStorage.getItem('idUsuario');
+export default function tablaHistorial() { // Define el componente funcional
+    const [casos, setCasos] = useState([]); // Estado para almacenar los casos obtenidos
+    const [busqueda, setBusqueda] = useState(''); // Estado para el término de búsqueda
+    const [casosFiltrados, setCasosFiltrados] = useState([]); // Estado para casos filtrados
+    const [loading, setLoading] = useState(false); // Estado de carga
+    const id = localStorage.getItem('idUsuario'); // Obtiene el ID de usuario del almacenamiento local
 
-    useEffect(() => {
-        setLoading(true);
-        const fetchData = async () => {
+    useEffect(() => { // Hook para ejecutar efectos secundarios
+        setLoading(true); // Activa el estado de carga
+        const fetchData = async () => { // Función asíncrona para obtener datos
             try {
+                // Realiza una solicitud a la API con el ID de usuario
                 const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=7&id=${id}`);
-                const data = await response.json();
+                const data = await response.json(); // Convierte la respuesta a JSON
 
-                // Si la respuesta contiene [{"rp":"no"}], no hay casos
+                // Verifica si la respuesta indica que no hay casos
                 if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                    setCasos([]);
-                    setLoading(false);
-                    setCasosFiltrados([]);
+                    setCasos([]); // Establece casos como un array vacío
+                    setLoading(false); // Desactiva el estado de carga
+                    setCasosFiltrados([]); // Establece casos filtrados como un array vacío
                 } else {
-                    setCasos(data.rpta);
-                    setCasosFiltrados(data.rpta); // Inicialmente muestra todos los casos
-                    setLoading(false);
+                    setCasos(data.rpta); // Almacena los casos obtenidos
+                    setCasosFiltrados(data.rpta); // Muestra todos los casos inicialmente
+                    setLoading(false); // Desactiva el estado de carga
                 }
-            } catch (error) {
-                console.error('Error al obtener casos:', error);
-                setLoading(false);
+            } catch (error) { // Manejo de errores
+                console.error('Error al obtener casos:', error); // Imprime el error en consola
+                setLoading(false); // Desactiva el estado de carga
             }
         };
 
-        fetchData();
-    }, [id]);
+        fetchData(); // Llama a la función para obtener datos
+    }, [id]); // Se ejecuta cuando el componente se monta o cuando cambia 'id'
 
-
-
-
-    useEffect(() => {
-        const resultados = casos.filter(item => {
-            // Verificamos si item.id y item.nombreSoporte no están vacíos o indefinidos antes de aplicar toLowerCase()
+    useEffect(() => { // Otro hook para filtrar los casos
+        const resultados = casos.filter(item => { // Filtra los casos basados en la búsqueda
+            // Verifica si id y nombreSoporte existen y aplica toLowerCase() para comparación
             const id = item.id ? item.id.toLowerCase() : '';
             const nombreSoporte = item.nombreSoporte ? item.nombreSoporte.toLowerCase() : '';
             const serialPc = item.serialPc ? item.serialPc.toLowerCase() : '';
 
-            // Filtramos los casos basándonos en la búsqueda
-            return id.includes(busqueda.toLowerCase()) || nombreSoporte.includes(busqueda.toLowerCase()) || serialPc.includes(busqueda.toLowerCase());
+            // Filtra según el término de búsqueda
+            return id.includes(busqueda.toLowerCase()) ||
+                nombreSoporte.includes(busqueda.toLowerCase()) ||
+                serialPc.includes(busqueda.toLowerCase());
         });
 
-        setCasosFiltrados(resultados);
-    }, [busqueda, casos]);
+        setCasosFiltrados(resultados); // Actualiza los casos filtrados con los resultados
+    }, [busqueda, casos]); // Se ejecuta cuando cambia 'busqueda' o 'casos'
 
-    function hexToRgba(hex, opacity) {
+    function hexToRgba(hex, opacity) { // Función para convertir hex a RGBA
+        // Verifica si el hex es válido
         if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            // Si hex es vacío, no tiene el formato adecuado, o no tiene el tamaño adecuado
-            return `rgba(0, 0, 0, ${opacity})`;  // Retorna un color negro con la opacidad deseada como valor predeterminado
+            return `rgba(0, 0, 0, ${opacity})`; // Retorna negro por defecto con la opacidad especificada
         }
 
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        hex = hex.replace('#', ''); // Elimina el símbolo '#' si está presente
+        let r = parseInt(hex.substring(0, 2), 16); // Extrae el componente rojo
+        let g = parseInt(hex.substring(2, 4), 16); // Extrae el componente verde
+        let b = parseInt(hex.substring(4, 6), 16); // Extrae el componente azul
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Retorna el color en formato RGBA
     }
 
-    const getColor = (color) => {
-        if (!color || color.trim() === '') {
-            return '#000000';  // Color negro predeterminado
+    const getColor = (color) => { // Función para obtener un color válido
+        if (!color || color.trim() === '') { // Verifica si el color es válido
+            return '#000000'; // Retorna negro como color por defecto
         }
-        return color.startsWith('#') ? color : `#${color}`;
+        return color.startsWith('#') ? color : `#${color}`; // Retorna el color formateado
     };
-
     return (
         <>
             {/* TABLA GENERAL DE CONTENIDO */}

@@ -1,60 +1,56 @@
-import { useEffect, useRef, useState } from 'react';
-import Slider from 'react-slick';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./carrusel.css";
-import { MoonLoader } from 'react-spinners';
+import { useEffect, useRef, useState } from 'react'; // Importa hooks de React
+import Slider from 'react-slick'; // Importa el componente Slider para carruseles
+import "slick-carousel/slick/slick.css"; // Importa estilos para el carrusel
+import "slick-carousel/slick/slick-theme.css"; // Importa tema para el carrusel
+import "./carrusel.css"; // Importa estilos personalizados
+import { MoonLoader } from 'react-spinners'; // Importa un loader de react-spinners
 
-export default function Anuncios() {
-    const [noticias, setNoticias] = useState([]);
-    const [descripcion, setDescripcion] = useState(false);
-    const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
-    const [loading, setLoading] = useState(false);
+export default function Anuncios() { // Definición del componente Anuncios
+    const [noticias, setNoticias] = useState([]); // Estado para almacenar noticias
+    const [descripcion, setDescripcion] = useState(false); // Estado para controlar la visualización de la descripción
+    const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null); // Estado para almacenar la noticia seleccionada
+    const [loading, setLoading] = useState(false); // Estado para controlar la carga de datos
 
-
-
-
-
-
-    useEffect(() => {
-        setLoading(true);
-        const fetchNoticias = async () => {
+    useEffect(() => { // Efecto para cargar noticias al montar el componente
+        setLoading(true); // Inicia el estado de carga
+        const fetchNoticias = async () => { // Función asíncrona para obtener noticias
             try {
-                const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=3');
-                const data = await response.json();
-                console.log('Datos obtenidos:', data);
+                const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=3'); // Solicitud a la API
+                const data = await response.json(); // Convierte la respuesta a JSON
+                console.log('Datos obtenidos:', data); // Imprime los datos obtenidos en consola
 
-                if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                    setNoticias([]);
-                    setLoading(false);
+                if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") { // Verifica si no hay noticias
+                    setNoticias([]); // Establece un array vacío si no hay noticias
+                    setLoading(false); // Finaliza el estado de carga
                 } else {
-                    setNoticias(data.rpta);
-                    setLoading(false);
+                    setNoticias(data.rpta); // Establece las noticias en el estado
+                    setLoading(false); // Finaliza el estado de carga
                 }
             } catch (error) {
-                console.error('Error al obtener noticias:', error);
-                setLoading(false);
+                console.error('Error al obtener noticias:', error); // Manejo de errores
+                setLoading(false); // Finaliza el estado de carga
             }
         };
 
-        fetchNoticias();
-    }, []);
+        fetchNoticias(); // Llama a la función para obtener noticias
+    }, []); // Dependencias vacías para que se ejecute solo al montar
 
-    const carouselSettings = {
-        dots: true,
-        infinite: false, // Si es 'true', el carrusel podría repetirse infinitamente
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
+    const carouselSettings = { // Configuraciones para el carrusel
+        dots: true, // Muestra puntos de navegación
+        infinite: false, // Carrusel no infinito
+        speed: 500, // Velocidad de transición
+        slidesToShow: 1, // Muestra un slide a la vez
+        slidesToScroll: 1, // Desplaza un slide a la vez
+        arrows: true, // Muestra flechas de navegación
+        autoplay: true, // Activa el autoplay
+        autoplaySpeed: 5000, // Velocidad del autoplay
     };
 
-    const handleNoticiaClick = (noticia) => {
-        setNoticiaSeleccionada(noticia);
-        setDescripcion(true);
+    const handleNoticiaClick = (noticia) => { // Maneja el clic en una noticia
+        setNoticiaSeleccionada(noticia); // Establece la noticia seleccionada
+        setDescripcion(true); // Muestra la descripción de la noticia
     };
+
 
     return (
         <>

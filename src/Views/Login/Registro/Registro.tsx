@@ -8,212 +8,204 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs'; // Importa bcryptjs
 import MoonLoader from 'react-spinners/MoonLoader';
-import RContraseñas from '../../../Components/Inputs/Icon_inputs/RContraseña.svg'
+
 
 export default function Registro() {
 
-    const [tipoDocumento, setDocumento] = useState([]);
-    const [selectedDocumento, setSelectedDocumento] = useState([]);
-    const [showDocumentos, setShowDocumentos] = useState(false);
-    const [selectedDocumentoIds, setSelectedDocumentosIds] = useState([]);
-    const [error, setError] = useState("");
+    const [tipoDocumento, setDocumento] = useState([]); // Estado para los tipos de documento
+    const [selectedDocumento, setSelectedDocumento] = useState([]); // Estado para el documento seleccionado
+    const [showDocumentos, setShowDocumentos] = useState(false); // Estado para mostrar la lista de documentos
+    const [selectedDocumentoIds, setSelectedDocumentosIds] = useState([]); // IDs de documentos seleccionados
+    const [error, setError] = useState(""); // Estado para manejar errores
     const [loading, setLoading] = useState(false); // Estado para controlar el loader
 
+    const [tipoCargo, setCargo] = useState([]); // Estado para los tipos de cargo
+    const [selectedCargo, setSelectedCargo] = useState([]); // Estado para el cargo seleccionado
+    const [showCargo, setShowCargos] = useState(false); // Estado para mostrar la lista de cargos
+    const [selectedCargoId, setSelectedCargoIds] = useState([]); // IDs de cargos seleccionados
+    const navigate = useNavigate(); // Hook para navegación
+    const bcrypt1 = bcrypt; // Importación de bcrypt para la encriptación de contraseñas
 
-    const [tipoCargo, setCargo] = useState([]);
-    const [selectedCargo, setSelectedCargo] = useState([]);
-    const [showCargo, setShowCargos] = useState(false);
-    const [selectedCargoId, setSelectedCargoIds] = useState([]);
-    const navigate = useNavigate();
-    const bcrypt1 = bcrypt;
-
+    // useEffect para cargar los tipos de documento y cargo al montar el componente
     useEffect(() => {
-        fetchDocumento();
-        fetchCargo();
+        fetchDocumento(); // Llama a la función para obtener documentos
+        fetchCargo(); // Llama a la función para obtener cargos
     }, []);
 
-
+    // Función para obtener tipos de documentos
     const fetchDocumento = () => {
-        fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=2')
+        fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=2') // Llama a la API
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener los documentos');
+                if (!response.ok) { // Verifica si la respuesta no es OK
+                    throw new Error('Error al obtener los documentos'); // Lanza un error
                 }
-                return response.text();
+                return response.text(); // Devuelve la respuesta como texto
             })
             .then(text => {
                 try {
-                    const data = JSON.parse(text);
-                    setDocumento(data.rpta);
+                    const data = JSON.parse(text); // Intenta parsear la respuesta a JSON
+                    setDocumento(data.rpta); // Establece los documentos en el estado
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
+                    console.error('Error al parsear JSON:', error); // Maneja errores de parseo
+                    console.error('Respuesta recibida:', text); // Muestra la respuesta original
                 }
             })
-            .catch(error => console.error('Error al obtener los documentos:', error));
+            .catch(error => console.error('Error al obtener los documentos:', error)); // Maneja errores de fetch
     };
 
+    // Función para obtener tipos de cargo
     const fetchCargo = () => {
-        fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=6')
+        fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=6') // Llama a la API
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Error al obtener los cargos');
+                if (!response.ok) { // Verifica si la respuesta no es OK
+                    throw new Error('Error al obtener los cargos'); // Lanza un error
                 }
-                return response.text();
+                return response.text(); // Devuelve la respuesta como texto
             })
             .then(text => {
                 try {
-                    const data = JSON.parse(text);
-                    setCargo(data.rpta);
+                    const data = JSON.parse(text); // Intenta parsear la respuesta a JSON
+                    setCargo(data.rpta); // Establece los cargos en el estado
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
+                    console.error('Error al parsear JSON:', error); // Maneja errores de parseo
+                    console.error('Respuesta recibida:', text); // Muestra la respuesta original
                 }
             })
-            .catch(error => console.error('Error al obtener los cargos:', error));
+            .catch(error => console.error('Error al obtener los cargos:', error)); // Maneja errores de fetch
     };
 
+    // Función para manejar el cambio de selección de documentos
     const handleDocumentoChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedDocumento(selectedOptions);
-        setSelectedDocumentosIds(selectedOptionsIds);
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene valores seleccionados
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene IDs seleccionados
+        setSelectedDocumento(selectedOptions); // Actualiza el estado de documentos seleccionados
+        setSelectedDocumentosIds(selectedOptionsIds); // Actualiza el estado de IDs seleccionados
     };
 
+    // Función para manejar el cambio de selección de cargos
     const handleCargoChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedCargo(selectedOptions);
-        setSelectedCargoIds(selectedOptionsIds);
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene valores seleccionados
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene IDs seleccionados
+        setSelectedCargo(selectedOptions); // Actualiza el estado de cargos seleccionados
+        setSelectedCargoIds(selectedOptionsIds); // Actualiza el estado de IDs seleccionados
     };
 
-
-
-
-
+    // Función para manejar el envío del formulario
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault(); // Previene el comportamiento predeterminado del formulario
         setLoading(true); // Inicia el loader
 
+        // Obtiene valores de los campos del formulario
         const nombre = document.getElementById('name').value;
         const noDoc = document.getElementById('NumeroDoc').value;
         const telefono = document.getElementById('telefono').value;
         const correo = document.getElementById('e-mail').value;
-        const tipoDocumento = selectedDocumentoIds[0] || "";
+        const tipoDocumento = selectedDocumentoIds[0] || ""; // Toma el primer ID seleccionado o vacío
         const contraseña = document.getElementById('contraseña').value;
-        const idRol = selectedCargoId[0] || "";
-        const contraseña1 = document.getElementById("name1").value
+        const idRol = selectedCargoId[0] || ""; // Toma el primer ID de cargo seleccionado o vacío
+        const contraseña1 = document.getElementById("name1").value; // Toma el valor del campo de confirmación de contraseña
 
+        // Validaciones de entrada
         if (!nombre || !noDoc || !telefono || !correo || !contraseña) {
-            alert("Por favor completa todos los campos.");
+            alert("Por favor completa todos los campos."); // Alerta si falta algún campo
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
-        if (tipoDocumento === "1") {
-            if (noDoc.length !== 10) {
-                alert("Su número de documento debe tener una longitud de 10 dígitos.");
-                setLoading(false); // Detiene el loader
-                return;
-            }
-        } else if (tipoDocumento === "3") {
-            if (noDoc.length !== 6) {
-                alert("Su número de documento debe tener una longitud de 6 dígitos.");
-                setLoading(false); // Detiene el loader
-                return;
-            }
-        } else if (tipoDocumento === "2") {
-            if (noDoc.length !== 9) {
-                alert("Su número de documento debe tener una longitud de 9 dígitos.");
-                setLoading(false); // Detiene el loader
-                return;
-            }
-        } else {
-            alert("Error al validar el documento. Vuelva más tarde.");
+        // Validaciones de longitud del número de documento
+        if (tipoDocumento === "1" && noDoc.length !== 10) {
+            alert("Su número de documento debe tener una longitud de 10 dígitos."); // Alerta si la longitud es incorrecta
             setLoading(false); // Detiene el loader
-            return;
-        }
-
-        if (!tipoDocumento) {
-            alert("Debe de elegir un tipo de documento");
+            return; // Termina la función
+        } else if (tipoDocumento === "3" && noDoc.length !== 6) {
+            alert("Su número de documento debe tener una longitud de 6 dígitos."); // Alerta si la longitud es incorrecta
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
+        } else if (tipoDocumento === "2" && noDoc.length !== 9) {
+            alert("Su número de documento debe tener una longitud de 9 dígitos."); // Alerta si la longitud es incorrecta
+            setLoading(false); // Detiene el loader
+            return; // Termina la función
+        } else if (!tipoDocumento) {
+            alert("Debe de elegir un tipo de documento"); // Alerta si no se selecciona un tipo de documento
+            setLoading(false); // Detiene el loader
+            return; // Termina la función
         }
 
         if (!idRol) {
-            alert("Debe de elegir un cargo");
+            alert("Debe de elegir un cargo"); // Alerta si no se selecciona un cargo
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
         if (telefono.length !== 10) {
-            alert("El teléfono debe tener 10 dígitos.");
+            alert("El teléfono debe tener 10 dígitos."); // Alerta si la longitud del teléfono es incorrecta
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
-        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar correos
         if (!emailPattern.test(correo)) {
-            alert("Por favor ingresa un correo electrónico válido.");
+            alert("Por favor ingresa un correo electrónico válido."); // Alerta si el correo no es válido
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
         if (contraseña.length < 8) {
-            alert("La contraseña debe tener al menos 8 dígitos.");
+            alert("La contraseña debe tener al menos 8 dígitos."); // Alerta si la contraseña es demasiado corta
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
+        // Validaciones de complejidad de contraseña
         const mayuscula = /[A-Z]/;
         const minuscula = /[a-z]/;
         const especial = /[!@#$%^&*(),.?":{}|<>]/;
         const numeros = /\d/;
 
         if (!mayuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra mayúscula.");
+            alert("La contraseña debe contener al menos una letra mayúscula."); // Alerta si falta una letra mayúscula
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
         if (!minuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra minúscula.");
+            alert("La contraseña debe contener al menos una letra minúscula."); // Alerta si falta una letra minúscula
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
         if (!numeros.test(contraseña)) {
-            alert("La contraseña debe contener al menos un número.");
+            alert("La contraseña debe contener al menos un número."); // Alerta si falta un número
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
         if (!especial.test(contraseña)) {
-            alert("La contraseña debe contener al menos un carácter especial.");
+            alert("La contraseña debe contener al menos un carácter especial."); // Alerta si falta un carácter especial
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
 
-        if (contraseña !== contraseña1) { // Corregido para comparación correcta
-            alert("Las contraseñas no coinciden.");
+        if (contraseña !== contraseña1) { // Comparación correcta de contraseñas
+            alert("Las contraseñas no coinciden."); // Alerta si las contraseñas no coinciden
             setLoading(false); // Detiene el loader
-            return;
+            return; // Termina la función
         }
-
 
         try {
+            // Verifica si el correo y documento ya están registrados
             const checkResponse = await fetch(`https://instrudev.com/aiameapp/login/webserviceapp.php?case=7&correo=${encodeURIComponent(correo)}&documento=${encodeURIComponent(noDoc)}`, {
-                method: 'GET',
+                method: 'GET', // Método GET
             });
 
-            const checkData = await checkResponse.json();
+            const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
 
             if (checkData.rp === "si") {
-                alert("El correo o documento ya están registrados. Por favor utiliza otros datos.");
+                alert("El correo o documento ya están registrados. Por favor utiliza otros datos."); // Alerta si ya están registrados
                 setLoading(false); // Detiene el loader
-                return;
+                return; // Termina la función
             } else {
-                setError("");
-                const encryptedPassword = await bcrypt.hash(contraseña, 10);
+                setError(""); // Limpia el estado de error
+                const encryptedPassword = await bcrypt.hash(contraseña, 10); // Encripta la contraseña
 
                 const formData = {
                     'nombre': nombre,
@@ -225,53 +217,57 @@ export default function Registro() {
                     'idRol': idRol
                 };
 
-                console.log("Formulario válido. Enviar datos al backend:", formData);
+                console.log("Formulario válido. Enviar datos al backend:", formData); // Imprime el formulario en la consola
 
                 try {
+                    // Envía los datos al backend
                     const response = await fetch('https://instrudev.com/aiameapp/login/webserviceapp.php?case=5', {
-                        method: 'POST',
+                        method: 'POST', // Método POST
                         headers: {
-                            'Content-Type': 'application/json',
+                            'Content-Type': 'application/json', // Indica el tipo de contenido
                         },
-                        body: JSON.stringify(formData),
+                        body: JSON.stringify(formData), // Convierte los datos a JSON
                     });
 
-                    const data = await response.json();
+                    const data = await response.json(); // Convierte la respuesta a JSON
 
                     if (data.rp === "si") {
-                        console.log("Datos guardados correctamente en el backend.");
+                        console.log("Datos guardados correctamente en el backend."); // Imprime éxito en la consola
 
+                        // Envía un correo de confirmación
                         const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/registro.php?&correo=${correo}`, {
-                            method: 'GET',
+                            method: 'GET', // Método GET
                         });
 
-                        const correoRespuesta = await correorespuesta.json();
+                        const correoRespuesta = await correorespuesta.json(); // Convierte la respuesta a JSON
 
+                        // Maneja la respuesta del envío de correo
                         if (correoRespuesta.rp === "si") {
-                            alert("El correo se ha enviado con éxito. Revise su bandeja de entrada.");
-                            setLoading(false);
+                            alert("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito
+                            setLoading(false); // Detiene el loader
                         } else {
-                            alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
-                            setLoading(false);
+                            alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario."); // Alerta si no se envió el correo
+                            setLoading(false); // Detiene el loader
                         }
 
                         setLoading(false); // Detiene el loader
-                        navigate('/'); // Asegúrate de tener la función navigate definida
+                        navigate('/'); // Navega a la ruta principal
                     } else {
-                        console.error("Error al guardar los datos en el backend:", data.mensaje);
+                        console.error("Error al guardar los datos en el backend:", data.mensaje); // Imprime error en la consola
                         setLoading(false); // Detiene el loader
                     }
                 } catch (error) {
-                    console.error("Error al conectar con el servidor:", error);
+                    console.error("Error al conectar con el servidor:", error); // Imprime error en la consola
                     setLoading(false); // Detiene el loader
                 }
             }
         } catch (error) {
-            console.error("Error al verificar el correo y documento en la base de datos:", error);
-            setError("Error al verificar el correo y documento en la base de datos");
+            console.error("Error al verificar el correo y documento en la base de datos:", error); // Imprime error en la consola
+            setError("Error al verificar el correo y documento en la base de datos"); // Establece mensaje de error
             setLoading(false); // Detiene el loader
         }
     };
+
 
 
 

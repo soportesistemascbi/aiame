@@ -1,316 +1,239 @@
-import suma from '../../Views/Tablas/icon/suma.svg';
-import { useEffect, useRef, useState } from 'react';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import "./carrusel.css";
-import { MoonLoader } from 'react-spinners';
+import suma from '../../Views/Tablas/icon/suma.svg'; // Importa una imagen SVG
+import { useEffect, useRef, useState } from 'react'; // Importa hooks de React
+import "slick-carousel/slick/slick.css"; // Importa estilos para el carrusel
+import "slick-carousel/slick/slick-theme.css"; // Importa estilos temáticos para el carrusel
+import "./carrusel.css"; // Importa estilos personalizados para el carrusel
+import { MoonLoader } from 'react-spinners'; // Importa un componente de carga
 
-export default function TablaInstructor() {
-    const [casos, setCasos] = useState([]);
-    const [noticias, setNoticias] = useState([]);
-    const [busqueda, setBusqueda] = useState('');
-    const [casosFiltrados, setCasosFiltrados] = useState([]);
-    const [descripcion, setDescripcion] = useState(false);
-    const [noticiaSeleccionada, setNoticiaSeleccionada] = useState(null);
-    const id = localStorage.getItem('idUsuario');
-    const [loading, setLoading] = useState(false);
-    const [TipoCaso, setCategorias] = useState([]);
-    const [selectedCategorias, setSelectedCategorias] = useState([]);
-    const [showCategories, setShowCategories] = useState(false);
-    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]);
-    const [showAlert_inicio, setShowAlert] = useState(false);
-    const [Reporte, setReporte] = useState(false);
-    const fileInputRef = useRef(null);
-    const [file, setFile] = useState(null);
+export default function TablaInstructor() { // Define el componente funcional
+    const [casos, setCasos] = useState([]); // Estado para almacenar casos
+    const [busqueda, setBusqueda] = useState(''); // Estado para el término de búsqueda
+    const [casosFiltrados, setCasosFiltrados] = useState([]); // Estado para casos filtrados
+    const id = localStorage.getItem('idUsuario'); // Obtiene el ID de usuario del almacenamiento local
+    const [loading, setLoading] = useState(false); // Estado de carga
+    const [TipoCaso, setCategorias] = useState([]); // Estado para almacenar categorías de casos
+    const [selectedCategorias, setSelectedCategorias] = useState([]); // Estado para categorías seleccionadas
+    const [showCategories, setShowCategories] = useState(false); // Estado para mostrar/ocultar categorías
+    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]); // IDs de categorías seleccionadas
+    const [showAlert_inicio, setShowAlert] = useState(false); // Estado para mostrar alerta
+    const [Reporte, setReporte] = useState(false); // Estado para mostrar reporte
+    const fileInputRef = useRef(null); // Referencia para el input de archivo
+    const [file, setFile] = useState(null); // Estado para almacenar el archivo seleccionado
 
 
+    const fetchCasos = async () => { // Función asíncrona para obtener casos
+        setLoading(true); // Activa el estado de carga
+        try {
+            // Realiza una solicitud a la API con el ID de usuario
+            const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=4&id=${id}`);
+            const data = await response.json(); // Convierte la respuesta a JSON
 
-    useEffect(() => {
-        setLoading(true);
-        const fetchCasos = async () => {
-            try {
-                const response = await fetch(`https://instrudev.com/aiameapp/caso/webserviceapp.php?case=4&id=${id}`);
-                const data = await response.json();
-                if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                    setCasos([]);
-                    setCasosFiltrados([]);
-                    setLoading(false);
-                } else {
-                    setCasos(data.rpta);
-                    setCasosFiltrados(data.rpta);
-                    setLoading(false);
-                }
-            } catch (error) {
-                console.error('Error al obtener casos:', error);
-                setLoading(false);
+            // Verifica si no hay casos
+            if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
+                setCasos([]); // Establece casos como un array vacío
+                setCasosFiltrados([]); // Establece casos filtrados como un array vacío
+                setLoading(false); // Desactiva el estado de carga
+            } else {
+                setCasos(data.rpta); // Almacena los casos obtenidos
+                setCasosFiltrados(data.rpta); // Inicialmente muestra todos los casos
+                setLoading(false); // Desactiva el estado de carga
             }
-        };
-
-        fetchCasos();
-    }, [id]);
-
-
-    useEffect(() => {
-        const fetchNoticias = async () => {
-            try {
-                const response = await fetch('https://instrudev.com/aiameapp/anuncio/anuncio.php?case=3');
-                const data = await response.json();
-                console.log('Datos obtenidos:', data);
-
-                if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                    setNoticias([]);
-
-                } else {
-                    setNoticias(data.rpta);
-
-                }
-            } catch (error) {
-                console.error('Error al obtener noticias:', error);
-            }
-        };
-
-        fetchNoticias();
-    }, []);
-
-
-
-
-
-    useEffect(() => {
-        const resultados = casos.filter(item => {
-            const id = item.id ? item.id.toLowerCase() : '';
-            const nombreSoporte = item.nombreSoporte ? item.nombreSoporte.toLowerCase() : '';
-            const SerialPc = item.serialPc ? item.serialPc.toLowerCase() : '';
-
-
-            return id.includes(busqueda.toLowerCase()) || nombreSoporte.includes(busqueda.toLowerCase()) || SerialPc.includes(busqueda.toLowerCase());
-        });
-        setCasosFiltrados(resultados);
-    }, [busqueda, casos]);
-
-    function hexToRgba(hex, opacity) {
-        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
-            return `rgba(0, 0, 0, ${opacity})`;
+        } catch (error) { // Manejo de errores
+            console.error('Error al obtener casos:', error); // Imprime el error en consola
+            setLoading(false); // Desactiva el estado de carga
         }
-        hex = hex.replace('#', '');
-        let r = parseInt(hex.substring(0, 2), 16);
-        let g = parseInt(hex.substring(2, 4), 16);
-        let b = parseInt(hex.substring(4, 6), 16);
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+    };
+    useEffect(() => { // Hook para cargar datos al montar el componente
+        fetchCasos(); // Llama a la función para obtener casos
+    }, [id]); // Se ejecuta cuando el componente se monta o cuando cambia 'id'
+
+    useEffect(() => { // Hook para filtrar los casos
+        const resultados = casos.filter(item => { // Filtra los casos basados en la búsqueda
+            const id = item.id ? item.id.toLowerCase() : ''; // Obtiene el ID en minúsculas
+            const nombreSoporte = item.nombreSoporte ? item.nombreSoporte.toLowerCase() : ''; // Obtiene el nombre del soporte en minúsculas
+            const SerialPc = item.serialPc ? item.serialPc.toLowerCase() : ''; // Obtiene el serial del PC en minúsculas
+
+            // Filtra según el término de búsqueda
+            return id.includes(busqueda.toLowerCase()) ||
+                nombreSoporte.includes(busqueda.toLowerCase()) ||
+                SerialPc.includes(busqueda.toLowerCase());
+        });
+
+        setCasosFiltrados(resultados); // Actualiza los casos filtrados con los resultados
+    }, [busqueda, casos]); // Se ejecuta cuando cambia 'busqueda' o 'casos'
+
+    function hexToRgba(hex, opacity) { // Función para convertir un color hex a RGBA
+        // Verifica si el hex es válido
+        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) {
+            return `rgba(0, 0, 0, ${opacity})`; // Retorna negro por defecto con la opacidad especificada
+        }
+        hex = hex.replace('#', ''); // Elimina el símbolo '#' si está presente
+        let r = parseInt(hex.substring(0, 2), 16); // Extrae el componente rojo
+        let g = parseInt(hex.substring(2, 4), 16); // Extrae el componente verde
+        let b = parseInt(hex.substring(4, 6), 16); // Extrae el componente azul
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Retorna el color en formato RGBA
     }
 
-    const getColor = (color) => {
-        if (!color || color.trim() === '') {
-            return '#000000';
+    const getColor = (color) => { // Función para obtener un color válido
+        if (!color || color.trim() === '') { // Verifica si el color es válido
+            return '#000000'; // Retorna negro como color por defecto
         }
-        return color.startsWith('#') ? color : `#${color}`;
+        return color.startsWith('#') ? color : `#${color}`; // Retorna el color formateado
     };
-    const carouselSettings = {
-        dots: true,
+
+    const carouselSettings = { // Configuraciones para el carrusel
+        dots: true, // Muestra puntos de navegación
         infinite: false, // Si es 'true', el carrusel podría repetirse infinitamente
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
+        speed: 500, // Velocidad de transición
+        slidesToShow: 1, // Número de slides a mostrar
+        slidesToScroll: 1, // Número de slides a desplazar
+        arrows: true, // Muestra flechas de navegación
+        autoplay: true, // Activa el autoplay
+        autoplaySpeed: 5000, // Velocidad de autoplay
     };
 
-
-
-
-
-    useEffect(() => {
-        fetchCategorias();
+    useEffect(() => { // Hook para cargar categorías al montar el componente
+        fetchCategorias(); // Llama a la función para obtener categorías
     }, []);
 
-    const fetchCategorias = () => {
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2')
-            .then(response => response.ok ? response.text() : Promise.reject('Error al obtener las categorías'))
-            .then(text => {
+    const fetchCategorias = () => { // Función para obtener categorías
+        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2') // Realiza una solicitud para obtener categorías
+            .then(response => response.ok ? response.text() : Promise.reject('Error al obtener las categorías')) // Verifica la respuesta
+            .then(text => { // Si la respuesta es correcta
                 try {
-                    const data = JSON.parse(text);
-                    setCategorias(data.rpta);
-                } catch (error) {
-                    console.error('Error al parsear JSON:', error);
-                    console.error('Respuesta recibida:', text);
+                    const data = JSON.parse(text); // Intenta parsear la respuesta a JSON
+                    setCategorias(data.rpta); // Almacena las categorías obtenidas
+                } catch (error) { // Manejo de errores al parsear
+                    console.error('Error al parsear JSON:', error); // Imprime el error en consola
+                    console.error('Respuesta recibida:', text); // Imprime la respuesta recibida
                 }
             })
-            .catch(error => console.error('Error al obtener las categorías:', error));
+            .catch(error => console.error('Error al obtener las categorías:', error)); // Manejo de errores en la solicitud
     };
 
-    const handleCategoriaChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id'));
-        setSelectedCategorias(selectedOptions);
-        setSelectedCategoriasIds(selectedOptionsIds);
+    const handleCategoriaChange = (e) => { // Maneja el cambio en la selección de categorías
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtiene las opciones seleccionadas
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtiene los IDs de las opciones seleccionadas
+        setSelectedCategorias(selectedOptions); // Actualiza las categorías seleccionadas
+        setSelectedCategoriasIds(selectedOptionsIds); // Actualiza los IDs de categorías seleccionadas
     };
 
-    const handleButtonClick = () => {
-        if (fileInputRef.current) {
-            fileInputRef.current.click();
+    const handleButtonClick = () => { // Maneja el clic en el botón para seleccionar archivo
+        if (fileInputRef.current) { // Verifica si la referencia del input de archivo es válida
+            fileInputRef.current.click(); // Dispara el clic en el input de archivo
         }
     };
 
-    const handleFileChange = (e) => {
-        setFile(e.target.files[0]);
+    const handleFileChange = (e) => { // Maneja el cambio en el input de archivo
+        setFile(e.target.files[0]); // Almacena el archivo seleccionado
     };
 
+    const handleSubmit = async (e) => { // Maneja el envío del formulario
+        e.preventDefault(); // Previene el comportamiento por defecto del formulario
+        setLoading(true); // Activa el estado de carga
 
+        const dato = document.getElementById('serial_pc').value; // Obtiene el valor del serial del PC
 
-
-
-
-
-
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-
-        const dato = document.getElementById('serial_pc').value;
-
-        if (!dato) {
-            alert("Por favor ingrese el serial o la placa del equipo o componente ");
-            setLoading(false);
-            return;
+        if (!dato) { // Verifica si se ingresó un serial
+            alert("Por favor ingrese el serial o la placa del equipo o componente "); // Alerta si falta el serial
+            setLoading(false); // Desactiva el estado de carga
+            return; // Sale de la función
         }
 
         try {
+            // Realiza una solicitud para verificar el serial
             const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=4&dato=${dato}`);
-            if (!checkResponse.ok) {
-                throw new Error('Error en la respuesta del servidor');
+            if (!checkResponse.ok) { // Verifica si la respuesta es correcta
+                throw new Error('Error en la respuesta del servidor'); // Lanza un error si la respuesta no es correcta
             }
-            const checkData = await checkResponse.json();
+            const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
 
-            if (checkData.rpta[0].rp === 'si') {
-                const descripcion = document.getElementById('descripcionCaso').value;
-                const idUsuarioReporte = localStorage.getItem('idUsuario');
-                const idEquipo = checkData.rpta[0].id;
-                const idLugar = checkData.rpta[0].idLugar;
-                const tipoCaso = selectedCategoriaIds[0] || "";
-                const estado = '1';
+            if (checkData.rpta[0].rp === 'si') { // Si el serial existe
+                const descripcion = document.getElementById('descripcionCaso').value; // Obtiene la descripción del caso
+                const idUsuarioReporte = localStorage.getItem('idUsuario'); // Obtiene el ID del usuario que reporta
+                const idEquipo = checkData.rpta[0].id; // Obtiene el ID del equipo
+                const idLugar = checkData.rpta[0].idLugar; // Obtiene el ID del lugar
+                const tipoCaso = selectedCategoriaIds[0] || ""; // Obtiene el tipo de caso seleccionado
+                const estado = '1'; // Establece el estado
 
+                // Verifica si faltan datos requeridos
                 if (!tipoCaso || !idEquipo || !descripcion || !file) {
-                    alert("Faltan datos requeridos. Revise los datos que usted ha ingresado.");
-                    setLoading(false);
-                    return;
+                    alert("Faltan datos requeridos. Revise los datos que usted ha ingresado."); // Alerta si faltan datos
+                    setLoading(false); // Desactiva el estado de carga
+                    return; // Sale de la función
                 }
 
-                const formData = new FormData();
-                formData.append('case', '1');
-                formData.append('descripcion', descripcion);
-                formData.append('idUsuarioReporte', idUsuarioReporte);
-                formData.append('idEquipo', idEquipo);
-                formData.append('tipoCaso', tipoCaso);
-                formData.append('idLugar', idLugar);
-                formData.append('estado', estado);
-                formData.append('urlArchivo', file);
+                const formData = new FormData(); // Crea un objeto FormData para enviar los datos
+                formData.append('case', '1'); // Agrega el caso al FormData
+                formData.append('descripcion', descripcion); // Agrega la descripción
+                formData.append('idUsuarioReporte', idUsuarioReporte); // Agrega el ID del usuario que reporta
+                formData.append('idEquipo', idEquipo); // Agrega el ID del equipo
+                formData.append('tipoCaso', tipoCaso); // Agrega el tipo de caso
+                formData.append('idLugar', idLugar); // Agrega el ID del lugar
+                formData.append('estado', estado); // Agrega el estado
+                formData.append('urlArchivo', file); // Agrega el archivo
 
                 try {
+                    // Envía el reporte de caso
                     const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', {
-                        method: 'POST',
-                        body: formData,
+                        method: 'POST', // Método de la solicitud
+                        body: formData, // Cuerpo de la solicitud
                     });
 
-                    const text = await response.text();
+                    const text = await response.text(); // Obtiene la respuesta como texto
                     try {
-                        const data = JSON.parse(text);
-                        if (data.rpta[0].rp === 'si') {
-                            alert("Caso reportado con éxito.");
+                        const data = JSON.parse(text); // Intenta parsear la respuesta a JSON
+                        if (data.rpta[0].rp === 'si') { // Si el reporte fue exitoso
+                            alert("Caso reportado con éxito."); // Alerta de éxito
+                            AbrirCaracteristicas(); // Llama a la función para abrir características
+                            const correo = localStorage.getItem('correo'); // Obtiene el correo del usuario
+                            fetchCasos(); //recargamos la consulta
 
-                            AbrirCaracteristicas();
-                            const correo = localStorage.getItem('correo');
-
+                            // Envía un correo de respuesta
                             const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/caso.php?correo=${correo}&descripcion=${descripcion}&codigo=${selectedCategorias}`, {
                                 method: 'GET',
                             });
 
-                            const correoRespuesta = await correorespuesta.json();
+                            const correoRespuesta = await correorespuesta.json(); // Convierte la respuesta a JSON
 
+                            // Verifica la respuesta del envío de correo
                             if (correoRespuesta.rp === "si") {
-                                alert("El correo se ha enviado con éxito. Revise su bandeja de entrada.");
-                                setLoading(false);
+                                alert("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito
+                                setLoading(false); // Desactiva el estado de carga
                             } else {
-                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
-                                setLoading(false);
+                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario."); // Alerta de fallo en el envío
+                                setLoading(false); // Desactiva el estado de carga
                             }
-                            setSelectedCategorias([]);
-                            setSelectedCategoriasIds([]);
-                            setFile(null);
+                            setSelectedCategorias([]); // Reinicia categorías seleccionadas
+                            setSelectedCategoriasIds([]); // Reinicia IDs de categorías seleccionadas
+                            setFile(null); // Reinicia el archivo
                         } else {
-                            console.log("No se pudo subir el caso:", data.mensaje);
+                            console.log("No se pudo subir el caso:", data.mensaje); // Imprime mensaje de error
                         }
                     } catch (error) {
-                        console.error('Error al parsear JSON:', error);
+                        console.error('Error al parsear JSON:', error); // Manejo de errores al parsear
                     }
                 } catch (error) {
-                    console.error("Error al subir el caso:", error);
+                    console.error("Error al subir el caso:", error); // Manejo de errores al enviar el caso
                 }
             } else {
-                setShowAlert(true);
-                setTimeout(() => setShowAlert(false), 3000);
+                setShowAlert(true); // Muestra alerta si el serial no existe
+                setTimeout(() => setShowAlert(false), 3000); // Oculta la alerta después de 3 segundos
             }
         } catch (error) {
-            console.error("Error al guardar el caso:", error);
+            console.error("Error al guardar el caso:", error); // Manejo de errores al guardar el caso
         } finally {
-            setLoading(false);
+            setLoading(false); // Desactiva el estado de carga
         }
     };
-    const AbrirCaracteristicas = () => {
-        setReporte(!Reporte);
-    }
+
+    const AbrirCaracteristicas = () => { // Función para alternar el estado de Reporte
+        setReporte(!Reporte); // Cambia el estado de Reporte
+    };
+
 
     return (
         <>
-
-
-            {descripcion && noticiaSeleccionada && Object.keys(noticiaSeleccionada).length > 0 && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0,
-                    left: 0,
-                    width: '100%',
-                    height: '100%',
-                    background: 'rgba(0, 0, 0, 0.5)',  // Fondo opaco
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    zIndex: '2'
-                }}>
-                    <div style={{
-                        width: '80%', // Puedes ajustar este valor según tu diseño
-                        maxWidth: '800px',
-                        background: 'white',
-                        borderRadius: '10px',
-                        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                        padding: '20px',
-                        position: 'relative',
-                        display: 'flex',
-                        flexDirection: 'column'
-                    }}>
-                        <div style={{ marginBottom: '20px' }}>
-                            <h2>Descripción Completa</h2>
-                            <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                <img src={noticiaSeleccionada.urlImagen} alt="Noticia" style={{ width: '100%', maxWidth: '400px', height: 'auto', borderRadius: '5px' }} />
-                            </div>
-                            <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
-                                {noticiaSeleccionada.descripcion}
-                            </p>
-                        </div>
-                        <button onClick={() => setDescripcion(false)} style={{
-                            padding: '10px',
-                            border: 'none',
-                            backgroundColor: '#007bff',
-                            color: 'white',
-                            borderRadius: '5px',
-                            cursor: 'pointer',
-                            alignSelf: 'center'
-                        }}>
-                            Cerrar
-                        </button>
-                    </div>
-                </div>
-            )}
 
 
 

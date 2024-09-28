@@ -447,121 +447,116 @@ export default function ReportesSopor() {
                                 padding: '10px',
                                 boxSizing: 'border-box',
                             }}>
-                                <div style={{
-                                    width: '90%',
-                                    display: 'flex',
-                                    flexDirection: 'column', // Ensure single column for smaller screens
-                                    gap: '10px',
-                                    padding: '10px',
-                                    overflowY: 'auto',
-                                    boxSizing: 'border-box',
-                                    marginLeft: '25px',
-                                }}>
-                                    {/* Info Container */}
-                                    {info.length === 0 ? (
-                                        <p>No hay información disponible.</p>
-                                    ) : (
-                                        <div style={{
-                                            display: 'flex',
-                                            flexWrap: 'nowrap', // Prevent wrapping to force horizontal scroll
-                                            overflowX: 'auto', // Allow horizontal scroll if items overflow
-                                        }}>
-                                            {info.map((item, index) => (
-                                                <div key={index} style={{
-                                                    flex: '0 0 auto', // Prevent flex items from shrinking
-                                                    width: 'calc(30% - 10px)', // Responsive width
-                                                    background: 'white',
-                                                    borderRadius: '10px',
-                                                    boxShadow: '1px 1px 5px #d4d4d4',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'flex-start',
-                                                    padding: '10px',
-                                                    boxSizing: 'border-box',
-                                                    marginRight: '10px', // Add space between cards
-                                                }}>
-                                                    <img src={PC} style={{
-                                                        width: '60px',
+                                <div style={{ height: '100%', display: 'flex', flexDirection: window.innerWidth <= 768 ? 'column' : 'row', }}>
+                                    <div style={{
+                                        flex: '1 1 auto',
+                                        background: 'white',
+                                        borderRadius: '10px',
+                                        boxShadow: '1px 1px 5px #d4d4d4',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '10px',
+                                        width: '100%',
+                                        boxSizing: 'border-box',
+
+                                    }}>
+                                        {/* Info Container */}
+                                        {info.length === 0 ? (
+                                            <p>No hay información disponible.</p>
+                                        ) : (
+                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                {info.map((item, index) => (
+                                                    <div key={index} style={{
+                                                        display: 'flex', flexDirection: 'column', width: '100%', height: '100%'
+                                                    }}>
+                                                        <img src={PC} style={{
+                                                            width: '60px',
+                                                            marginBottom: '10px',
+                                                        }} />
+                                                        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
+                                                            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                                                <div style={{ display: 'flex', paddingBottom: '15px' }}>
+                                                                    <b style={{ marginRight: '10px' }}>Nombre:</b>
+                                                                    <p style={{ margin: '0' }}>{item.modelo}</p>
+                                                                </div>
+                                                                <div><b>Tipo de equipo:</b> <p style={{ margin: '0' }}>{item.tipo}</p></div>
+                                                            </div>
+                                                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                                                <div style={{ display: 'flex', paddingBottom: '15px' }}>
+                                                                    <b style={{ marginRight: '10px' }}>Marca:</b>
+                                                                    <p style={{ margin: '0' }}>{item.marca}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <img src={Hola} style={{
+                                                            width: '60px',
+                                                            marginTop: '10px',
+                                                        }} />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Case Evidence Image */}
+                                    <div style={{
+                                        flex: '1 1 auto',
+                                        background: 'white',
+                                        borderRadius: '10px',
+                                        boxShadow: '1px 1px 5px #d4d4d4',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '10px',
+                                        width: '100%',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        {CasoCaracteristicas.length === 0 ? (
+                                            <p>No hay imágenes disponibles.</p>
+                                        ) : (
+                                            CasoCaracteristicas.map((item, index) => (
+                                                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <p>Imagen de evidencia del caso</p>
+                                                    <img src={item.urlArchivo} style={{
+                                                        width: '100px',
                                                         marginBottom: '10px',
                                                     }} />
-                                                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-                                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                                            <div style={{ display: 'flex', paddingBottom: '15px' }}>
-                                                                <b style={{ marginRight: '10px' }}>Nombre:</b>
-                                                                <p style={{ margin: '0' }}>{item.modelo}</p>
-                                                            </div>
-                                                            <div><b>Tipo de equipo:</b> <p style={{ margin: '0' }}>{item.tipo}</p></div>
-                                                        </div>
-                                                        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                            <div style={{ display: 'flex', paddingBottom: '15px' }}>
-                                                                <b style={{ marginRight: '10px' }}>Marca:</b>
-                                                                <p style={{ margin: '0' }}>{item.marca}</p>
-                                                            </div>
-                                                        </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+
+                                    {/* Case Description */}
+                                    <div style={{
+                                        flex: '1 1 auto',
+                                        background: 'white',
+                                        borderRadius: '10px',
+                                        boxShadow: '1px 1px 5px #d4d4d4',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        alignItems: 'center',
+                                        justifyContent: 'center',
+                                        padding: '10px',
+                                        width: '100%',
+                                        boxSizing: 'border-box',
+                                    }}>
+                                        {CasoCaracteristicas.length === 0 ? (
+                                            <p>No hay descripciones disponibles.</p>
+                                        ) : (
+                                            CasoCaracteristicas.map((item, index) => (
+                                                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                                                    <p>Descripción del caso</p>
+                                                    <div>
+                                                        <b>{item.descripcion}</b>
                                                     </div>
-                                                    <img src={Hola} style={{
-                                                        width: '60px',
-                                                        marginTop: '10px',
-                                                    }} />
                                                 </div>
-                                            ))}
-                                        </div>
-                                    )}
+                                            ))
+                                        )}
+                                    </div>
                                 </div>
-
-                                {/* Case Evidence Image */}
-                                <div style={{
-                                    flex: '1 1 auto',
-                                    background: 'white',
-                                    borderRadius: '10px',
-                                    boxShadow: '1px 1px 5px #d4d4d4',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    padding: '10px',
-                                    boxSizing: 'border-box',
-                                }}>
-                                    {CasoCaracteristicas.length === 0 ? (
-                                        <p>No hay imágenes disponibles.</p>
-                                    ) : (
-                                        CasoCaracteristicas.map((item, index) => (
-                                            <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <p>Imagen de evidencia del caso</p>
-                                                <img src={item.urlArchivo} style={{
-                                                    width: '100px',
-                                                    marginBottom: '10px',
-                                                }} />
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-
-                                {/* Case Description */}
-                                <div style={{
-                                    flex: '1 1 auto',
-                                    background: 'white',
-                                    borderRadius: '10px',
-                                    boxShadow: '1px 1px 5px #d4d4d4',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                    padding: '10px',
-                                    boxSizing: 'border-box',
-                                }}>
-                                    {CasoCaracteristicas.length === 0 ? (
-                                        <p>No hay descripciones disponibles.</p>
-                                    ) : (
-                                        CasoCaracteristicas.map((item, index) => (
-                                            <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                                <p>Descripción del caso</p>
-                                                <div>
-                                                    <b>{item.descripcion}</b>
-                                                </div>
-                                            </div>
-                                        ))
-                                    )}
-                                </div>
-
                                 {/* Reports Section */}
                                 <div style={{
                                     width: '100%',

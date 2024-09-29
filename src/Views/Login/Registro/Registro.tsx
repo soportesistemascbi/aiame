@@ -241,6 +241,7 @@ export default function Registro() {
 
                         const correoRespuesta = await correorespuesta.json(); // Convierte la respuesta a JSON
 
+                        console.log(correoRespuesta)
                         // Maneja la respuesta del envío de correo
                         if (correoRespuesta.rp === "si") {
                             alert("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito

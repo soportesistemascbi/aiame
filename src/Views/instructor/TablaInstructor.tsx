@@ -512,13 +512,8 @@ export default function TablaInstructor() { // Define el componente funcional
 
 
 
-                <div style={{ width: '100%', overflowY: 'auto' }}>
-                    <table
-                        style={{
-                            width: '100%',
-                            borderCollapse: 'collapse',
-                        }}
-                    >
+                <div style={{ width: '100%', height: '650px', overflowY: 'auto', overflowX: 'auto' }}>
+                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                         <thead>
                             <tr style={{ borderBottom: '1px solid #f0f0f0' }}>
                                 <th style={{ padding: '10px' }}>Codigo del caso</th>
@@ -546,7 +541,8 @@ export default function TablaInstructor() { // Define el componente funcional
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             width: '100%',
-                                            height: '100px' // Puedes ajustar la altura según tus necesidades
+                                            marginTop: '130px',
+                                            height: '100%'
                                         }}>
                                             <img
                                                 src="https://img.icons8.com/ios/100/000000/nothing-found.png"

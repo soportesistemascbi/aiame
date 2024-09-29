@@ -9,356 +9,417 @@ import Hola from '../../Tablas/icon/icon.svg'; // Importing another icon.
 
 export default function ReportesSopor() { // Declaring the functional component.
 
-    const [caracteristicas_pc, setcaracteristicas_pc] = useState(false); // State for toggling PC characteristics visibility.
-    const [hoveredRow, setHoveredRow] = useState(null); // State for tracking hovered row.
-    const [Reportes, setReporetes] = useState(false); // State for toggling report visibility.
-    const [usuarios, setUsuarios] = useState([]); // State for storing users.
-    const [busqueda, setBusqueda] = useState(''); // State for search input.
-    const [loading, setLoading] = useState(false); // State for loading status.
-    const [Componentes, setComponentes] = useState([]); // State for storing components.
-    const [info, setInflo] = useState([]); // State for storing additional info.
-    const [caso, setCaso] = useState([]); // State for storing case data.
-    const [noHayCasos, setNoHayCasos] = useState(false); // State for tracking if there are no cases.
-    const fileInputRef = useRef<HTMLInputElement>(null); // Ref for file input element.
-    const [TipoCaso, setCategorias] = useState([]); // State for storing case categories.
-    const [TipoEstado, setEstado] = useState([]); // State for storing statuses.
-    const [selectedEstado, setSelectedEstado] = useState([]); // State for selected statuses.
-    const [selectedEstadoIds, setSelectedEstadoIds] = useState([]); // State for selected status IDs.
-    const [selectedCategorias, setSelectedCategorias] = useState([]); // State for selected categories.
-    const [showCategories, setShowCategories] = useState(false); // State for showing categories dropdown.
-    const [showEstado, setShowEstado] = useState(false); // State for showing status dropdown.
-    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]); // State for selected category IDs.
-    const [DatosCaso, setDatosCaso] = useState([]); // State for storing case data.
-    const [idcaso, setIdCaso] = useState([]); // State for storing case ID.
-    const [file, setFile] = useState(null); // State for storing uploaded file.
-    const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]); // State for storing case characteristics.
+    const [caracteristicas_pc, setcaracteristicas_pc] = useState(false); // Estado para alternar la visibilidad de las características de la PC.
+    const [img, setimg] = useState(false); // Estado para alternar la visibilidad de la imagen.
+    const [hoveredRow, setHoveredRow] = useState(null); // Estado para rastrear la fila sobre la que se pasa el mouse.
+    const [Reportes, setReporetes] = useState(false); // Estado para alternar la visibilidad de los reportes.
+    const [usuarios, setUsuarios] = useState([]); // Estado para almacenar usuarios.
+    const [busqueda, setBusqueda] = useState(''); // Estado para la entrada de búsqueda.
+    const [loading, setLoading] = useState(false); // Estado para el estado de carga.
+    const [Componentes, setComponentes] = useState([]); // Estado para almacenar componentes.
+    const [info, setInflo] = useState([]); // Estado para almacenar información adicional.
+    const [caso, setCaso] = useState([]); // Estado para almacenar datos del caso.
+    const [noHayCasos, setNoHayCasos] = useState(false); // Estado para rastrear si no hay casos.
+    const fileInputRef = useRef<HTMLInputElement>(null); // Ref para el elemento de entrada de archivo.
+    const [TipoCaso, setCategorias] = useState([]); // Estado para almacenar categorías de casos.
+    const [TipoEstado, setEstado] = useState([]); // Estado para almacenar estados.
+    const [selectedEstado, setSelectedEstado] = useState([]); // Estado para estados seleccionados.
+    const [selectedEstadoIds, setSelectedEstadoIds] = useState([]); // Estado para IDs de estados seleccionados.
+    const [selectedCategorias, setSelectedCategorias] = useState([]); // Estado para categorías seleccionadas.
+    const [showCategories, setShowCategories] = useState(false); // Estado para mostrar el desplegable de categorías.
+    const [showEstado, setShowEstado] = useState(false); // Estado para mostrar el desplegable de estados.
+    const [selectedCategoriaIds, setSelectedCategoriasIds] = useState([]); // Estado para IDs de categorías seleccionadas.
+    const [DatosCaso, setDatosCaso] = useState([]); // Estado para almacenar datos del caso.
+    const [idcaso, setIdCaso] = useState([]); // Estado para almacenar ID del caso.
+    const [file, setFile] = useState(null); // Estado para almacenar archivo subido.
+    const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]); // Estado para almacenar características del caso.
 
-    const AbrirCaracteristicas = () => { // Function to toggle the visibility of PC characteristics.
-        setcaracteristicas_pc(!caracteristicas_pc); // Toggle the state.
+
+    const AbrirCaracteristicas = () => { // Función para alternar la visibilidad de las características de la PC.
+        setcaracteristicas_pc(!caracteristicas_pc); // Alternar el estado.
     }
 
-    const AbrirReportes = async (id) => { // Function to toggle report visibility and fetch case data.
-        setReporetes(!Reportes); // Toggle the report state.
-        setIdCaso(id); // Set the case ID.
+    const AbrirImg = () => { // Función para alternar la visibilidad de la imagen.
+        setimg(!img); // Alternar el estado.
+    }
+
+    const AbrirReportes = async (id) => { // Función para alternar la visibilidad de los reportes y obtener datos del caso.
+        setReporetes(!Reportes); // Alternar el estado de los reportes.
+        setIdCaso(id); // Establecer el ID del caso.
 
         try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL to fetch case data.
-            const response = await fetch(url); // Fetching data from the server.
-            const data1 = await response.json(); // Parsing the response as JSON.
-            setDatosCaso(data1.rpta); // Storing the response data in state.
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL para obtener datos del caso.
+            const response = await fetch(url); // Obtener datos del servidor.
+            const data1 = await response.json(); // Analizar la respuesta como JSON.
+            setDatosCaso(data1.rpta); // Almacenar los datos de la respuesta en el estado.
         } catch (error) {
-            console.log("Error al obtener componentes:", error); // Log error if fetching fails.
+            console.log("Error al obtener componentes:", error); // Registrar error si la obtención falla.
         }
     };
 
-    useEffect(() => { // Hook to fetch categories on component mount.
-        fetchCategorias(); // Call function to fetch categories.
+    useEffect(() => { // Hook para obtener categorías al montar el componente.
+        fetchCategorias(); // Llamar a la función para obtener categorías.
     }, []);
 
-    const fetchCategorias = () => { // Function to fetch case categories from the server.
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2') // Fetching categories from the server.
-            .then(response => { // Handling the response.
-                if (!response.ok) { // Check if the response is okay.
-                    throw new Error('Error al obtener las categorías'); // Throw an error if not.
+    const fetchCategorias = () => { // Función para obtener categorías de casos del servidor.
+        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=2') // Obtener categorías del servidor.
+            .then(response => { // Manejar la respuesta.
+                if (!response.ok) { // Verificar si la respuesta es correcta.
+                    throw new Error('Error al obtener las categorías'); // Lanzar un error si no es así.
                 }
-                return response.text(); // Return response as text.
+                return response.text(); // Devolver la respuesta como texto.
             })
-            .then(text => { // Handling the text response.
+            .then(text => { // Manejar la respuesta de texto.
                 try {
-                    const data = JSON.parse(text); // Parse the text as JSON.
-                    setCategorias(data.rpta); // Store the categories in state.
+                    const data = JSON.parse(text); // Analizar el texto como JSON.
+                    setCategorias(data.rpta); // Almacenar las categorías en el estado.
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error); // Log JSON parsing errors.
-                    console.error('Respuesta recibida:', text); // Log the received response for debugging.
+                    console.error('Error al parsear JSON:', error); // Registrar errores de análisis JSON.
+                    console.error('Respuesta recibida:', text); // Registrar la respuesta recibida para depuración.
                 }
             })
-            .catch(error => console.error('Error al obtener las categorías:', error)); // Log errors if fetching fails.
+            .catch(error => console.error('Error al obtener las categorías:', error)); // Registrar errores si la obtención falla.
     };
 
-    useEffect(() => { // Hook to fetch statuses on component mount.
-        fetchEstados(); // Call function to fetch statuses.
+    useEffect(() => { // Hook para obtener estados al montar el componente.
+        fetchEstados(); // Llamar a la función para obtener estados.
     }, []);
 
-    const fetchEstados = () => { // Function to fetch case statuses from the server.
-        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=7') // Fetching statuses from the server.
-            .then(response => { // Handling the response.
-                if (!response.ok) { // Check if the response is okay.
-                    throw new Error('Error al obtener las categorías'); // Throw an error if not.
+    const fetchEstados = () => { // Función para obtener estados de casos del servidor.
+        fetch('https://instrudev.com/aiameapp/caso/casos.php?case=7') // Obtener estados del servidor.
+            .then(response => { // Manejar la respuesta.
+                if (!response.ok) { // Verificar si la respuesta es correcta.
+                    throw new Error('Error al obtener las categorías'); // Lanzar un error si no es así.
                 }
-                return response.text(); // Return response as text.
+                return response.text(); // Devolver la respuesta como texto.
             })
-            .then(text => { // Handling the text response.
+            .then(text => { // Manejar la respuesta de texto.
                 try {
-                    const data = JSON.parse(text); // Parse the text as JSON.
-                    setEstado(data.rpta); // Store the statuses in state.
+                    const data = JSON.parse(text); // Analizar el texto como JSON.
+                    setEstado(data.rpta); // Almacenar los estados en el estado.
                 } catch (error) {
-                    console.error('Error al parsear JSON:', error); // Log JSON parsing errors.
-                    console.error('Respuesta recibida:', text); // Log the received response for debugging.
+                    console.error('Error al parsear JSON:', error); // Registrar errores de análisis JSON.
+                    console.error('Respuesta recibida:', text); // Registrar la respuesta recibida para depuración.
                 }
             })
-            .catch(error => console.error('Error al obtener las categorías:', error)); // Log errors if fetching fails.
+            .catch(error => console.error('Error al obtener las categorías:', error)); // Registrar errores si la obtención falla.
     };
 
-    const handleCategoriaChange = (e) => { // Function to handle category selection changes.
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Get selected category values.
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Get selected category IDs.
-        setSelectedCategorias(selectedOptions); // Update selected categories in state.
-        setSelectedCategoriasIds(selectedOptionsIds); // Update selected category IDs in state.
+    const handleCategoriaChange = (e) => { // Función para manejar cambios en la selección de categorías.
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtener valores de categorías seleccionadas.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtener IDs de categorías seleccionadas.
+        setSelectedCategorias(selectedOptions); // Actualizar categorías seleccionadas en el estado.
+        setSelectedCategoriasIds(selectedOptionsIds); // Actualizar IDs de categorías seleccionadas en el estado.
     };
 
-    const handleCategoriaChange2 = (e) => { // Function to handle status selection changes.
-        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Get selected status values.
-        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Get selected status IDs.
-        setSelectedEstado(selectedOptions); // Update selected statuses in state.
-        setSelectedEstadoIds(selectedOptionsIds); // Update selected status IDs in state.
+    const handleCategoriaChange2 = (e) => { // Función para manejar cambios en la selección de estados.
+        const selectedOptions = Array.from(e.target.selectedOptions, option => option.value); // Obtener valores de estados seleccionados.
+        const selectedOptionsIds = Array.from(e.target.selectedOptions, option => option.getAttribute('data-id')); // Obtener IDs de estados seleccionados.
+        setSelectedEstado(selectedOptions); // Actualizar estados seleccionados en el estado.
+        setSelectedEstadoIds(selectedOptionsIds); // Actualizar IDs de estados seleccionados en el estado.
     };
 
-    const handleButtonClick = () => { // Function to handle button click for file input.
-        if (fileInputRef.current) { // Check if the ref is set.
-            fileInputRef.current.click(); // Trigger the file input click.
+    const handleButtonClick = () => { // Función para manejar clic en el botón para la entrada de archivo.
+        if (fileInputRef.current) { // Verificar si el ref está establecido.
+            fileInputRef.current.click(); // Disparar clic en la entrada de archivo.
         }
     };
 
-    const handleFileChange = (e) => { // Function to handle file input changes.
-        setFile(e.target.files[0]); // Store the uploaded file in state.
+    const handleFileChange = (e) => { // Función para manejar cambios en la entrada de archivo.
+        setFile(e.target.files[0]); // Almacenar el archivo subido en el estado.
     };
 
-    const fetchData = async () => { // Function to fetch user cases from the server.
-        setLoading(true); // Set loading state to true.
+
+
+
+    const fetchData = async () => { // Función para obtener casos de usuario del servidor.
+        setLoading(true); // Establecer el estado de carga en verdadero.
         try {
-            const response = await fetch('https://instrudev.com/aiameapp/caso/casos.php?case=5'); // Fetching user cases.
+            const response = await fetch('https://instrudev.com/aiameapp/caso/casos.php?case=5'); // Obteniendo casos de usuario.
 
-            const data = await response.json(); // Parse response as JSON.
+            const data = await response.json(); // Analizar la respuesta como JSON.
 
-            // Check if there are no cases in the response.
+            // Verificar si no hay casos en la respuesta.
             if (data.rpta && data.rpta.length === 1 && data.rpta[0].rp === "no") {
-                setUsuarios([]); // Clear users if no cases are found.
-                setLoading(false); // Set loading state to false.
+                setUsuarios([]); // Limpiar usuarios si no se encuentran casos.
+                setLoading(false); // Establecer el estado de carga en falso.
             } else {
-                setUsuarios(data.rpta); // Store cases in state.
-                setLoading(false); // Set loading state to false.
+                setUsuarios(data.rpta); // Almacenar casos en el estado.
+                setLoading(false); // Establecer el estado de carga en falso.
             }
         } catch (error) {
-            console.error('Error al obtener casos:', error); // Log errors if fetching fails.
-            setLoading(false); // Set loading state to false.
+            console.error('Error al obtener casos:', error); // Registrar errores si falla la obtención.
+            setLoading(false); // Establecer el estado de carga en falso.
         }
     };
 
-    useEffect(() => { // Hook to fetch user cases on component mount.
-        fetchData(); // Call function to fetch cases.
+    useEffect(() => { // Hook para obtener casos de usuario al montar el componente.
+        fetchData(); // Llamar a la función para obtener casos.
     }, []);
 
-    async function Aceptarpeticion(id) { // Function to accept a request and fetch associated data.
-        setcaracteristicas_pc(!caracteristicas_pc); // Toggle visibility of PC characteristics.
-        setLoading(true); // Set loading state to true.
+    async function Aceptarpeticion(id) { // Función para aceptar una solicitud y obtener datos asociados.
+        setcaracteristicas_pc(!caracteristicas_pc); // Alternar la visibilidad de las características del PC.
+        setLoading(true); // Establecer el estado de carga en verdadero.
         try {
-            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL to fetch case details.
-            const response = await fetch(url); // Fetching case data.
-            const data1 = await response.json(); // Parse response as JSON.
-            const idEquipoCaso = await (data1.rpta[0].idEquipo); // Get the equipment ID from case data.
-            setDatosCasoCracteristicas(data1.rpta); // Store case characteristics in state.
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=8&id=${id}`; // URL para obtener detalles del caso.
+            const response = await fetch(url); // Obteniendo datos del caso.
+            const data1 = await response.json(); // Analizar la respuesta como JSON.
+            const idEquipoCaso = await (data1.rpta[0].idEquipo); // Obtener el ID del equipo del caso.
+            setDatosCasoCracteristicas(data1.rpta); // Almacenar características del caso en el estado.
 
-            // Fetch components related to the case.
+            // Obtener componentes relacionados con el caso.
             try {
-                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`; // URL to fetch components.
-                const response = await fetch(url); // Fetching components data.
-                const data1 = await response.json(); // Parse response as JSON.
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=3&idEquipo=${idEquipoCaso}`; // URL para obtener componentes.
+                const response = await fetch(url); // Obteniendo datos de componentes.
+                const data1 = await response.json(); // Analizar la respuesta como JSON.
                 if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
-                    setComponentes([]); // Clear components if none found.
+                    setComponentes([]); // Limpiar componentes si no se encuentran.
                 } else {
-                    setComponentes(data1.rpta); // Store components in state.
+                    setComponentes(data1.rpta); // Almacenar componentes en el estado.
                 }
             } catch (error) {
-                console.log("Error al obtener componentes:", error); // Log errors if fetching fails.
+                console.log("Error al obtener componentes:", error); // Registrar errores si falla la obtención.
             }
 
-            // Fetch additional info related to the case.
+            // Obtener información adicional relacionada con el caso.
             try {
-                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`; // URL to fetch additional info.
-                const response = await fetch(url); // Fetching additional info.
-                const data2 = await response.json(); // Parse response as JSON.
+                const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=2&idEquipo=${idEquipoCaso}`; // URL para obtener información adicional.
+                const response = await fetch(url); // Obteniendo información adicional.
+                const data2 = await response.json(); // Analizar la respuesta como JSON.
 
                 if (data2.rpta && data2.rpta.length === 1 && data2.rpta[0].rp === "no") {
-                    setInflo([]); // Clear info if none found.
+                    setInflo([]); // Limpiar información si no se encuentra.
                 } else {
-                    setInflo(data2.rpta); // Store additional info in state.
+                    setInflo(data2.rpta); // Almacenar información adicional en el estado.
                 }
             } catch (error) {
-                console.log("Error al obtener información adicional:", error); // Log errors if fetching fails.
+                console.log("Error al obtener información adicional:", error); // Registrar errores si falla la obtención.
             }
 
-            // Fetch cases related to the equipment.
+            // Obtener casos relacionados con el equipo.
             try {
-                const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${idEquipoCaso}`; // URL to fetch equipment cases.
-                const response = await fetch(url); // Fetching equipment cases.
-                const data3 = await response.json(); // Parse response as JSON.
+                const url = `https://instrudev.com/aiameapp/equipos/equiposquery.php?case=2&idEquipo=${idEquipoCaso}`; // URL para obtener casos del equipo.
+                const response = await fetch(url); // Obteniendo casos del equipo.
+                const data3 = await response.json(); // Analizar la respuesta como JSON.
 
                 if (data3.rpta && data3.rpta[0].rp === "no") {
-                    setNoHayCasos(true); // Set no cases flag if none found.
-                    setLoading(false); // Set loading state to false.
+                    setNoHayCasos(true); // Establecer bandera de no casos si no se encuentran.
+                    setLoading(false); // Establecer el estado de carga en falso.
                 } else {
-                    setNoHayCasos(false); // Reset no cases flag if cases found.
-                    setCaso(data3.rpta); // Store cases in state.
-                    setLoading(false); // Set loading state to false.
+                    setNoHayCasos(false); // Restablecer la bandera de no casos si se encuentran.
+                    setCaso(data3.rpta); // Almacenar casos en el estado.
+                    setLoading(false); // Establecer el estado de carga en falso.
                 }
             } catch (error) {
-                console.log("Error al obtener casos:", error); // Log errors if fetching fails.
-                setLoading(false); // Set loading state to false.
+                console.log("Error al obtener casos:", error); // Registrar errores si falla la obtención.
+                setLoading(false); // Establecer el estado de carga en falso.
             }
         } catch (error) {
-            setLoading(false); // Set loading state to false on error.
-            console.log("Error al obtener componentes:", error); // Log errors if fetching fails.
+            setLoading(false); // Establecer el estado de carga en falso en caso de error.
+            console.log("Error al obtener componentes:", error); // Registrar errores si falla la obtención.
         }
     }
 
-    const handleSearchChange = (event) => { // Function to handle search input changes.
-        setBusqueda(event.target.value); // Update search input in state.
+    const handleSearchChange = (event) => { // Función para manejar cambios en la entrada de búsqueda.
+        setBusqueda(event.target.value); // Actualizar entrada de búsqueda en el estado.
     }
 
-    const usuariosFiltrados = usuarios.filter(item => // Filtering users based on search input.
-        item.nombre.toLowerCase().includes(busqueda.toLowerCase()) || // Filter by name.
-        item.codigo.toLowerCase().includes(busqueda.toLowerCase()) || // Filter by code.
-        item.serialPc.toLowerCase().includes(busqueda.toLowerCase()) // Filter by serial number.
+    const usuariosFiltrados = usuarios.filter(item => // Filtrando usuarios basado en la entrada de búsqueda.
+        item.nombre.toLowerCase().includes(busqueda.toLowerCase()) || // Filtrar por nombre.
+        item.codigo.toLowerCase().includes(busqueda.toLowerCase()) || // Filtrar por código.
+        item.serialPc.toLowerCase().includes(busqueda.toLowerCase()) // Filtrar por número de serie.
     );
 
-    function hexToRgba(hex, opacity) { // Function to convert HEX color to RGBA.
-        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) { // Check for valid HEX format.
-            return `rgba(0, 0, 0, ${opacity})`; // Return black color if invalid.
+    function hexToRgba(hex, opacity) { // Función para convertir color HEX a RGBA.
+        if (!hex || hex.length < 6 || !/^#?[0-9A-Fa-f]{6}$/.test(hex)) { // Comprobar formato HEX válido.
+            return `rgba(0, 0, 0, ${opacity})`; // Devolver color negro si no es válido.
         }
 
-        hex = hex.replace('#', ''); // Remove '#' from HEX.
-        let r = parseInt(hex.substring(0, 2), 16); // Get red component.
-        let g = parseInt(hex.substring(2, 4), 16); // Get green component.
-        let b = parseInt(hex.substring(4, 6), 16); // Get blue component.
-        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Return RGBA string.
+        hex = hex.replace('#', ''); // Eliminar '#' del HEX.
+        let r = parseInt(hex.substring(0, 2), 16); // Obtener componente rojo.
+        let g = parseInt(hex.substring(2, 4), 16); // Obtener componente verde.
+        let b = parseInt(hex.substring(4, 6), 16); // Obtener componente azul.
+        return `rgba(${r}, ${g}, ${b}, ${opacity})`; // Devolver cadena RGBA.
     }
 
-    const getColor = (color) => { // Function to ensure a valid color value.
-        if (!color || color.trim() === '') { // Check if color is empty.
-            return '#000000'; // Return black as default.
+    const getColor = (color) => { // Función para asegurar un valor de color válido.
+        if (!color || color.trim() === '') { // Comprobar si el color está vacío.
+            return '#000000'; // Devolver negro como valor predeterminado.
         }
-        return color.startsWith('#') ? color : `#${color}`; // Return color with '#' if not present.
+        return color.startsWith('#') ? color : `#${color}`; // Devolver color con '#' si no está presente.
     };
 
-    const handleSubmitDetalle = async (e) => { // Function to handle form submission.
-        e.preventDefault(); // Prevent default form submission behavior.
-        setLoading(true); // Set loading state to true.
+    const handleSubmitDetalle = async (e) => { // Función para manejar la presentación del formulario.
+        e.preventDefault(); // Prevenir el comportamiento de envío predeterminado del formulario.
+        setLoading(true); // Establecer el estado de carga en verdadero.
 
-        const id = DatosCaso[0].idEquipo; // Get equipment ID from case data.
-        const idCaso = idcaso; // Get case ID from state.
-        const observacion = document.getElementById('descripcionCaso').value; // Get observation input value.
-        const idUsuarioSoporte = localStorage.getItem('idUsuario'); // Get user ID from local storage.
-        const tipoCaso = selectedCategoriaIds; // Get selected case types from state.
-        const estado = selectedEstadoIds; // Get selected statuses from state.
+        const id = DatosCaso[0].idEquipo; // Obtener ID del equipo de los datos del caso.
+        const idCaso = idcaso; // Obtener ID del caso del estado.
+        const observacion = document.getElementById('descripcionCaso').value; // Obtener el valor de entrada de observación.
+        const idUsuarioSoporte = localStorage.getItem('idUsuario'); // Obtener ID de usuario del almacenamiento local.
+        const tipoCaso = selectedCategoriaIds; // Obtener tipos de caso seleccionados del estado.
+        const estado = selectedEstadoIds; // Obtener estados seleccionados del estado.
 
-        // Validations
-        if (!observacion) { // Check if observation is empty.
-            alert('No ha puesto una descripcion'); // Alert user to provide description.
-            setLoading(false); // Set loading state to false.
-            return; // Exit function.
+        // Validaciones
+        if (!observacion) { // Comprobar si la observación está vacía.
+            alert('No ha puesto una descripción'); // Alertar al usuario para que proporcione una descripción.
+            setLoading(false); // Establecer el estado de carga en falso.
+            return; // Salir de la función.
         }
-        if (!file) { // Check if file is not provided.
-            alert('No ha puesto una imagen'); // Alert user to provide an image.
-            setLoading(false); // Set loading state to false.
-            return; // Exit function.
+        if (!file) { // Comprobar si no se ha proporcionado un archivo.
+            alert('No ha puesto una imagen'); // Alertar al usuario para que proporcione una imagen.
+            setLoading(false); // Establecer el estado de carga en falso.
+            return; // Salir de la función.
         }
-        if (!tipoCaso) { // Check if case type is not selected.
-            alert('No ha puesto un tipo de caso'); // Alert user to select a case type.
-            setLoading(false); // Set loading state to false.
-            return; // Exit function.
+        if (!tipoCaso) { // Comprobar si no se ha seleccionado un tipo de caso.
+            alert('No ha puesto un tipo de caso'); // Alertar al usuario para que seleccione un tipo de caso.
+            setLoading(false); // Establecer el estado de carga en falso.
+            return; // Salir de la función.
         }
-        if (!estado) { // Check if status is not selected.
-            alert('No ha puesto un estado para el caso'); // Alert user to select a status.
-            setLoading(false); // Set loading state to false.
-            return; // Exit function.
+        if (!estado) { // Comprobar si no se ha seleccionado un estado.
+            alert('No ha puesto un estado para el caso'); // Alertar al usuario para que seleccione un estado.
+            setLoading(false); // Establecer el estado de carga en falso.
+            return; // Salir de la función.
         }
-        if (!id) { // Check if equipment ID is not available.
-            alert('No ha puesto un equipo para el caso'); // Alert user to provide an equipment ID.
-            setLoading(false); // Set loading state to false.
-            return; // Exit function.
+        if (!id) { // Comprobar si no se ha proporcionado un ID de equipo.
+            alert('No ha puesto un equipo para el caso'); // Alertar al usuario para que proporcione un ID de equipo.
+            setLoading(false); // Establecer el estado de carga en falso.
+            return; // Salir de la función.
         }
 
-        const formData = new FormData(); // Create a new FormData object to send form data.
-        formData.append('case', '2'); // Append case type to form data.
-        formData.append('idCaso', idCaso); // Append case ID to form data.
-        formData.append('observacion', observacion); // Append observation to form data.
-        formData.append('idEquipo', id); // Append equipment ID to form data.
-        formData.append('idUsuarioSoporte', idUsuarioSoporte!); // Append user ID to form data.
-        formData.append('tipoCaso', tipoCaso); // Append case types to form data.
-        if (file) { // Check if a file is selected.
-            formData.append('urlArchivo', file); // Append file to form data.
+        const formData = new FormData(); // Crear un nuevo objeto FormData para enviar datos del formulario.
+        formData.append('case', '2'); // Agregar tipo de caso a los datos del formulario.
+        formData.append('idCaso', idCaso); // Agregar ID de caso a los datos del formulario.
+        formData.append('observacion', observacion); // Agregar observación a los datos del formulario.
+        formData.append('idEquipo', id); // Agregar ID de equipo a los datos del formulario.
+        formData.append('idUsuarioSoporte', idUsuarioSoporte!); // Agregar ID de usuario a los datos del formulario.
+        formData.append('tipoCaso', tipoCaso); // Agregar tipos de caso a los datos del formulario.
+        if (file) { // Comprobar si se ha seleccionado un archivo.
+            formData.append('urlArchivo', file); // Agregar archivo a los datos del formulario.
         }
 
         try {
-            const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', { // Sending form data to server.
-                method: 'POST', // Using POST method.
-                body: formData, // Sending the form data.
+            const response = await fetch('https://instrudev.com/aiameapp/caso/ReporteCasosWeb.php', { // Enviando datos del formulario al servidor.
+                method: 'POST', // Usando el método POST.
+                body: formData, // Enviando los datos del formulario.
             });
 
-            if (!response.ok) { // Check if the response is okay.
-                throw new Error('Error en la respuesta del servidor'); // Throw an error if not.
+            if (!response.ok) { // Comprobar si la respuesta es correcta.
+                throw new Error('Error en la respuesta del servidor'); // Lanzar un error si no es así.
             }
 
-            const text = await response.text(); // Parse response as text.
-            let data; // Variable to store parsed data.
+            const text = await response.text(); // Analizar la respuesta como texto.
+            let data; // Variable para almacenar datos analizados.
 
             try {
-                data = JSON.parse(text); // Parse text as JSON.
+                data = JSON.parse(text); // Analizar texto como JSON.
             } catch (jsonError) {
-                console.error('Error al parsear JSON:', jsonError); // Log JSON parsing errors.
-                setLoading(false); // Set loading state to false.
-                return; // Exit function.
+                console.error('Error al parsear JSON:', jsonError); // Registrar errores de análisis JSON.
+                setLoading(false); // Establecer el estado de carga en falso.
+                return; // Salir de la función.
             }
 
-            if (!data) { // Check if data is empty.
-                console.error('La respuesta del servidor está vacía'); // Log empty response.
-                setLoading(false); // Set loading state to false.
-                return; // Exit function.
+            if (!data) { // Comprobar si los datos están vacíos.
+                console.error('La respuesta del servidor está vacía'); // Registrar respuesta vacía.
+                setLoading(false); // Establecer el estado de carga en falso.
+                return; // Salir de la función.
             }
 
-            if (data.rpta[0].rp === 'si') { // Check if the response indicates success.
+            if (data.rpta[0].rp === 'si') { // Comprobar si la respuesta indica éxito.
                 try {
-                    const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`); // Check case status.
-                    if (!checkResponse.ok) { // Check if the response is okay.
-                        throw new Error('Error en la respuesta del servidor'); // Throw an error if not.
+                    const checkResponse = await fetch(`https://instrudev.com/aiameapp/caso/casos.php?case=8&id=${idCaso}&estado=${estado}&idUsuarioSoporte=${idUsuarioSoporte}`); // Verificar el estado del caso.
+                    if (!checkResponse.ok) { // Comprobar si la respuesta es correcta.
+                        throw new Error('Error en la respuesta del servidor'); // Lanzar un error si no es así.
                     }
 
-                    const checkData = await checkResponse.json(); // Parse response as JSON.
+                    const checkData = await checkResponse.json(); // Analizar respuesta como JSON.
 
-                    if (checkData.rp === 'si') { // Check if the response indicates success.
-                        fetchData(); // Fetch updated data.
-                        AbrirReportes(false); // Close reports.
-                        setLoading(false); // Set loading state to false.
-                        setSelectedEstado([]); // Clear selected status.
-                        setSelectedEstadoIds([]); // Clear selected status IDs.
-                        setSelectedCategorias([]); // Clear selected categories.
-                        setSelectedCategoriasIds([]); // Clear selected category IDs.
-                        setFile(null); // Clear selected file.
-                        alert("Caso reportado con éxito."); // Alert user of success.
+                    if (checkData.rp === 'si') { // Comprobar si la respuesta indica éxito.
+                        fetchData(); // Obtener datos actualizados.
+                        AbrirReportes(false); // Cerrar reportes.
+                        setLoading(false); // Establecer el estado de carga en falso.
+                        setSelectedEstado([]); // Limpiar estado seleccionado.
+                        setSelectedEstadoIds([]); // Limpiar IDs de estado seleccionados.
+                        setSelectedCategorias([]); // Limpiar categorías seleccionadas.
+                        setSelectedCategoriasIds([]); // Limpiar IDs de categorías seleccionadas.
+                        setFile(null); // Limpiar archivo seleccionado.
+                        alert("Caso reportado con éxito."); // Alertar al usuario del éxito.
                     } else {
-                        alert('Error al guardar el caso'); // Alert user if saving the case fails.
+                        alert('Error al guardar el caso'); // Alertar al usuario si falla el guardado del caso.
                     }
                 } catch (error) {
-                    console.error("Error al guardar el caso:", error); // Log errors if saving fails.
+                    console.error("Error al guardar el caso:", error); // Registrar errores si falla el guardado.
                 } finally {
-                    setLoading(false); // Set loading state to false after attempt.
+                    setLoading(false); // Establecer el estado de carga en falso después del intento.
                 }
             } else {
-                console.log("No se pudo subir el caso:", data.mensaje); // Log case submission errors.
-                setLoading(false); // Set loading state to false.
+                console.log("No se pudo subir el caso:", data.mensaje); // Registrar errores de envío del caso.
+                setLoading(false); // Establecer el estado de carga en falso.
             }
         } catch (error) {
-            console.error("Error al subir el caso:", error); // Log errors if submission fails.
-            setLoading(false); // Set loading state to false.
+            console.error("Error al subir el caso:", error); // Registrar errores si falla la presentación.
+            setLoading(false); // Establecer el estado de carga en falso.
         }
     };
+
 
 
 
     return (
 
         <>
-
+            {img && (
+                <div style={{
+                    position: 'fixed',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    background: 'rgba(0, 0, 0, 0.5)',  // Fondo opaco
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    zIndex: '10'
+                }}>
+                    {CasoCaracteristicas.length === 0 ? (
+                        <p>No hay informacion disponibles.</p>
+                    ) : (
+                        CasoCaracteristicas.map((item, index) => (
+                            <div key={index} style={{
+                                width: '80%', // Puedes ajustar este valor según tu diseño
+                                maxWidth: '800px',
+                                background: 'white',
+                                borderRadius: '10px',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                                padding: '20px',
+                                position: 'relative',
+                                display: 'flex',
+                                flexDirection: 'column'
+                            }}>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <h2>Descripción y imagen completa</h2>
+                                    <div style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                        <img src={item.urlArchivo} alt="Noticia" style={{ width: '100%', maxWidth: '5000px', height: 'auto', borderRadius: '5px' }} />
+                                    </div>
+                                    <p style={{ wordWrap: 'break-word', overflowWrap: 'break-word' }}>
+                                        {item.descripcion}
+                                    </p>
+                                </div>
+                                <button onClick={() => setimg(false)} style={{
+                                    padding: '10px',
+                                    border: 'none',
+                                    backgroundColor: '#007bff',
+                                    color: 'white',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer',
+                                    alignSelf: 'center'
+                                }}>
+                                    Cerrar
+                                </button>
+                            </div>
+                        )))}
+                </div>
+            )}
 
             {caracteristicas_pc && (
                 <div style={{
@@ -482,8 +543,9 @@ export default function ReportesSopor() { // Declaring the functional component.
                                         padding: '10px',
                                         width: '100%',
                                         boxSizing: 'border-box',
-                                        margin: '10px'
-                                    }}>
+                                        margin: '10px',
+                                        cursor: 'pointer'
+                                    }} onClick={AbrirImg}>
                                         {CasoCaracteristicas.length === 0 ? (
                                             <p>No hay imágenes disponibles.</p>
                                         ) : (
@@ -512,8 +574,9 @@ export default function ReportesSopor() { // Declaring the functional component.
                                         padding: '10px',
                                         width: '100%',
                                         boxSizing: 'border-box',
-                                        margin: '10px'
-                                    }}>
+                                        margin: '10px',
+                                        cursor: 'pointer'
+                                    }} onClick={AbrirImg}>
                                         {CasoCaracteristicas.length === 0 ? (
                                             <p>No hay descripciones disponibles.</p>
                                         ) : (
@@ -958,14 +1021,15 @@ export default function ReportesSopor() { // Declaring the functional component.
 
                             {usuariosFiltrados.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ padding: '40px', textAlign: 'center' }}>
+                                    <td colSpan="10" style={{ padding: '40px', textAlign: 'center' }}>
                                         <div style={{
                                             display: 'flex',
                                             flexDirection: 'column',
+                                            marginTop: '150px',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             width: '100%',
-                                            height: '300px' // Aumenta el alto para centrar mejor verticalmente
+                                            height: '100%' // Aumenta el alto para centrar mejor verticalmente
                                         }}>
                                             <img src="https://img.icons8.com/ios/100/000000/nothing-found.png" alt="No hay peticiones" style={{ marginBottom: '20px', opacity: 0.8 }} />
                                             <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>No hay casos disponibles</span>

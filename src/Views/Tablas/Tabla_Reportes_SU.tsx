@@ -118,14 +118,15 @@ export default function Tabla_Reportes_SU() {
 
                             {usuariosFiltrados.length === 0 ? (
                                 <tr>
-                                    <td colSpan="5" style={{ padding: '40px', textAlign: 'center' }}>
+                                    <td colSpan="10" style={{ padding: '40px', textAlign: 'center' }}>
                                         <div style={{
                                             display: 'flex',
                                             flexDirection: 'column',
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             width: '100%',
-                                            height: '300px' // Aumenta el alto para centrar mejor verticalmente
+                                            marginTop: '130px',
+                                            height: '100%'
                                         }}>
                                             <img src="https://img.icons8.com/ios/100/000000/nothing-found.png" alt="No hay peticiones" style={{ marginBottom: '20px', opacity: 0.8 }} />
                                             <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>No hay casos reportados disponibles</span>

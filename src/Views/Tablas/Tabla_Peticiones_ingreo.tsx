@@ -7,6 +7,7 @@ export default function Tabla_Peticiones_Ingreso() {
     // Importamos useState y useEffect desde React
     const [usuarios, setUsuarios] = useState([]); // Inicializa el estado 'usuarios' como un array vacío
     const [loading, setLoading] = useState(false); // Inicializa el estado 'loading' como false
+    const [usuario, setUsuario] = useState([]); // Estado para almacenar usuarios.
 
     // Función asíncrona para obtener datos
     const fetchData = async () => {
@@ -42,50 +43,147 @@ export default function Tabla_Peticiones_Ingreso() {
 
         const estado = 1; // Define el estado para "aceptar"
         try {
-            // Construye la URL para la solicitud
-            const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
-            const data = await response.json(); // Convierte la respuesta en formato JSON
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=9&id=${id}`; // URL para obtener componentes.
+            const response = await fetch(url); // Obteniendo datos de componentes.
+            const data1 = await response.json(); // Analizar la respuesta como JSON.
 
-            // Verifica si la respuesta indica que la operación fue exitosa
-            if (data.rp === 'si') {
-                fetchData(); // Llama a fetchData para refrescar los datos
-                alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+            if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
+                setUsuario([]); // Limpiar componentes si no se encuentran.
                 setLoading(false); // Detiene la animación de carga
             } else {
-                alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
-                setLoading(false); // Detiene la animación de carga
+                setUsuario(data1.rpta); // Almacenar componentes en el estado.
+                try {
+                    // Construye la URL para la solicitud
+                    const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
+                    const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
+                    const data = await response.json(); // Convierte la respuesta en formato JSON
+
+                    // Verifica si la respuesta indica que la operación fue exitosa
+                    if (data.rp === 'si') {
+                        const correo = await (data1.rpta[0].correo); // Obtener el ID del equipo del caso.
+                        fetchData(); // Llama a fetchData para refrescar los datos
+                        alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setLoading(false); // Detiene la animación de carga
+
+
+                        try {
+                            // Realiza una solicitud GET a la API para enviar un correo
+                            const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/peticionAceptado.php?&correo=${correo}`, {
+                                method: 'GET', // Especifica que el método de la solicitud es GET
+                            });
+
+                            // Verifica si la respuesta de la solicitud es exitosa
+                            if (!correorespuesta.ok) {
+                                // Si la respuesta no es exitosa, lanza un error con el estado HTTP
+                                throw new Error(`Error HTTP! Estado: ${correorespuesta.status}`);
+                            }
+
+                            // Convierte la respuesta en formato JSON
+                            const correoRespuesta = await correorespuesta.json();
+
+                            // Verifica el campo 'rp' en la respuesta para determinar el resultado
+                            if (correoRespuesta.rp === "si") {
+                                // Si 'rp' es "si", muestra un mensaje de éxito
+                                alert("El correo se ha enviado con éxito al usuario correspondiente");
+                            } else {
+                                // Si 'rp' no es "si", muestra un mensaje de error indicando que el registro existe
+                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                            }
+                        } catch (error) {
+                            // Maneja cualquier error que ocurra durante la solicitud
+                            alert(`Ocurrió un error: ${error.message}`);
+                        } finally {
+                            // Detiene el loader siempre que termina la operación
+                            setLoading(false);
+                        }
+                    } else {
+                        alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setLoading(false); // Detiene la animación de carga
+                    }
+                } catch (error) {
+                    // Maneja errores en la solicitud
+                    alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setLoading(false); // Detiene la animación de carga
+                }
             }
         } catch (error) {
-            // Maneja errores en la solicitud
-            alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+            console.log("Error al obtener componentes:", error); // Registrar errores si falla la obtención.
             setLoading(false); // Detiene la animación de carga
         }
+
     }
 
     // Función para rechazar una petición
     async function Rechazarpeticion(id) {
         setLoading(true); // Establece 'loading' a true para indicar que se está cargando
 
-        const estado = 2; // Define el estado para "rechazar"
+        const estado = 2; // Define el estado para "aceptar"
         try {
-            // Construye la URL para la solicitud
-            const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
-            const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
-            const data = await response.json(); // Convierte la respuesta en formato JSON
+            const url = `https://instrudev.com/aiameapp/caso/webserviceapp.php?case=9&id=${id}`; // URL para obtener componentes.
+            const response = await fetch(url); // Obteniendo datos de componentes.
+            const data1 = await response.json(); // Analizar la respuesta como JSON.
 
-            // Verifica si la respuesta indica que la operación fue exitosa
-            if (data.rp === 'si') {
-                fetchData(); // Llama a fetchData para refrescar los datos
-                alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+            if (data1.rpta && data1.rpta.length === 1 && data1.rpta[0].rp === "no") {
+                setUsuario([]); // Limpiar componentes si no se encuentran.
                 setLoading(false); // Detiene la animación de carga
             } else {
-                alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
-                setLoading(false); // Detiene la animación de carga
+                setUsuario(data1.rpta); // Almacenar componentes en el estado.
+                try {
+                    // Construye la URL para la solicitud
+                    const url = `https://instrudev.com/aiameapp/caso/casos.php?case=6&id=${id}&estado=${estado}`;
+                    const response = await fetch(url, { method: 'GET' }); // Realiza la solicitud GET
+                    const data = await response.json(); // Convierte la respuesta en formato JSON
+
+                    // Verifica si la respuesta indica que la operación fue exitosa
+                    if (data.rp === 'si') {
+                        const correo = await (data1.rpta[0].correo); // Obtener el ID del equipo del caso.
+                        fetchData(); // Llama a fetchData para refrescar los datos
+                        alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setLoading(false); // Detiene la animación de carga
+
+
+                        try {
+                            // Realiza una solicitud GET a la API para enviar un correo
+                            const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/peticionRechazo.php?&correo=${correo}`, {
+                                method: 'GET', // Especifica que el método de la solicitud es GET
+                            });
+
+                            // Verifica si la respuesta de la solicitud es exitosa
+                            if (!correorespuesta.ok) {
+                                // Si la respuesta no es exitosa, lanza un error con el estado HTTP
+                                throw new Error(`Error HTTP! Estado: ${correorespuesta.status}`);
+                            }
+
+                            // Convierte la respuesta en formato JSON
+                            const correoRespuesta = await correorespuesta.json();
+
+                            // Verifica el campo 'rp' en la respuesta para determinar el resultado
+                            if (correoRespuesta.rp === "si") {
+                                // Si 'rp' es "si", muestra un mensaje de éxito
+                                alert("El correo se ha enviado con éxito al usuario correspondiente");
+                            } else {
+                                // Si 'rp' no es "si", muestra un mensaje de error indicando que el registro existe
+                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                            }
+                        } catch (error) {
+                            // Maneja cualquier error que ocurra durante la solicitud
+                            alert(`Ocurrió un error: ${error.message}`);
+                        } finally {
+                            // Detiene el loader siempre que termina la operación
+                            setLoading(false);
+                        }
+                    } else {
+                        alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setLoading(false); // Detiene la animación de carga
+                    }
+                } catch (error) {
+                    // Maneja errores en la solicitud
+                    alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setLoading(false); // Detiene la animación de carga
+                }
             }
         } catch (error) {
-            // Maneja errores en la solicitud
-            alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+            console.log("Error al obtener componentes:", error); // Registrar errores si falla la obtención.
             setLoading(false); // Detiene la animación de carga
         }
     }
@@ -169,7 +267,8 @@ export default function Tabla_Peticiones_Ingreso() {
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             width: '100%',
-                                            height: '300px' // Aumenta el alto para centrar mejor verticalmente
+                                            marginTop: '130px',
+                                            height: '100%'
                                         }}>
                                             <img src="https://img.icons8.com/ios/100/000000/nothing-found.png" alt="No hay peticiones" style={{ marginBottom: '20px', opacity: 0.8 }} />
                                             <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>No hay peticiones de acceso</span>

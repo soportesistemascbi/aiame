@@ -113,11 +113,12 @@ export default function Anuncios() { // Define el componente funcional
           <div style={{ marginTop: '30px', marginLeft: '133px', display: 'flex', flexDirection: 'row' }}>
             {/* TEXTBOX */}
             <div style={{ textAlign: 'start', justifyContent: 'start' }}>
-              <p>Descripcion</p>
-              <input
-                type="text"
+              <p>Descripción</p>
+              <textarea
                 className='descripcion'
                 id='descripcion'
+                maxLength={500}
+                placeholder='Solo 500 caracteres para la descripcion'
                 style={{
                   width: '800px', height: '350px', padding: '9px', border: 'none',
                   background: '#F5F7FA', borderRadius: '20px', outline: 'none',

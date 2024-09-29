@@ -582,7 +582,8 @@ export default function Historial() {
                                             alignItems: 'center',
                                             justifyContent: 'center',
                                             width: '100%',
-                                            height: '300px'
+                                            marginTop: '130px',
+                                            height: '100%'
                                         }}>
                                             <img src="https://img.icons8.com/ios/100/000000/nothing-found.png" alt="No hay peticiones" style={{ marginBottom: '20px', opacity: 0.8 }} />
                                             <span style={{ fontWeight: 'bold', fontSize: '24px', color: '#333' }}>No hay historial disponibles</span>

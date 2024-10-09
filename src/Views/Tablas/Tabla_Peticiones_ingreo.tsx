@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import MoonLoader from 'react-spinners/MoonLoader';
-
+import Modal from '../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../Components/Alertas/alertaBuena.tsx'
 
 export default function Tabla_Peticiones_Ingreso() {
 
@@ -8,7 +9,41 @@ export default function Tabla_Peticiones_Ingreso() {
     const [usuarios, setUsuarios] = useState([]); // Inicializa el estado 'usuarios' como un array vacío
     const [loading, setLoading] = useState(false); // Inicializa el estado 'loading' como false
     const [usuario, setUsuario] = useState([]); // Estado para almacenar usuarios.
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
 
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const handleClose1 = () => {
+        setOpen(false);
+    };
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
     // Función asíncrona para obtener datos
     const fetchData = async () => {
         setLoading(true); // Establece 'loading' a true para indicar que se está cargando
@@ -62,7 +97,8 @@ export default function Tabla_Peticiones_Ingreso() {
                     if (data.rp === 'si') {
                         const correo = await (data1.rpta[0].correo); // Obtener el ID del equipo del caso.
                         fetchData(); // Llama a fetchData para refrescar los datos
-                        alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setMessage("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setOpen(true);
                         setLoading(false); // Detiene la animación de carga
 
 
@@ -71,7 +107,7 @@ export default function Tabla_Peticiones_Ingreso() {
                             const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/peticionAceptado.php?&correo=${correo}`, {
                                 method: 'GET', // Especifica que el método de la solicitud es GET
                             });
-                            
+
 
                             // Verifica si la respuesta de la solicitud es exitosa
                             if (!correorespuesta.ok) {
@@ -81,30 +117,35 @@ export default function Tabla_Peticiones_Ingreso() {
 
                             // Convierte la respuesta en formato JSON
                             const correoRespuesta = await correorespuesta.json();
-                            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaacorreoRespuesta',correoRespuesta)
+
 
                             // Verifica el campo 'rp' en la respuesta para determinar el resultado
                             if (correoRespuesta.rp === "si") {
                                 // Si 'rp' es "si", muestra un mensaje de éxito
-                                alert("El correo se ha enviado con éxito al usuario correspondiente");
+                                setMessage("El correo se ha enviado con éxito al usuario correspondiente");
+                                setOpen(true);
                             } else {
                                 // Si 'rp' no es "si", muestra un mensaje de error indicando que el registro existe
-                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                                setErrorMessage("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                                setIsOpen(true)
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la solicitud
-                            alert(`Ocurrió un error: ${error.message}`);
+                            setErrorMessage(`Ocurrió un error: ${error.message}`);
+                            setIsOpen(true)
                         } finally {
                             // Detiene el loader siempre que termina la operación
                             setLoading(false);
                         }
                     } else {
-                        alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setErrorMessage("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setIsOpen(true)
                         setLoading(false); // Detiene la animación de carga
                     }
                 } catch (error) {
                     // Maneja errores en la solicitud
-                    alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setErrorMessage("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setIsOpen(true)
                     setLoading(false); // Detiene la animación de carga
                 }
             }
@@ -140,7 +181,8 @@ export default function Tabla_Peticiones_Ingreso() {
                     if (data.rp === 'si') {
                         const correo = await (data1.rpta[0].correo); // Obtener el ID del equipo del caso.
                         fetchData(); // Llama a fetchData para refrescar los datos
-                        alert("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setMessage("Estado actualizado con éxito."); // Muestra un mensaje de éxito
+                        setOpen(true);
                         setLoading(false); // Detiene la animación de carga
 
 
@@ -162,25 +204,30 @@ export default function Tabla_Peticiones_Ingreso() {
                             // Verifica el campo 'rp' en la respuesta para determinar el resultado
                             if (correoRespuesta.rp === "si") {
                                 // Si 'rp' es "si", muestra un mensaje de éxito
-                                alert("El correo se ha enviado con éxito al usuario correspondiente");
+                                setMessage("El correo se ha enviado con éxito al usuario correspondiente");
+                                setOpen(true);
                             } else {
                                 // Si 'rp' no es "si", muestra un mensaje de error indicando que el registro existe
-                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                                setErrorMessage("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario.");
+                                setIsOpen(true)
                             }
                         } catch (error) {
                             // Maneja cualquier error que ocurra durante la solicitud
-                            alert(`Ocurrió un error: ${error.message}`);
+                            setErrorMessage(`Ocurrió un error: ${error.message}`);
+                            setIsOpen(true)
                         } finally {
                             // Detiene el loader siempre que termina la operación
                             setLoading(false);
                         }
                     } else {
-                        alert("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setErrorMessage("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                        setIsOpen(true)
                         setLoading(false); // Detiene la animación de carga
                     }
                 } catch (error) {
                     // Maneja errores en la solicitud
-                    alert("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setErrorMessage("Error al actualizar estado:", error); // Muestra un mensaje de error
+                    setIsOpen(true)
                     setLoading(false); // Detiene la animación de carga
                 }
             }
@@ -193,6 +240,9 @@ export default function Tabla_Peticiones_Ingreso() {
 
     return (
         <>
+            {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+            {isOpen && <Modal message={errorMessage} onClose={handleClose} />}
+            {Open && <Modal1 message={Message} onClose={handleClose1} />}
             <div style={{
                 width: 'calc(3em + 80vw)',
                 height: '85%',

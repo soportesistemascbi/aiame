@@ -6,7 +6,8 @@ import linea from '../../Tablas/icon/linea.svg'; // Importing another icon.
 import persona from '../../Tablas/icon/Ppersona.svg'; // Importing another icon.
 import PC from '../../Tablas/icon/Pc.svg'; // Importing another icon.
 import Hola from '../../Tablas/icon/icon.svg'; // Importing another icon.
-
+import Modal from '../../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../../Components/Alertas/alertaBuena.tsx'
 export default function ReportesSopor() { // Declaring the functional component.
 
     const [caracteristicas_pc, setcaracteristicas_pc] = useState(false); // Estado para alternar la visibilidad de las características de la PC.
@@ -33,6 +34,41 @@ export default function ReportesSopor() { // Declaring the functional component.
     const [idcaso, setIdCaso] = useState([]); // Estado para almacenar ID del caso.
     const [file, setFile] = useState(null); // Estado para almacenar archivo subido.
     const [CasoCaracteristicas, setDatosCasoCracteristicas] = useState([]); // Estado para almacenar características del caso.
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const handleClose1 = () => {
+        setOpen(false);
+    };
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
 
 
     const AbrirCaracteristicas = () => { // Función para alternar la visibilidad de las características de la PC.
@@ -262,27 +298,32 @@ export default function ReportesSopor() { // Declaring the functional component.
 
         // Validaciones
         if (!observacion) { // Comprobar si la observación está vacía.
-            alert('No ha puesto una descripción'); // Alertar al usuario para que proporcione una descripción.
+            setErrorMessage('No ha puesto una descripción'); // Alertar al usuario para que proporcione una descripción.
+            setIsOpen(true)
             setLoading(false); // Establecer el estado de carga en falso.
             return; // Salir de la función.
         }
         if (!file) { // Comprobar si no se ha proporcionado un archivo.
-            alert('No ha puesto una imagen'); // Alertar al usuario para que proporcione una imagen.
+            setErrorMessage('No ha puesto una imagen'); // Alertar al usuario para que proporcione una imagen.
+            setIsOpen(true)
             setLoading(false); // Establecer el estado de carga en falso.
             return; // Salir de la función.
         }
         if (!tipoCaso) { // Comprobar si no se ha seleccionado un tipo de caso.
-            alert('No ha puesto un tipo de caso'); // Alertar al usuario para que seleccione un tipo de caso.
+            setErrorMessage('No ha puesto un tipo de caso'); // Alertar al usuario para que seleccione un tipo de caso.
+            setIsOpen(true)
             setLoading(false); // Establecer el estado de carga en falso.
             return; // Salir de la función.
         }
         if (!estado) { // Comprobar si no se ha seleccionado un estado.
-            alert('No ha puesto un estado para el caso'); // Alertar al usuario para que seleccione un estado.
+            setErrorMessage('No ha puesto un estado para el caso'); // Alertar al usuario para que seleccione un estado.
+            setIsOpen(true)
             setLoading(false); // Establecer el estado de carga en falso.
             return; // Salir de la función.
         }
         if (!id) { // Comprobar si no se ha proporcionado un ID de equipo.
-            alert('No ha puesto un equipo para el caso'); // Alertar al usuario para que proporcione un ID de equipo.
+            setErrorMessage('No ha puesto un equipo para el caso'); // Alertar al usuario para que proporcione un ID de equipo.
+            setIsOpen(true)
             setLoading(false); // Establecer el estado de carga en falso.
             return; // Salir de la función.
         }
@@ -343,9 +384,11 @@ export default function ReportesSopor() { // Declaring the functional component.
                         setSelectedCategorias([]); // Limpiar categorías seleccionadas.
                         setSelectedCategoriasIds([]); // Limpiar IDs de categorías seleccionadas.
                         setFile(null); // Limpiar archivo seleccionado.
-                        alert("Caso reportado con éxito."); // Alertar al usuario del éxito.
+                        setMessage("Caso reportado con éxito."); // Alertar al usuario del éxito.
+                        setOpen(true);
                     } else {
-                        alert('Error al guardar el caso'); // Alertar al usuario si falla el guardado del caso.
+                        setErrorMessage('Error al guardar el caso'); // Alertar al usuario si falla el guardado del caso.
+                        setIsOpen(true)
                     }
                 } catch (error) {
                     console.error("Error al guardar el caso:", error); // Registrar errores si falla el guardado.
@@ -368,6 +411,11 @@ export default function ReportesSopor() { // Declaring the functional component.
     return (
 
         <>
+            {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+            {isOpen && <Modal message={errorMessage} onClose={handleClose} />}
+            {Open && <Modal1 message={Message} onClose={handleClose1} />}
+
+
             {img && (
                 <div style={{
                     position: 'fixed',

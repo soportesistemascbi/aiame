@@ -6,7 +6,8 @@ import reportes from './icon/Reportes.svg'
 import linea from './icon/linea.svg'
 import persona from './icon/Ppersona.svg'
 import { MoonLoader } from 'react-spinners';
-
+import Modal from '../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../Components/Alertas/alertaBuena.tsx'
 export default function Tabla_Equipos_SU() {
 
     // Modal que muestra la información única de cada equipo
@@ -36,6 +37,42 @@ export default function Tabla_Equipos_SU() {
     // Estado para almacenar casos relacionados con los equipos
     const [noHayCasos, setNoHayCasos] = useState(false);
     // Estado para indicar si no hay casos disponibles
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const handleClose1 = () => {
+        setOpen(false);
+    };
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
 
     // Función para obtener los datos de equipos desde la base de datos
     const fetchData = async () => {
@@ -161,14 +198,18 @@ export default function Tabla_Equipos_SU() {
             }
             const data = await response.json();
             if (data.rp === 'si') {
+                setMessage("Estado del equipo cambiado con exito."); // Alertar al usuario del éxito.
+                setOpen(true);
                 fetchData(); // Recarga los datos después de eliminar
                 setLoading(false);
             } else {
-                console.log("No se pudo actualizar el estado.");
+                setErrorMessage("No se pudo actualizar el estado.");
+                setIsOpen(true)
                 setLoading(false);
             }
         } catch (error) {
-            console.log("Error al eliminar usuario:", error);
+            setErrorMessage("Error al cambiar el estado del equipo:", error);
+            setIsOpen(true)
             setLoading(false);
         }
     }
@@ -185,14 +226,19 @@ export default function Tabla_Equipos_SU() {
             }
             const data = await response.json();
             if (data.rp === 'si') {
+
                 fetchData(); // Recarga los datos después de restaurar
                 setLoading(false);
+                setMessage("Estado del equipo cambiado con exito."); // Alertar al usuario del éxito.
+                setOpen(true);
             } else {
-                console.log("No se pudo restaurar el usuario.");
+                setErrorMessage("No se pudo actualizar el estado.");
+                setIsOpen(true)
                 setLoading(false);
             }
         } catch (error) {
-            console.log("Error al restaurar usuario:", error);
+            setErrorMessage("Error al cambiar el estado del equipo:", error);
+            setIsOpen(true)
             setLoading(false);
         }
     }
@@ -200,6 +246,9 @@ export default function Tabla_Equipos_SU() {
     return (
         <>
             {/* Modal de características únicas de cada pc */}
+            {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+            {isOpen && <Modal message={errorMessage} onClose={handleClose} />}
+            {Open && <Modal1 message={Message} onClose={handleClose1} />}
 
             {caracteristicas_pc && (
                 <div style={{

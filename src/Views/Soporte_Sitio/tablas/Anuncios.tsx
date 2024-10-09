@@ -1,12 +1,50 @@
 import React, { useState, useEffect } from 'react'; // Importa React y hooks de estado y efecto
 import MoonLoader from 'react-spinners/MoonLoader'; // Importa un componente de carga
-
+import Modal from '../../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../../Components/Alertas/alertaBuena.tsx'
 export default function Anuncios() { // Define el componente funcional
 
   const [options, setOptions] = useState([]); // Estado para almacenar opciones
   const [selectedOption, setSelectedOption] = useState(null); // Estado para la opción seleccionada
-  const [showAlert_inicio, setShowAlert] = useState(false); // Estado para mostrar alerta
+
   const [loading, setLoading] = useState(false); // Estado de carga
+  const [errorMessage, setErrorMessage] = useState('');
+  const [Message, setMessage] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+  const [Open, setOpen] = useState(false);
+
+
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handleClose1 = () => {
+    setOpen(false);
+  };
+
+  // Manejo de cierre automático del modal
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        setIsOpen(false);
+      }, 3000); // Cierra el modal después de 3 segundos
+
+      return () => clearTimeout(timer); // Limpieza del timer
+    }
+  }, [isOpen]);
+
+  // Manejo de cierre automático del modal
+  useEffect(() => {
+    if (Open) {
+      const timer = setTimeout(() => {
+        setOpen(false);
+      }, 3000); // Cierra el modal después de 3 segundos
+
+      return () => clearTimeout(timer); // Limpieza del timer
+    }
+  }, [Open]);
+
+
 
   useEffect(() => { // Hook para cargar datos al montar el componente
     setLoading(true); // Comienza la animación de carga
@@ -46,7 +84,19 @@ export default function Anuncios() { // Define el componente funcional
     const descripcion = document.getElementById('descripcion').value; // Obtiene la descripción ingresada
     const estado = '1'; // Establece el estado
     const imgId = selectedOption.id; // Obtiene el ID de la imagen seleccionada
-
+    // Verifica si alguno de los campos está vacío.
+    if (!descripcion) {
+      setErrorMessage('Por favor ingrese una descripcion');//le pasamos el mensaje a la alerta 
+      setIsOpen(true);//Activamos la alerta 
+      setLoading(false); // Desactiva el loader.
+      return; // Sale de la función si hay campos vacíos.
+    }
+    if (!imgId) {
+      setErrorMessage('Por favor seleccione una imagen');//le pasamos el mensaje a la alerta 
+      setIsOpen(true);//Activamos la alerta 
+      setLoading(false); // Desactiva el loader.
+      return; // Sale de la función si hay campos vacíos.
+    }
     try {
       // Realiza una solicitud para guardar el anuncio
       const checkResponse = await fetch(`https://instrudev.com/aiameapp/anuncio/anuncio.php?case=1&descripcion=${descripcion}&img=${imgId}&estado=${estado}`);
@@ -56,13 +106,15 @@ export default function Anuncios() { // Define el componente funcional
       const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
       console.log(checkData); // Imprime la respuesta en consola
       if (checkData.rp === 'si') { // Si el anuncio se guardó exitosamente
-        alert('El anuncio ha sido enviado con éxito'); // Alerta de éxito
+        setMessage('El anuncio ha sido enviado con éxito'); // Alerta de éxito
+        setOpen(true);
         window.location.reload(); // Recarga la página
         setLoading(false); // Detiene la animación de carga
       } else {
-        setShowAlert(true); // Muestra alerta si hubo un error
+        setErrorMessage("Error no se pudo subir el anuncio"); // Muestra un mensaje de error
+        setIsOpen(true)
+
         setLoading(false); // Detiene la animación de carga
-        setTimeout(() => setShowAlert(false), 3000); // Oculta la alerta después de 3 segundos
       }
     } catch (error) {
       console.error("Error al guardar el anuncio :", error); // Manejo de errores al guardar el anuncio
@@ -75,11 +127,10 @@ export default function Anuncios() { // Define el componente funcional
   };
   return (
     <>
-      {showAlert_inicio && (
-        <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', color: 'white', background: 'linear-gradient(145deg, #232323, #1e1e1e)', padding: '20px', borderRadius: '10px', zIndex: '9999', }}>
-          Equipo no encontrado, vuelva a intentar.
-        </div>
-      )}
+      {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+      {isOpen && <Modal message={errorMessage} onClose={handleClose} />}
+      {Open && <Modal1 message={Message} onClose={handleClose1} />}
+
 
       <body style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <table

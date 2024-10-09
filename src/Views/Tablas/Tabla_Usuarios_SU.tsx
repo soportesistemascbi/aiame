@@ -1,13 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { MoonLoader } from 'react-spinners';
-
+import Modal from '../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../Components/Alertas/alertaBuena.tsx'
 export default function Tabla_Usuarios_SU() {
     // Inicializa los estados necesarios
     const [usuarios, setUsuarios] = useState([]); // Estado para almacenar la lista de usuarios
     const [busqueda, setBusqueda] = useState(''); // Estado para almacenar el término de búsqueda
     const [loading, setLoading] = useState(false); // Estado para manejar el estado de carga
     const [usuariosFiltrados, setUsuariosFiltrados] = useState([]); // Estado para almacenar los usuarios filtrados
-    console.log(usuarios); // Imprime la lista de usuarios en la consola para depuración
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+    };
+    const handleClose1 = () => {
+        setOpen(false);
+    };
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
 
     // Función que obtiene los datos de los usuarios
     const fetchData = async () => {
@@ -84,13 +119,16 @@ export default function Tabla_Usuarios_SU() {
             }
             const data = await response.json(); // Convierte la respuesta en formato JSON
             if (data.rp === 'si') {
-                alert('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                setMessage('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                setOpen(true);
                 fetchData(); // Recarga los datos después de eliminar
             } else {
-                console.log("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                setErrorMessage("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                setIsOpen(true)
             }
         } catch (error) {
-            console.log("Error al eliminar usuario:", error); // Maneja errores en la solicitud
+            setErrorMessage("Error al eliminar usuario:", error); // Maneja errores en la solicitud
+            setIsOpen(true)
         }
     }
 
@@ -106,19 +144,25 @@ export default function Tabla_Usuarios_SU() {
             }
             const data = await response.json(); // Convierte la respuesta en formato JSON
             if (data.rp === 'si') {
-                alert('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                setMessage('Estado actualizado con éxito.'); // Muestra un mensaje de éxito
+                setOpen(true);
                 fetchData(); // Recarga los datos después de restaurar
             } else {
-                console.log("No se pudo restaurar el usuario."); // Muestra un mensaje de error
+                setErrorMessage("No se pudo actualizar el estado."); // Muestra un mensaje de error
+                setIsOpen(true)
             }
         } catch (error) {
-            console.log("Error al restaurar usuario:", error); // Maneja errores en la solicitud
+            setErrorMessage("Error al restaurar usuario:", error); // Maneja errores en la solicitud
+            setIsOpen(true)
         }
     }
 
 
     return (
         <>
+            {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+            {isOpen && <Modal message={errorMessage} onClose={handleClose} />}
+            {Open && <Modal1 message={Message} onClose={handleClose1} />}
             <div style={{
                 width: 'calc(3em + 80vw)',
                 height: '85%',

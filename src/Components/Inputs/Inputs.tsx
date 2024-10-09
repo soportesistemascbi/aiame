@@ -22,17 +22,17 @@ export function Nombre() {
 
     return (
         <div className="inputGroup">
-            <input type="text" required autoComplete="off" id="name" name="nombre" onKeyDown={handleKeyDown} />
-            <img
-                src={Usuario}
-                alt="Icono de usuario"
+            <input type="text" required autoComplete="off" id="name" name="nombre" onKeyDown={handleKeyDown}
                 style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '10px',
-                    marginTop: '10px'
-                }}
-            />
+                    width: '95%',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                    outline: 'none',
+                    cursor: 'auto'
+                }} />
             <label htmlFor="name">Nombre</label>
         </div>
     );
@@ -52,10 +52,10 @@ export function TipoDocumento() {
     };
 
     return (
-        <div 
-        style={{
-            width:'400px',height:'40px'
-        }}>
+        <div
+            style={{
+                width: '400px', height: '40px'
+            }}>
             <input
                 type="text"
                 required
@@ -68,35 +68,35 @@ export function TipoDocumento() {
                 onClick={(e) => e.currentTarget.nextSibling?.classList.toggle('show')}
 
                 style={{
-                    width:'calc(15em + 8.3vw)',paddingTop:'13px',paddingBottom:'13px',paddingLeft:'40px',
-                    borderRadius:'8px',border:'none',outline:'none'
+                    width: 'calc(15em + 8.3vw)', paddingTop: '13px', paddingBottom: '13px', paddingLeft: '40px',
+                    borderRadius: '8px', border: 'none', outline: 'none'
                 }}
             />
-            
+
             <img
                 src={Cedula}
                 alt="Icono de usuario"
                 style={{
-                    position:'relative',
+                    position: 'relative',
                     top: '-33px',
                     left: '10px',
                 }}
             />
             {mostrarPanel && (
                 <div className="dropdown-content">
-                {tiposDocumento.map((tipo, index) => (
-                    <span key={index} onClick={() => handleTipoDocumentoClick(tipo)} >
-                        <div onClick={togglePanel}
-                            style={{
-                                color: 'black', 
-                                padding:'7px', fontOpticalSizing: 'auto', fontWeight: '600',
-                                display:'flex',justifyContent:'start',transition:'all ease-in-out 300ms',
-                                
+                    {tiposDocumento.map((tipo, index) => (
+                        <span key={index} onClick={() => handleTipoDocumentoClick(tipo)} >
+                            <div onClick={togglePanel}
+                                style={{
+                                    color: 'black',
+                                    padding: '7px', fontOpticalSizing: 'auto', fontWeight: '600',
+                                    display: 'flex', justifyContent: 'start', transition: 'all ease-in-out 300ms',
 
-                            }}>{tipo}</div> 
-                    </span>
-                ))}
-            </div>
+
+                                }}>{tipo}</div>
+                        </span>
+                    ))}
+                </div>
             )}
         </div>
     );
@@ -122,15 +122,15 @@ export function NDocumento() {
                 id="NumeroDoc"
                 name="nombre"
                 onKeyDown={handleKeyDown}
-            />
-            <img
-                src={Numero}
-                alt="Icono de usuario"
                 style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '10px',
-                    marginTop: '10px'
+                    width: '95%',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                    outline: 'none',
+                    cursor: 'auto'
                 }}
             />
             <label htmlFor="name">Numero de documento</label>
@@ -143,20 +143,20 @@ export function Gmail() {
 
     return (
         <div className="inputGroup"
-        style={{
-            marginTop:'2px'
-        }}>
-            <input type="e-mail" required autoComplete="off" id="e-mail" name="e-mail"  />
-            <img
-                src={Correo}
-                alt="Icono de usuario"
+            style={{
+                marginTop: '2px'
+            }}>
+            <input type="e-mail" required autoComplete="off" id="e-mail" name="e-mail"
                 style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '10px',
-                    marginTop: '10px'
-                }}
-            />
+                    width: '95%',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                    outline: 'none',
+                    cursor: 'auto'
+                }} />
             <label htmlFor="name">Correo electronico</label>
         </div>
     );
@@ -182,15 +182,15 @@ export function NumeroTelefono() {
                 id="telefono"
                 name="nombre"
                 onKeyDown={handleKeyDown}
-            />
-            <img
-                src={Numero}
-                alt="Icono de usuario"
                 style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '10px',
-                    marginTop: '10px'
+                    width: '95%',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    border: '1px solid #ccc',
+                    fontSize: '16px',
+                    transition: 'border-color 0.3s',
+                    outline: 'none',
+                    cursor: 'auto'
                 }}
             />
             <label htmlFor="name">Numero de telefono</label>
@@ -201,7 +201,7 @@ export function NumeroTelefono() {
 
 //--------------------------------------------------------------------------------------------
 export function Contraseña() {
-    
+
     return (
         <div className="inputGroup">
             <input
@@ -210,17 +210,20 @@ export function Contraseña() {
                 autoComplete="off"
                 id="contraseña"
                 name="nombre"
-               
-            />
-            <img
-                src={Contraseñas}
-                alt="Icono de usuario"
-                style={{
-                    position: 'absolute',
-                    top: '-2px',
-                    left: '10px',
-                    marginTop: '10px'
-                }}
+                style={
+                    {
+
+                        width: '95%',
+                        padding: '10px',
+                        borderRadius: '5px',
+                        border: '1px solid #ccc',
+                        fontSize: '16px',
+                        transition: 'border-color 0.3s',
+                        outline: 'none',
+                        cursor: 'auto'
+                    }
+                }
+
             />
             <label htmlFor="name">Contraseña</label>
         </div>

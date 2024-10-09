@@ -9,7 +9,9 @@ import Seguridad from './CV_icon/Seguridad.svg'
 import { Link, useNavigate } from 'react-router-dom';
 import { Aceptar, Cancelar } from '../../../Components/Botones/Botones';
 import MoonLoader from 'react-spinners/MoonLoader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Modal from '../../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../../Components/Alertas/alertaBuena.tsx'
 
 
 
@@ -19,7 +21,43 @@ export default function Codigo_Vef() {
 
     const navigate = useNavigate(); // Hook de React Router para navegar entre rutas
     const [loading, setLoading] = useState(false); // Estado para manejar la animación de carga
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
 
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+      };
+      const handleClose1 = () => {
+        setOpen(false);
+      };
+
+       // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
+    
+    
     // Función que se ejecuta al enviar el formulario
     const handleSubmit = async (e) => {
         e.preventDefault(); // Previene el comportamiento predeterminado del formulario
@@ -29,7 +67,8 @@ export default function Codigo_Vef() {
         // Expresión regular para validar el formato de correo electrónico
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(correo)) { // Verifica si el correo es válido
-            alert("Por favor ingresa un correo electrónico válido."); // Muestra alerta si el correo no es válido
+            setErrorMessage("Por favor ingresa un correo electrónico válido."); // Muestra alerta si el correo no es válido
+            setIsOpen(true)
             return; // Termina la función si el correo no es válido
         }
     }
@@ -56,16 +95,19 @@ export default function Codigo_Vef() {
             console.log("Respuesta del servidor:", data); // Imprime la respuesta del servidor en la consola
 
             if (data.rp === 'si') { // Verifica si el código fue verificado con éxito
-                alert('Código verificado con éxito'); // Muestra un mensaje de éxito
+                setMessage('Código verificado con éxito'); // Muestra un mensaje de éxito
+                setOpen(true)
                 navigate('/NuevaContraseña'); // Navega a la ruta para establecer una nueva contraseña
                 setLoading(false); // Detiene la animación de carga
             } else {
-                alert(data.mensaje); // Muestra el mensaje de error recibido del servidor
+                setErrorMessage(data.mensaje); // Muestra el mensaje de error recibido del servidor
+                setIsOpen(true)
                 setLoading(false); // Detiene la animación de carga
             }
         } catch (error) {
             console.error('Error al verificar el código:', error); // Imprime el error en la consola
-            alert('Ocurrió un error al procesar la solicitud.'); // Muestra un mensaje de error al usuario
+            setErrorMessage('Ocurrió un error al procesar la solicitud.'); // Muestra un mensaje de error al usuario
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
         }
     };
@@ -74,6 +116,12 @@ export default function Codigo_Vef() {
 
     return (
         <>
+
+        {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+
+        {isOpen && <Modal message={errorMessage} onClose={handleClose}/>}
+        {Open && <Modal1 message={Message} onClose={handleClose1}/>}
+
 
             <div className="fondo1">
                 <div className='container'
@@ -99,12 +147,7 @@ export default function Codigo_Vef() {
                         }}>Ingrese su código de verificación </h1>
                     <div className="inputGroup">
                         <input type="e-mail" required autoComplete="off" id="name" onSubmit={handleSubmit} />
-                        <img src={Seguridad}
-                            style={{
-                                position: 'absolute',
-                                top: '0px', left: '10px',
-                                marginTop: '10px'
-                            }} />
+                       
                         <label htmlFor="name"> Código verificación </label>
                     </div>
                     <div

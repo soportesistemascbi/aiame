@@ -58,10 +58,10 @@ body {
 .inputGroup label {
   font-size: 90%;
   position: absolute;
+  text-align: start;
   left: 0;
   padding: 0.8em;
-  margin-top: -43px;
-  margin-left: 2em;
+  margin-top: -40px;
   pointer-events: none;
   transition: all 0.3s ease;
   color: rgb(131, 131, 131);

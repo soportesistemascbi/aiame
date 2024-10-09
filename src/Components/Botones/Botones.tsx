@@ -48,11 +48,11 @@ export function Registrarme() {
         <>
             <button
                 style={{
-                    width: '130px', padding: '12px',
+                   width: '130px', padding: '12px',height:'40px',
                     borderRadius: '5px', border: 'none',
                     background: '#096ECB', color: 'white',
-                    marginTop: '25px', cursor: 'pointer',
-                    marginLeft: '10px'
+                    marginTop: '35px', cursor: 'pointer',
+                    textAlign: 'center'
                 }}>Registrarme
             </button>
         </>
@@ -68,6 +68,7 @@ export function Atras() {
                     borderRadius: '5px', border: 'none',
                     background: 'red', color: 'white',
                     marginTop: '25px', cursor: 'pointer',
+                    textAlign: 'center'
                 }}>Atras</button>
         </>
     )

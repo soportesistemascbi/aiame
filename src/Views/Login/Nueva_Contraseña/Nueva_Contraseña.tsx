@@ -10,7 +10,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Cancelar } from '../../../Components/Botones/Botones';
 import bcrypt from 'bcryptjs'; // Importa bcryptjs
 import MoonLoader from 'react-spinners/MoonLoader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Modal from '../../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../../Components/Alertas/alertaBuena.tsx'
 
 
 
@@ -19,6 +21,45 @@ export default function NuevaContraseña() {
     const [loading, setLoading] = useState(false); // Estado para manejar la animación de carga
     const navigate = useNavigate(); // Hook de React Router para navegar entre rutas
     const bcrypt1 = bcrypt; // Asigna bcrypt a una variable para usar en la función
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+      };
+      const handleClose1 = () => {
+        setOpen(false);
+      };
+
+       // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
+
+
+
+
 
     // Función que se ejecuta al enviar el formulario para cambiar la contraseña
     const cambiarContrasena = async (e) => {
@@ -37,7 +78,8 @@ export default function NuevaContraseña() {
 
         // Valida la longitud de la contraseña
         if (contraseña.length < 8) {
-            alert("La contraseña debe tener 8 dígitos."); // Muestra un mensaje si la contraseña es corta
+            setErrorMessage("La contraseña debe tener 8 dígitos.");
+            setIsOpen(true) // Muestra un mensaje si la contraseña es corta
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
@@ -50,35 +92,40 @@ export default function NuevaContraseña() {
 
         // Verifica si la contraseña contiene al menos una letra mayúscula
         if (!mayuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra mayúscula.");
+            setErrorMessage("La contraseña debe contener al menos una letra mayúscula.");
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
 
         // Verifica si la contraseña contiene al menos una letra minúscula
         if (!minuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra minúscula.");
+            setErrorMessage("La contraseña debe contener al menos una letra minúscula.");
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
 
         // Verifica si la contraseña contiene al menos un número
         if (!numeros.test(contraseña)) {
-            alert("La contraseña debe contener al menos un número.");
+            setErrorMessage("La contraseña debe contener al menos un número.");
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
 
         // Verifica si la contraseña contiene al menos un carácter especial
         if (!especial.test(contraseña)) {
-            alert("La contraseña debe contener al menos un carácter especial.");
+            setErrorMessage("La contraseña debe contener al menos un carácter especial.");
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
 
         // Verifica si las contraseñas ingresadas en ambos campos son iguales
         if (contraseña != contraseña1) {
-            alert("La contraseña debe ser la misma en ambos campos.");
+            setErrorMessage("La contraseña debe ser la misma en ambos campos.");
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
             return; // Termina la función
         }
@@ -98,15 +145,18 @@ export default function NuevaContraseña() {
             console.log("Respuesta del servidor:", data); // Imprime la respuesta en la consola
 
             if (data.rp === 'si') { // Verifica si la operación fue exitosa
-                alert('Contraseña cambiada con éxito'); // Muestra un mensaje de éxito
+                setMessage('Contraseña cambiada con éxito'); // Muestra un mensaje de éxito
+                setOpen(true)
                 navigate('/'); // Navega a la ruta principal
                 setLoading(false); // Detiene la animación de carga
             } else {
-                alert(data.mensaje); // Muestra el mensaje de error recibido del servidor
+                setErrorMessage(data.mensaje);
+                setIsOpen(true) // Muestra el mensaje de error recibido del servidor
             }
         } catch (error) {
             console.error('Error al verificar el código:', error); // Imprime el error en la consola
-            alert('Ocurrió un error al procesar la solicitud.'); // Muestra un mensaje de error al usuario
+            setErrorMessage('Ocurrió un error al procesar la solicitud.'); // Muestra un mensaje de error al usuario
+            setIsOpen(true)
             setLoading(false); // Detiene la animación de carga
         }
     };
@@ -114,6 +164,13 @@ export default function NuevaContraseña() {
 
     return (
         <>
+
+        {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+
+        {isOpen && <Modal message={errorMessage} onClose={handleClose}/>}
+        {Open && <Modal1 message={Message} onClose={handleClose1}/>}
+
+
 
             <div className="fondo1">
                 <div className='container'
@@ -137,24 +194,20 @@ export default function NuevaContraseña() {
                             fontVariationSettings: '"wdth" 100',
                             fontSize: '40px'
                         }}>Ingrese su nueva contraseña </h1>
+
+
                     <div className="inputGroup">
-                        <input type="password" required autoComplete="off" id="name" />
-                        <img src={Contra}
-                            style={{
-                                position: 'absolute',
-                                top: '0px', left: '10px',
-                                marginTop: '10px'
-                            }} />
+
+                        <input type="password" required autoComplete="off" id="name"
+                            
+                         />
+                        
                         <label htmlFor="name"> Contraseña Nueva</label>
                     </div>
                     <div className="inputGroup">
-                        <input type="password" required autoComplete="off" id="name2" />
-                        <img src={Contra}
-                            style={{
-                                position: 'absolute',
-                                top: '0px', left: '10px',
-                                marginTop: '10px'
-                            }} />
+                        <input type="password" required autoComplete="off" id="name2"
+                            />
+                       
                         <label htmlFor="name"> Confirmar contraseña</label>
                     </div>
                     <div

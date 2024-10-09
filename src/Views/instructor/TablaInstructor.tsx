@@ -4,6 +4,11 @@ import "slick-carousel/slick/slick.css"; // Importa estilos para el carrusel
 import "slick-carousel/slick/slick-theme.css"; // Importa estilos temáticos para el carrusel
 import "./carrusel.css"; // Importa estilos personalizados para el carrusel
 import { MoonLoader } from 'react-spinners'; // Importa un componente de carga
+import Modal from '../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../Components/Alertas/alertaBuena.tsx'
+
+
+
 
 export default function TablaInstructor() { // Define el componente funcional
     const [casos, setCasos] = useState([]); // Estado para almacenar casos
@@ -19,6 +24,42 @@ export default function TablaInstructor() { // Define el componente funcional
     const [Reporte, setReporte] = useState(false); // Estado para mostrar reporte
     const fileInputRef = useRef(null); // Referencia para el input de archivo
     const [file, setFile] = useState(null); // Estado para almacenar el archivo seleccionado
+
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
+
+
+
+    const handleClose = () => {
+        setIsOpen(false);
+      };
+      const handleClose1 = () => {
+        setOpen(false);
+      };
+
+       // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
+
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
+
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
 
 
     const fetchCasos = async () => { // Función asíncrona para obtener casos
@@ -135,7 +176,8 @@ export default function TablaInstructor() { // Define el componente funcional
         const dato = document.getElementById('serial_pc').value; // Obtiene el valor del serial del PC
 
         if (!dato) { // Verifica si se ingresó un serial
-            alert("Por favor ingrese el serial o la placa del equipo o componente "); // Alerta si falta el serial
+            setErrorMessage("Por favor ingrese el serial o la placa del equipo o componente "); // Alerta si falta el serial
+            setIsOpen(true)
             setLoading(false); // Desactiva el estado de carga
             return; // Sale de la función
         }
@@ -158,7 +200,8 @@ export default function TablaInstructor() { // Define el componente funcional
 
                 // Verifica si faltan datos requeridos
                 if (!tipoCaso || !idEquipo || !descripcion || !file) {
-                    alert("Faltan datos requeridos. Revise los datos que usted ha ingresado."); // Alerta si faltan datos
+                    setErrorMessage("Faltan datos requeridos. Revise los datos que usted ha ingresado."); // Alerta si faltan datos
+                    setIsOpen(true)
                     setLoading(false); // Desactiva el estado de carga
                     return; // Sale de la función
                 }
@@ -184,7 +227,8 @@ export default function TablaInstructor() { // Define el componente funcional
                     try {
                         const data = JSON.parse(text); // Intenta parsear la respuesta a JSON
                         if (data.rpta[0].rp === 'si') { // Si el reporte fue exitoso
-                            alert("Caso reportado con éxito."); // Alerta de éxito
+                            setMessage("Caso reportado con éxito."); // Alerta de éxito
+                            setOpen(true)
                             AbrirCaracteristicas(); // Llama a la función para abrir características
                             const correo = localStorage.getItem('correo'); // Obtiene el correo del usuario
                             fetchCasos(); //recargamos la consulta
@@ -198,10 +242,12 @@ export default function TablaInstructor() { // Define el componente funcional
 
                             // Verifica la respuesta del envío de correo
                             if (correoRespuesta.rp === "si") {
-                                alert("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito
+                                setMessage("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito
+                                setOpen(true)
                                 setLoading(false); // Desactiva el estado de carga
                             } else {
-                                alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario."); // Alerta de fallo en el envío
+                                setMessage("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario."); // Alerta de fallo en el envío
+                                setOpen(true)
                                 setLoading(false); // Desactiva el estado de carga
                             }
                             setSelectedCategorias([]); // Reinicia categorías seleccionadas
@@ -217,7 +263,8 @@ export default function TablaInstructor() { // Define el componente funcional
                     console.error("Error al subir el caso:", error); // Manejo de errores al enviar el caso
                 }
             } else {
-                setShowAlert(true); // Muestra alerta si el serial no existe
+                setErrorMessage("El equipo no se encuentra")
+                setIsOpen(true)
                 setTimeout(() => setShowAlert(false), 3000); // Oculta la alerta después de 3 segundos
             }
         } catch (error) {
@@ -235,18 +282,13 @@ export default function TablaInstructor() { // Define el componente funcional
     return (
         <>
 
+        {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+
+        {isOpen && <Modal message={errorMessage} onClose={handleClose}/>}
+        {Open && <Modal1 message={Message} onClose={handleClose1}/>}
 
 
-
-            {showAlert_inicio && (
-                <div style={{
-                    position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-                    color: 'white', background: 'linear-gradient(145deg, #232323, #1e1e1e)', padding: '20px',
-                    borderRadius: '10px', zIndex: '9999', textAlign: 'center'
-                }}>
-                    Equipo no encontrado, vuelva a intentar.
-                </div>
-            )}
+            
 
             {Reporte && (
                 <div style={{
@@ -295,7 +337,8 @@ export default function TablaInstructor() { // Define el componente funcional
                                             value={selectedCategorias.join(', ')}
                                             style={{
                                                 width: '100%', padding: '12px', marginBottom: '10px',
-                                                borderRadius: '10px', outline: 'none', textAlign: 'center', border: '1px solid #ccc'
+                                                borderRadius: '10px', outline: 'none', textAlign: 'center', border: '1px solid #ccc',
+                                                cursor: 'pointer'
                                             }}
                                             id="clase_categoria"
                                         />

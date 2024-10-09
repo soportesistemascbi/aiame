@@ -71,6 +71,7 @@ export default function Tabla_Peticiones_Ingreso() {
                             const correorespuesta = await fetch(`https://instrudev.com/aiameapp/correo/peticionAceptado.php?&correo=${correo}`, {
                                 method: 'GET', // Especifica que el método de la solicitud es GET
                             });
+                            
 
                             // Verifica si la respuesta de la solicitud es exitosa
                             if (!correorespuesta.ok) {
@@ -80,6 +81,7 @@ export default function Tabla_Peticiones_Ingreso() {
 
                             // Convierte la respuesta en formato JSON
                             const correoRespuesta = await correorespuesta.json();
+                            console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaacorreoRespuesta',correoRespuesta)
 
                             // Verifica el campo 'rp' en la respuesta para determinar el resultado
                             if (correoRespuesta.rp === "si") {

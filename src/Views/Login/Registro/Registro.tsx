@@ -2,12 +2,14 @@
 import './Registro.css';
 import Logo from '../../../Img/Logo.png';
 import Mujer from './Img/Mujer.svg';
-import { Contraseña, Gmail, NDocumento, Nombre, NumeroTelefono, RContraseña } from '../../../Components/Inputs/Inputs';
-import { Registrarme, Atras } from '../../../Components/Botones/Botones';
+import { Contraseña, Gmail, NDocumento, Nombre, NumeroTelefono } from '../../../Components/Inputs/Inputs';
+import { Registrarme, Atras } from '../../../Components/Botones/Botones.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import bcrypt from 'bcryptjs'; // Importa bcryptjs
 import MoonLoader from 'react-spinners/MoonLoader';
+import Modal from '../../../Components/Alertas/alertaMala.tsx';
+import Modal1 from '../../../Components/Alertas/alertaBuena.tsx'
 
 
 export default function Registro() {
@@ -18,6 +20,8 @@ export default function Registro() {
     const [selectedDocumentoIds, setSelectedDocumentosIds] = useState([]); // IDs de documentos seleccionados
     const [error, setError] = useState(""); // Estado para manejar errores
     const [loading, setLoading] = useState(false); // Estado para controlar el loader
+    const [errorMessage, setErrorMessage] = useState('');
+    const [Message, setMessage] = useState('');
 
     const [tipoCargo, setCargo] = useState([]); // Estado para los tipos de cargo
     const [selectedCargo, setSelectedCargo] = useState([]); // Estado para el cargo seleccionado
@@ -25,12 +29,23 @@ export default function Registro() {
     const [selectedCargoId, setSelectedCargoIds] = useState([]); // IDs de cargos seleccionados
     const navigate = useNavigate(); // Hook para navegación
     const bcrypt1 = bcrypt; // Importación de bcrypt para la encriptación de contraseñas
+    const [isOpen, setIsOpen] = useState(false);
+    const [Open, setOpen] = useState(false);
 
     // useEffect para cargar los tipos de documento y cargo al montar el componente
     useEffect(() => {
         fetchDocumento(); // Llama a la función para obtener documentos
         fetchCargo(); // Llama a la función para obtener cargos
     }, []);
+
+    //CONSTANTES QUE PERMITEN EL CIERRE DE LOS MODALES DE LAS ALERTAS
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const handleClose1 = () => {
+    setOpen(false);
+  };
 
     // Función para obtener tipos de documentos
     const fetchDocumento = () => {
@@ -107,50 +122,59 @@ export default function Registro() {
 
         // Validaciones de entrada
         if (!nombre || !noDoc || !telefono || !correo || !contraseña) {
-            alert("Por favor completa todos los campos."); // Alerta si falta algún campo
+            setErrorMessage("Por favor completa todos los campos."); // Alerta si falta algún campo
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         // Validaciones de longitud del número de documento
         if (tipoDocumento === "1" && noDoc.length !== 10) {
-            alert("Su número de documento debe tener una longitud de 10 dígitos."); // Alerta si la longitud es incorrecta
+            setErrorMessage("Su número de documento debe tener una longitud de 10 dígitos."); // Alerta si la longitud es incorrecta
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         } else if (tipoDocumento === "3" && noDoc.length !== 6) {
-            alert("Su número de documento debe tener una longitud de 6 dígitos."); // Alerta si la longitud es incorrecta
+            setErrorMessage("Su número de documento debe tener una longitud de 6 dígitos."); // Alerta si la longitud es incorrecta
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         } else if (tipoDocumento === "2" && noDoc.length !== 9) {
-            alert("Su número de documento debe tener una longitud de 9 dígitos."); // Alerta si la longitud es incorrecta
+            setErrorMessage("Su número de documento debe tener una longitud de 9 dígitos."); // Alerta si la longitud es incorrecta
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         } else if (!tipoDocumento) {
-            alert("Debe de elegir un tipo de documento"); // Alerta si no se selecciona un tipo de documento
+            setErrorMessage("Debe de elegir un tipo de documento"); // Alerta si no se selecciona un tipo de documento
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (!idRol) {
-            alert("Debe de elegir un cargo"); // Alerta si no se selecciona un cargo
+            setErrorMessage("Debe de elegir un cargo"); // Alerta si no se selecciona un cargo
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
         if (telefono.length !== 10) {
-            alert("El teléfono debe tener 10 dígitos."); // Alerta si la longitud del teléfono es incorrecta
+            setErrorMessage("El teléfono debe tener 10 dígitos."); // Alerta si la longitud del teléfono es incorrecta
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar correos
         if (!emailPattern.test(correo)) {
-            alert("Por favor ingresa un correo electrónico válido."); // Alerta si el correo no es válido
+            setErrorMessage("Por favor ingresa un correo electrónico válido."); // Alerta si el correo no es válido
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (contraseña.length < 8) {
-            alert("La contraseña debe tener al menos 8 dígitos."); // Alerta si la contraseña es demasiado corta
+            setErrorMessage("La contraseña debe tener al menos 8 dígitos."); // Alerta si la contraseña es demasiado corta
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
@@ -162,31 +186,37 @@ export default function Registro() {
         const numeros = /\d/;
 
         if (!mayuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra mayúscula."); // Alerta si falta una letra mayúscula
+            setErrorMessage("La contraseña debe contener al menos una letra mayúscula."); // Alerta si falta una letra mayúscula
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (!minuscula.test(contraseña)) {
-            alert("La contraseña debe contener al menos una letra minúscula."); // Alerta si falta una letra minúscula
+            setErrorMessage("La contraseña debe contener al menos una letra minúscula."); // Alerta si falta una letra minúscula
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (!numeros.test(contraseña)) {
-            alert("La contraseña debe contener al menos un número."); // Alerta si falta un número
+            setErrorMessage("La contraseña debe contener al menos un número."); // Alerta si falta un número
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (!especial.test(contraseña)) {
-            alert("La contraseña debe contener al menos un carácter especial."); // Alerta si falta un carácter especial
+            setErrorMessage("La contraseña debe contener al menos un carácter especial."); // Alerta si falta un carácter especial
+            setIsOpen(true); // Alerta si ya están registrados
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
 
         if (contraseña !== contraseña1) { // Comparación correcta de contraseñas
-            alert("Las contraseñas no coinciden."); // Alerta si las contraseñas no coinciden
+            setErrorMessage('Las contraseñas no coinciden');
+
+            setIsOpen(true); // Alerta si las contraseñas no coinciden
             setLoading(false); // Detiene el loader
             return; // Termina la función
         }
@@ -200,7 +230,8 @@ export default function Registro() {
             const checkData = await checkResponse.json(); // Convierte la respuesta a JSON
 
             if (checkData.rp === "si") {
-                alert("El correo o documento ya están registrados. Por favor utiliza otros datos."); // Alerta si ya están registrados
+                setErrorMessage('Los datos ya existen en la base de datos. Vuelva a inicio de sesión');
+                setIsOpen(true); // Alerta si ya están registrados
                 setLoading(false); // Detiene el loader
                 return; // Termina la función
             } else {
@@ -244,10 +275,13 @@ export default function Registro() {
                         console.log(correoRespuesta)
                         // Maneja la respuesta del envío de correo
                         if (correoRespuesta.rp === "si") {
-                            alert("El correo se ha enviado con éxito. Revise su bandeja de entrada."); // Alerta de éxito
+                            5
+                            setMessage('Se ha enviado un correo al e-mail otorgado. Revise su bandeja de entrada.');
+                            setOpen(true); // Alerta de éxito
                             setLoading(false); // Detiene el loader
                         } else {
-                            alert("El correo no se ha podido enviar, pero su registro existe. Consulte con el Super Usuario."); // Alerta si no se envió el correo
+                            setMessage('El correo no se pudo enviar, pero su registro existe. Consulte con el Super Usuario o administrador.');
+                            setOpen(true); // Alerta si no se envió el correo
                             setLoading(false); // Detiene el loader
                         }
 
@@ -264,19 +298,48 @@ export default function Registro() {
             }
         } catch (error) {
             console.error("Error al verificar el correo y documento en la base de datos:", error); // Imprime error en la consola
-            setError("Error al verificar el correo y documento en la base de datos"); // Establece mensaje de error
+            setErrorMessage('Error al verificar el correo y documento en la base de datos:');
+            setIsOpen(true); // Establece mensaje de error
             setLoading(false); // Detiene el loader
         }
     };
 
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (isOpen) {
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
 
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [isOpen]);
 
+    // Manejo de cierre automático del modal
+    useEffect(() => {
+        if (Open) {
+            const timer = setTimeout(() => {
+                setOpen(false);
+            }, 3000); // Cierra el modal después de 3 segundos
 
+            return () => clearTimeout(timer); // Limpieza del timer
+        }
+    }, [Open]);
 
 
 
     return (
         <>
+
+            {/*        ALERTAS/RESPUESTAS DE LAS VALIDACIONES        */}
+
+            {isOpen && <Modal message={errorMessage} onClose={handleClose}/>}
+            {Open && <Modal1 message={Message} onClose={handleClose1}/>}
+
+
+
+
+
             <div className="Registro"
                 style={{
                     width: '100%', height: '100vh',
@@ -290,6 +353,8 @@ export default function Registro() {
                         <p>Accede a todos los reportes y anuncios</p>
 
                         <Nombre />
+
+
                         {/* Document and Role Selectors */}
                         <div className="inputGroup">
 
@@ -299,7 +364,16 @@ export default function Registro() {
                                 onFocus={() => setShowDocumentos(true)}
                                 readOnly
                                 value={selectedDocumento.join(', ')}
-
+                                style={{
+                                    width: '95%',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                    fontSize: '16px',
+                                    transition: 'border-color 0.3s',
+                                    outline: 'none',
+                                    cursor:'pointer'
+                                }}
                                 id="clase_categoria"
                                 className="placeholder-style"
                             />
@@ -314,16 +388,24 @@ export default function Registro() {
                                 onClick={() => setShowDocumentos(false)}
                                 id="tipoDocumento"
                                 style={{
+                                    display: showDocumentos ? 'block' : 'none',
                                     position: 'absolute',
                                     top: '100%',
                                     left: '0',
                                     zIndex: '1',
                                     width: '100%',
-                                    display: showDocumentos ? 'block' : 'none',
-                                    textAlign: 'center',
+                                    height: '75px',
+                                    textAlign: 'start',
                                     backgroundColor: 'white',
-                                    scrollbarWidth: 'none',
-                                    color: 'black'
+                                    borderRadius: '10px',
+                                    padding: '10px',
+                                    margin: '0',
+                                    listStyle: 'none',
+                                    flexDirection: 'column',
+                                    overflowY: 'auto',
+                                    whiteSpace: 'nowrap',
+                                    color: 'black',
+                                    
                                 }}
                             >
                                 {tipoDocumento.map(Caso => (
@@ -338,16 +420,6 @@ export default function Registro() {
 
 
 
-
-
-
-
-
-
-
-
-
-
                         <div className="inputGroup">
 
                             <input
@@ -356,9 +428,18 @@ export default function Registro() {
                                 onFocus={() => setShowCargos(true)}
                                 readOnly
                                 value={selectedCargo.join(', ')}
-
                                 id="clase_categoria"
                                 className="placeholder-style"
+                                style={{
+                                    width: '95%',
+                                    padding: '10px',
+                                    borderRadius: '5px',
+                                    border: '1px solid #ccc',
+                                    fontSize: '16px',
+                                    transition: 'border-color 0.3s',
+                                    outline: 'none',
+                                    cursor:'pointer'
+                                }}
                             />
                             <select
                                 multiple
@@ -371,11 +452,18 @@ export default function Registro() {
                                     left: '0',
                                     zIndex: '1',
                                     width: '100%',
+                                    height: '75px',
                                     display: showCargo ? 'block' : 'none',
-                                    textAlign: 'center',
+                                    textAlign: 'start',
                                     backgroundColor: 'white',
-                                    scrollbarWidth: 'none',
-                                    color: 'black'
+                                    borderRadius: '10px',
+                                    padding: '10px',
+                                    margin: '0',
+                                    listStyle: 'none',
+                                    flexDirection: 'column',
+                                    overflowY: 'auto',
+                                    whiteSpace: 'nowrap',
+                                    color: 'black',
                                 }}
                             >
                                 {tipoCargo.map(Caso => (
@@ -384,6 +472,7 @@ export default function Registro() {
                                     </option>
                                 ))}
                             </select>
+
                         </div>
 
                         <NDocumento />
@@ -392,7 +481,23 @@ export default function Registro() {
                         <Contraseña />
 
                         <div className="inputGroup">
-                            <input type="password" id="name1" required placeholder="Confirmar Contraseña" />
+                            <input
+                         style={{
+                             padding: '10px',
+                            borderRadius: '5px',
+                            border: '1px solid #ccc',
+                            fontSize: '16px',
+                            transition: 'border-color 0.3s',
+                            outline: 'none',
+                            cursor: 'auto'
+                        }}
+                                type="password"
+                                required
+                                autoComplete="off"
+                                id="name1"
+                                name="nombre"
+                            />
+                            <label htmlFor="name" >Confirmar contraseña</label>
                         </div>
 
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>

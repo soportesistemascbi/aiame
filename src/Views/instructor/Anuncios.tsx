@@ -120,7 +120,7 @@ export default function Anuncios() { // Definición del componente Anuncios
                 justifyContent: 'start',
                 textAlign: 'center',
                 position: 'fixed',
-                bottom: '30px',
+                bottom: 'calc(40px + (101vh - 100%))',
                 left: '96%',
                 transform: 'translateX(-98%) translateX(-4px)',
                 zIndex: '1',

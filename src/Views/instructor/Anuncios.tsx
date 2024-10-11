@@ -110,7 +110,7 @@ export default function Anuncios() { // Definición del componente Anuncios
 
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '80%',
+                height: '85%',
                 background: 'white',
                 boxShadow: '1px 1px 5px 1px #cccccc',
                 borderRadius: '10px',
@@ -120,7 +120,7 @@ export default function Anuncios() { // Definición del componente Anuncios
                 justifyContent: 'start',
                 textAlign: 'center',
                 position: 'fixed',
-                bottom: 'calc(40px + (101vh - 100%))',
+                bottom: '30px',
                 left: '96%',
                 transform: 'translateX(-98%) translateX(-4px)',
                 zIndex: '1',

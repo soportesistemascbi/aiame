@@ -295,7 +295,7 @@ export default function TablaInstructor() { // Define el componente funcional
             {Reporte && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
+                    maxHeight: isMobile ? '70vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
@@ -305,7 +305,7 @@ export default function TablaInstructor() { // Define el componente funcional
                     justifyContent: 'start',
                     textAlign: 'center',
                     position: 'fixed',
-                    bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
+                    bottom: isMobile ? '7%' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                     left: '96%',
                     transform: 'translateX(-98%) translateX(-4px)',
                     zIndex: '5',
@@ -490,7 +490,7 @@ export default function TablaInstructor() { // Define el componente funcional
 
             <div style={{
                 width: 'calc(3em + 80vw)',
-                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
+                maxHeight: isMobile ? '70vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                 background: 'white',
                 boxShadow: '1px 1px 5px 1px #cccccc',
                 borderRadius: '10px',
@@ -500,7 +500,7 @@ export default function TablaInstructor() { // Define el componente funcional
                 justifyContent: 'start',
                 textAlign: 'center',
                 position: 'fixed',
-                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
+                bottom: isMobile ? '7%' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                 left: '96%',
                 transform: 'translateX(-98%) translateX(-4px)',
                 zIndex: '1',

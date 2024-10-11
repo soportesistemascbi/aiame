@@ -1023,7 +1023,7 @@ export default function ReportesSopor() { // Declaring the functional component.
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'fixed',
-                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
+                bottom: isMobile ? '5vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                 left: '96%',  // Centrar la tabla en el eje horizontal
                 transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
                 zIndex: '3'

@@ -76,7 +76,7 @@ export default function tablaHistorial() { // Define el componente funcional
             <table
                 style={{
                     width: 'calc(3em + 80vw)',
-                    height: '85%',
+                    height: '80%',
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',

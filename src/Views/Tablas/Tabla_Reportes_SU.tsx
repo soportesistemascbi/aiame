@@ -73,7 +73,7 @@ export default function Tabla_Reportes_SU() {
         <>
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '85%',
+                height: '80%',
                 background: 'white',
                 margin: 'auto',
                 boxShadow: '1px 1px 5px 1px #cccccc',
@@ -81,7 +81,7 @@ export default function Tabla_Reportes_SU() {
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'fixed',
-                bottom: '30px',
+                bottom: 'calc(40px + (101vh - 100%))',
                 left: '96%',  // Centrar la tabla en el eje horizontal
                 transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
                 zIndex: '3'

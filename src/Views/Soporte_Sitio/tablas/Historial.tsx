@@ -312,7 +312,7 @@ export default function Historial() {
             {Reportes && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '85%',
+                    height: '80%',
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
@@ -322,7 +322,7 @@ export default function Historial() {
                     textAlign: 'center',
                     flexDirection: 'column',
                     position: 'fixed',
-                    bottom: '30px',
+                   bottom: 'calc(40px + (101vh - 100%))',
                     left: '96%',  // Centramos la tabla en el eje horizontal
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
                     zIndex: '5',
@@ -507,7 +507,7 @@ export default function Historial() {
             <table
                 style={{
                     width: 'calc(3em + 80vw)',
-                    height: '85%',
+                    height: '80%',
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
@@ -517,7 +517,7 @@ export default function Historial() {
                     textAlign: 'center',
                     flexDirection: 'column',
                     position: 'fixed',
-                    bottom: '30px',
+                    bottom: 'calc(40px + (101vh - 100%))',
                     left: '96%',  // Centramos la tabla en el eje horizontal
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
                     zIndex: '3',

@@ -303,7 +303,7 @@ export default function TablaInstructor() { // Define el componente funcional
                     justifyContent: 'start',
                     textAlign: 'center',
                     position: 'fixed',
-                    bottom: '50px',
+                    bottom: 'calc(40px + (101vh - 100%))',
                     left: '96%',
                     transform: 'translateX(-98%) translateX(-4px)',
                     zIndex: '5',

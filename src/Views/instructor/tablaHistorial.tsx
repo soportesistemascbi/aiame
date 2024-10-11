@@ -86,7 +86,7 @@ export default function tablaHistorial() { // Define el componente funcional
                     textAlign: 'center',
                     flexDirection: 'column',
                     position: 'fixed',
-                    bottom: '30px',
+                    bottom: 'calc(40px + (101vh - 100%))',
                     left: '96%',  // Centramos la tabla en el eje horizontal
 
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda

@@ -70,13 +70,16 @@ export default function tablaHistorial() { // Define el componente funcional
         }
         return color.startsWith('#') ? color : `#${color}`; // Retorna el color formateado
     };
+
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades  
+
     return (
         <>
             {/* TABLA GENERAL DE CONTENIDO */}
             <table
                 style={{
                     width: 'calc(3em + 80vw)',
-                    height: '85%',
+                    maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
@@ -86,7 +89,7 @@ export default function tablaHistorial() { // Define el componente funcional
                     textAlign: 'center',
                     flexDirection: 'column',
                     position: 'fixed',
-                    bottom: '30px',
+                    bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                     left: '96%',  // Centramos la tabla en el eje horizontal
 
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda

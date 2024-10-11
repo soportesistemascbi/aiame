@@ -305,6 +305,7 @@ export default function Historial() {
         }
     };
 
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades
 
     return (
         <>
@@ -312,7 +313,7 @@ export default function Historial() {
             {Reportes && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '85%',
+                    maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                     background: 'white',
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
@@ -322,7 +323,7 @@ export default function Historial() {
                     textAlign: 'center',
                     flexDirection: 'column',
                     position: 'fixed',
-                   bottom: '30px',
+                    bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                     left: '96%',  // Centramos la tabla en el eje horizontal
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
                     zIndex: '5',
@@ -504,39 +505,28 @@ export default function Historial() {
             {/* Fin modal */}
 
             {/* TABLA GENERAL DE CONTENIDO */}
-            <table
-                style={{
-                    width: 'calc(3em + 80vw)',
-                    height: '85%',
-                    background: 'white',
-                    boxShadow: '1px 1px 5px 1px #cccccc',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'start',
-                    textAlign: 'center',
-                    flexDirection: 'column',
-                    position: 'fixed',
-                    bottom: '30px',
-                    left: '96%',  // Centramos la tabla en el eje horizontal
-                    transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
-                    zIndex: '3',
-                    borderCollapse: 'collapse',
-                    maxWidth: '100vw',  // Evitar que la tabla exceda el ancho de la pantalla
-                }}
-            >
-                <div
-                    style={{
-                        width: '100%',
-                        padding: '20px',
-                        paddingLeft: '80px',
-                        display: 'flex',
-                        maxWidth: '100%',  // Mantiene el contenedor dentro de la pantalla
-                    }}
-                >
-                    <div style={{ width: '1555px', height: '50px', display: 'flex', justifyContent: 'space-between' }}>
-                        <div style={{ display: 'flex', alignItems: 'center' }}>
-                            <input
+            <div style={{
+                width: 'calc(3em + 80vw)',
+                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
+                background: 'white',
+                margin: 'auto',
+                boxShadow: '1px 1px 5px 1px #cccccc',
+                borderRadius: '10px',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'fixed',
+                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
+                left: '96%',  // Centrar la tabla en el eje horizontal
+                transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
+                zIndex: '3'
+            }}>
+
+
+                {/* CONTENEDOR DEL INPUT DE BÚSQUEDA */}
+
+
+                <div style={{ width: '100%', padding: '20px', paddingLeft: '10px', display: 'flex' }}>
+                <input
                                 type="text"
                                 placeholder='Buscar por Número de Caso o Encargado'
                                 value={busqueda}
@@ -552,10 +542,14 @@ export default function Historial() {
                                     height: '22px'
                                 }}
                             />
-                        </div>
-                    </div>
                 </div>
 
+
+                {/* TABLA */}
+
+
+                <div style={{ width: '100%', height: '650px', overflowY: 'auto', overflowX: 'auto' }}>
+           
                 {/* ENCABEZADO DE LA TABLA */}
                 <div style={{ width: '100%', overflowY: 'auto' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
@@ -637,7 +631,9 @@ export default function Historial() {
                     </table>
 
                 </div>
-            </table>
+            
+            </div>
+              </div>
 
             {/*   LOADER O PANTALLA DE CARGA   */}
 

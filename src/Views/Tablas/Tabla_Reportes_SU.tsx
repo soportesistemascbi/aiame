@@ -68,12 +68,12 @@ export default function Tabla_Reportes_SU() {
         return color.startsWith('#') ? color : `#${color}`; // Si el color no tiene '#', lo agrega
     };
 
-
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades
     return (
         <>
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '80%',
+                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                 background: 'white',
                 margin: 'auto',
                 boxShadow: '1px 1px 5px 1px #cccccc',
@@ -81,7 +81,7 @@ export default function Tabla_Reportes_SU() {
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'fixed',
-                bottom: 'calc(40px + (101vh - 100%))',
+                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                 left: '96%',  // Centrar la tabla en el eje horizontal
                 transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
                 zIndex: '3'

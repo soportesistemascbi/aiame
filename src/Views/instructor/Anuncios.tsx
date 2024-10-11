@@ -51,6 +51,7 @@ export default function Anuncios() { // Definición del componente Anuncios
         setDescripcion(true); // Muestra la descripción de la noticia
     };
 
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades
 
     return (
         <>
@@ -108,9 +109,12 @@ export default function Anuncios() { // Definición del componente Anuncios
             {/* FIN MODALES  */}
 
 
+            {/*     TABLA DE ANUNCIOS      */}
+
+
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '85%',
+                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                 background: 'white',
                 boxShadow: '1px 1px 5px 1px #cccccc',
                 borderRadius: '10px',
@@ -120,7 +124,7 @@ export default function Anuncios() { // Definición del componente Anuncios
                 justifyContent: 'start',
                 textAlign: 'center',
                 position: 'fixed',
-                bottom: '30px',
+                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                 left: '96%',
                 transform: 'translateX(-98%) translateX(-4px)',
                 zIndex: '1',
@@ -130,6 +134,9 @@ export default function Anuncios() { // Definición del componente Anuncios
 
 
                 <div style={{ width: '100%', overflowY: 'auto', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+
+
+                    
                     {/*                 BLOQUE PARA LAS NOTICIAS               */}
 
 

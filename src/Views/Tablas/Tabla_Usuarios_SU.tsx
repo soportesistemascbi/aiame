@@ -157,6 +157,7 @@ export default function Tabla_Usuarios_SU() {
         }
     }
 
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades
 
     return (
         <>
@@ -165,7 +166,7 @@ export default function Tabla_Usuarios_SU() {
             {Open && <Modal1 message={Message} onClose={handleClose1} />}
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '80%',
+                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                 background: 'white',
                 margin: 'auto',
                 boxShadow: '1px 1px 5px 1px #cccccc',
@@ -173,7 +174,7 @@ export default function Tabla_Usuarios_SU() {
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'fixed',
-               bottom: 'calc(40px + (101vh - 100%))',
+                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño    
                 left: '96%',
                 transform: 'translateX(-98%) translateX(-4px)',
                 zIndex: '3'

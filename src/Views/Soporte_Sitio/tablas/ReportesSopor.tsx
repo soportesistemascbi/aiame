@@ -405,8 +405,7 @@ export default function ReportesSopor() { // Declaring the functional component.
         }
     };
 
-
-
+    const isMobile = window.innerWidth < 860; // Cambia el valor según tus necesidades
 
     return (
 
@@ -821,7 +820,7 @@ export default function ReportesSopor() { // Declaring the functional component.
             {Reportes && (
                 <div style={{
                     width: 'calc(3em + 80vw)',
-                    height: '80%',
+                    maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                     background: 'white',
                     margin: 'auto',
                     boxShadow: '1px 1px 5px 1px #cccccc',
@@ -829,7 +828,7 @@ export default function ReportesSopor() { // Declaring the functional component.
                     display: 'flex',
                     flexDirection: 'column',
                     position: 'fixed',
-                    bottom: 'calc(40px + (101vh - 100%))',
+                    bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                     left: '96%',  // Centrar la tabla en el eje horizontal
                     transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
                     zIndex: '5'
@@ -1016,7 +1015,7 @@ export default function ReportesSopor() { // Declaring the functional component.
 
             <div style={{
                 width: 'calc(3em + 80vw)',
-                height: '80%',
+                maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
                 background: 'white',
                 margin: 'auto',
                 boxShadow: '1px 1px 5px 1px #cccccc',
@@ -1024,7 +1023,7 @@ export default function ReportesSopor() { // Declaring the functional component.
                 display: 'flex',
                 flexDirection: 'column',
                 position: 'fixed',
-                bottom: 'calc(40px + (101vh - 100%))',
+                bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
                 left: '96%',  // Centrar la tabla en el eje horizontal
                 transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
                 zIndex: '3'

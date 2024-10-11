@@ -318,17 +318,17 @@ export default function Historial() {
                     boxShadow: '1px 1px 5px 1px #cccccc',
                     borderRadius: '10px',
                     display: 'flex',
+                    flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'start',
                     textAlign: 'center',
-                    flexDirection: 'column',
                     position: 'fixed',
                     bottom: isMobile ? '7%' : 'calc(20vh - 100px)', // Ajustar según el tamaño
-                    left: '96%',  // Centramos la tabla en el eje horizontal
-                    transform: 'translateX(-98%) translateX(-4px)',  // Corremos 180px a la izquierda
+                    left: '96%',
+                    transform: 'translateX(-98%) translateX(-4px)',
                     zIndex: '5',
                     borderCollapse: 'collapse',
-                    maxWidth: '100vw',  // Evitar que la tabla exceda el ancho de la pantalla
+                    maxWidth: '100vw',
                 }}>
                     <div style={{
                         width: '100%',
@@ -342,7 +342,6 @@ export default function Historial() {
                         alignItems: 'center',
                         justifyContent: 'flex-start', // Cambia a flex-start
                         textAlign: 'center',
-
                     }}>
                         <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>

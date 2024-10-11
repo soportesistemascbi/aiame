@@ -818,35 +818,38 @@ export default function ReportesSopor() { // Declaring the functional component.
 
 
             {Reportes && (
-                <div style={{
-                    width: 'calc(3em + 80vw)',
-                    maxHeight: isMobile ? '80vh' : 'calc(80vh - 50px)', // Ajustar según el tamaño
-                    background: 'white',
-                    margin: 'auto',
-                    boxShadow: '1px 1px 5px 1px #cccccc',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    position: 'fixed',
-                    bottom: isMobile ? '80vh' : 'calc(20vh - 100px)', // Ajustar según el tamaño
-                    left: '96%',  // Centrar la tabla en el eje horizontal
-                    transform: 'translateX(-98%) translateX(-4px)',  // Corremos a la izquierda
-                    zIndex: '5'
-                }}>
-                    <div style={{
-                        width: '100%',
-                        height: '100%',
-                        overflow: 'auto', // Mantén esta línea
-                        background: '#ffffff',
-                        boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
-                        borderRadius: '12px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'flex-start', // Cambia a flex-start
-                        textAlign: 'center',
-
-                    }}>
+                              <div style={{
+                                width: 'calc(3em + 80vw)',
+                                height: isMobile ? '5vh' : '91.5%', // Ajuste condicional para el height
+                                background: 'white',
+                                boxShadow: '1px 1px 5px 1px #cccccc',
+                                borderRadius: '10px',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'start',
+                                textAlign: 'center',
+                                position: 'fixed',
+                                bottom: isMobile ? '7%' : 'calc(20vh - 100px)', // Ajustar según el tamaño
+                                left: '96%',
+                                transform: 'translateX(-98%) translateX(-4px)',
+                                zIndex: '5',
+                                borderCollapse: 'collapse',
+                                maxWidth: '100vw',
+                            }}>
+                                <div style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    overflow: 'auto', // Mantén esta línea
+                                    background: '#ffffff',
+                                    boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)',
+                                    borderRadius: '12px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'flex-start', // Cambia a flex-start
+                                    textAlign: 'center',
+                                }}>
                         <h1 style={{ color: '#096ECB', marginBottom: '15px' }}>Reporte de Caso</h1>
                         <form style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                             <div style={{
